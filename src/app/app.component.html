@@ -1,7 +1,11 @@
-<h1>Hello world!</h1>
-<div class="row"><palette></palette></div>
-<div class="row">
-  <div class="col-lg-4"><links></links></div>
-  <div class="col-lg-8"><content></content></div>
-  <div></div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-3">
+      <palette (onSubmitChange)="onSubmit($event)"></palette>
+    </div>
+    <div class="col-lg-3"><links [links]="links"></links></div>
+    <div class="col-lg-6">
+      <content [newComponent]="selectedComponent"></content>
+    </div>
+  </div>
 </div>
