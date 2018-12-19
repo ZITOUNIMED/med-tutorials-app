@@ -1,5 +1,29 @@
-<p>palette works!</p>
-<select>
-  <option>Option 1</option>
-  <option>Option 2</option>
-</select>
+<h2>Choose an element</h2>
+<form [formGroup]="componentForm">
+  <div class="form-group">
+    <mat-form-field>
+      <mat-select
+        placeholder="Select a component!"
+        formControlName="componentkey"
+        (ngModelChange)="selectComponent()"
+      >
+        <mat-option
+          *ngFor="let componentChoice of componentsChoices"
+          [value]="componentChoice.key"
+          >{{ componentChoice.value }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="form-group">
+    <mat-form-field>
+      <textarea
+        matInput
+        placeholder="Textarea"
+        formControlName="content"
+      ></textarea>
+    </mat-form-field>
+  </div>
+  <button mat-stroked-button (click)="onSubmit()" color="primary">ADD</button>
+</form>
