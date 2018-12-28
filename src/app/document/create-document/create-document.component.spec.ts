@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PaletteComponent } from './palette.component';
+import { CreateDocumentComponent } from './create-document.component';
 
-describe('PaletteComponent', () => {
-  let component: PaletteComponent;
-  let fixture: ComponentFixture<PaletteComponent>;
+describe('CreateDocumentComponent', () => {
+  let component: CreateDocumentComponent;
+  let fixture: ComponentFixture<CreateDocumentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PaletteComponent ]
+      declarations: [ CreateDocumentComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PaletteComponent);
+    fixture = TestBed.createComponent(CreateDocumentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

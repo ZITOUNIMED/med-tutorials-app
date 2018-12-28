@@ -1,0 +1,7 @@
+<app-document-form
+(documentAdded)="onDocumentAdded($event)"
+></app-document-form>
+<app-document-list
+[documents]="documents"
+(selectDocument)="onSelectDocument($event)"
+></app-document-list>
