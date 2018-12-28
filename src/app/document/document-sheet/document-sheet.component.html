@@ -1,0 +1,12 @@
+<button (click)="returnToSelectDocument.emit(true)"><<</button>
+<div>
+  <h2>{{document.name}}</h2>
+</div>
+<div class="row">
+  <div class="col-lg-4">
+    <app-document-palette (onSubmitChange)="onSubmit($event)"></app-document-palette>
+  </div>
+  <div class="col-lg-8">
+    <app-document-content [document]="document"></app-document-content>
+  </div>
+</div>

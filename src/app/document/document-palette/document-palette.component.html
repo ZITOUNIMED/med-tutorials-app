@@ -1,0 +1,36 @@
+<form [formGroup]="elementForm">
+  <div class="form-group">
+    <mat-form-field>
+      <mat-select
+        placeholder="Select an element!"
+        formControlName="type"
+        (ngModelChange)="selectElement()"
+      >
+        <mat-option
+          *ngFor="let elementChoice of ELEMENTS_CHOICES"
+          [value]="elementChoice.key"
+          >{{ elementChoice.value }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div [ngSwitch]="true" *ngIf="elementChoiceKey">
+    <div *ngSwitchCase="elementChoiceKey === ElementType.SOURCE_CODE ||
+    elementChoiceKey === ElementType.TEXT"
+    class="form-group">
+      <mat-form-field>
+        <textarea
+          matInput
+          placeholder="Textarea"
+          formControlName="text"
+        ></textarea>
+      </mat-form-field>
+    </div>
+    <div *ngSwitchCase="elementChoiceKey === ElementType.BIG_TITLE ||
+    elementChoiceKey === ElementType.MEDIUM_TITLE ||
+    elementChoiceKey === ElementType.SMALL_TITLE" class="form-group">
+      <input type="text" formControlName="text" />
+    </div>
+  </div>
+  <button mat-stroked-button (click)="onSubmit()" color="primary">ADD</button>
+</form>
