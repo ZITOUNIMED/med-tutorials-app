@@ -1,11 +1,11 @@
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-lg-3">
-      <palette (onSubmitChange)="onSubmit($event)"></palette>
-    </div>
-    <div class="col-lg-3"><links [links]="links"></links></div>
-    <div class="col-lg-6">
-      <content [newComponent]="selectedComponent"></content>
-    </div>
+  <div *ngIf="document; else createSelectDocument">
+    <app-document-sheet
+    [document]="document"
+    (returnToSelectDocument)="onReturnToSelectDocument($event)"
+    ></app-document-sheet>
   </div>
+  <ng-template #createSelectDocument>
+    <app-create-document (selectDocument)="onSelectDocument($event)"></app-create-document>
+  </ng-template>
 </div>

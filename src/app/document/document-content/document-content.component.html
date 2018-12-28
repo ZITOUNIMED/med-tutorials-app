@@ -1,0 +1,43 @@
+<h1>{{document.name}}</h1>
+<div class="row">
+  <div class="col-lg-3">
+    Content:
+    <div *ngFor="let element of document.elements">
+      <div  *ngIf="element.type === ElementType.BIG_TITLE ||
+      element.type === ElementType.MEDIUM_TITLE ||
+      element.type === ElementType.SMALL_TITLE">{{element.text}}</div>
+    </div>
+  </div>
+  <div class="col-lg-9">
+    <div *ngFor="let element of document.elements">
+      <div [ngSwitch]="element.type">
+        <div *ngSwitchCase="ElementType.SOURCE_CODE">
+          <textarea rows="{{getRows(element.text)}}" cols="80" disabled="disabled">{{element.text}}</textarea>
+        </div>
+        <div *ngSwitchCase="ElementType.TEXT">
+          <div>
+            {{element.text}}
+          </div>
+        </div>
+        <div *ngSwitchCase="ElementType.BIG_TITLE">
+          <h1>
+            {{element.text}}
+          </h1>
+        </div>
+        <div *ngSwitchCase="ElementType.MEDIUM_TITLE">
+          <h2>
+            {{element.text}}
+          </h2>
+        </div>
+        <div *ngSwitchCase="ElementType.SMALL_TITLE">
+          <h3>
+            {{element.text}}
+          </h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <button (click)="save()">Save</button>
+  </div>
+</div>
