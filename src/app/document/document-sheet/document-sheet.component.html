@@ -1,12 +1,16 @@
-<button (click)="returnToSelectDocument.emit(true)"><<</button>
-<div>
-  <h2>{{document.name}}</h2>
-</div>
+<mat-chip-list>
+  <mat-chip (click)="returnToSelectDocument.emit(true)">Back</mat-chip>
+</mat-chip-list>
+<mat-chip-list>
+  <mat-chip (click)="editMode = true;" color="primary">EDIT</mat-chip>
+</mat-chip-list>
 <div class="row">
-  <div class="col-lg-4">
+  <div class="col-lg-4" *ngIf="editMode">
     <app-document-palette (onSubmitChange)="onSubmit($event)"></app-document-palette>
   </div>
-  <div class="col-lg-8">
-    <app-document-content [document]="document"></app-document-content>
+  <div [ngClass]="{'col-lg-8': editMode, 'col-lg-12': !editMode}">
+    <app-document-content [document]="document"
+    [editMode]="editMode"
+    (editModeChange)="onEditModeChange($event)"></app-document-content>
   </div>
 </div>

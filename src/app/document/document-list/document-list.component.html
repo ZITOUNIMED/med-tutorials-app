@@ -1,3 +1,4 @@
-<ul>
-  <li *ngFor="let document of documents" (click)="onSelectDocument(document.id)">{{document.name}}</li>
-</ul>
+<mat-action-list>
+  <button mat-list-item *ngFor="let document of documents" (click)="onSelectDocument(document.id)">
+    {{document.name}}</button>
+</mat-action-list>

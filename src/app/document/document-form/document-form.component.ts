@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Document } from '../shared/document.model';
 import { DocumentService } from '../shared/document.service';
+import { AppSnackbarService } from '../../shared/app-snackbar.service';
 
 @Component({
   selector: 'app-document-form',
@@ -14,7 +15,9 @@ export class DocumentFormComponent implements OnInit {
   documentForm: FormGroup;
   @Output() documentAdded= new EventEmitter<boolean>();
 
-  constructor(private fb: FormBuilder, private documentService: DocumentService) { }
+  constructor(private fb: FormBuilder,
+    private documentService: DocumentService,
+    private appSnackbarService: AppSnackbarService) { }
 
   ngOnInit() {
     this.documentForm = this.fb.group({
@@ -31,7 +34,10 @@ export class DocumentFormComponent implements OnInit {
     };
 
     this.documentService.saveDocument(document).subscribe(
-      res => this.documentAdded.emit(true)
+      res => {
+        this.appSnackbarService.openSnackBar('Success!: Document Saved', 'save');
+        this.documentAdded.emit(true);
+      }
     );
   }
 
