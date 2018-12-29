@@ -12,6 +12,7 @@ export class DocumentSheetComponent implements OnInit {
 
   @Input() document: Document;
   @Output() returnToSelectDocument = new EventEmitter<boolean>();
+  editMode: false;
 
   element: Element;
 
@@ -24,8 +25,12 @@ export class DocumentSheetComponent implements OnInit {
     if(!this.document.elements){
       this.document.elements = [];
     }
-    
+
     this.document.elements.push(element);
+  }
+
+  onEditModeChange(editMode){
+    this.editMode = editMode;
   }
 
 }

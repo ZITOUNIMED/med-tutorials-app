@@ -3,21 +3,30 @@ import {
   MatFormFieldModule,
   MatSelectModule,
   MatInputModule,
-  MatButtonModule
+  MatButtonModule,
+  MatToolbarModule,
+  MatListModule,
+  MatSnackBarModule,
+  MatIconModule,
+  MatChipsModule,
+  MatProgressSpinnerModule
 } from "@angular/material";
 
+const modules = [
+  MatFormFieldModule,
+  MatSelectModule,
+  MatInputModule,
+  MatButtonModule,
+  MatToolbarModule,
+  MatListModule,
+  MatSnackBarModule,
+  MatIconModule,
+  MatChipsModule,
+  MatProgressSpinnerModule
+];
+
 @NgModule({
-  imports: [
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    MatButtonModule
-  ],
-  exports: [
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    MatButtonModule
-  ]
+  imports: modules,
+  exports: modules
 })
 export class AppMaterialmodule {}

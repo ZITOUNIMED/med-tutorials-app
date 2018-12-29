@@ -21,7 +21,7 @@
       <mat-form-field>
         <textarea
           matInput
-          placeholder="Textarea"
+          placeholder="Text Content here!"
           formControlName="text"
         ></textarea>
       </mat-form-field>
@@ -29,7 +29,9 @@
     <div *ngSwitchCase="elementChoiceKey === ElementType.BIG_TITLE ||
     elementChoiceKey === ElementType.MEDIUM_TITLE ||
     elementChoiceKey === ElementType.SMALL_TITLE" class="form-group">
-      <input type="text" formControlName="text" />
+      <mat-form-field>
+        <input type="text" placeholder="Title Here!" matInput formControlName="text" />
+      </mat-form-field>
     </div>
   </div>
   <button mat-stroked-button (click)="onSubmit()" color="primary">ADD</button>
