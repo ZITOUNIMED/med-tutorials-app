@@ -12,7 +12,7 @@ export class DocumentSheetComponent implements OnInit {
 
   @Input() document: Document;
   @Output() returnToSelectDocument = new EventEmitter<boolean>();
-  editMode: false;
+  editMode= false;
 
   element: Element;
 
