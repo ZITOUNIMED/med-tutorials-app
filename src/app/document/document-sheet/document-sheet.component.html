@@ -2,7 +2,7 @@
   <mat-chip (click)="returnToSelectDocument.emit(true)">Back</mat-chip>
 </mat-chip-list>
 <mat-chip-list>
-  <mat-chip (click)="editMode = true;" color="primary">EDIT</mat-chip>
+  <mat-chip (click)="activeEditMode()" color="primary">EDIT</mat-chip>
 </mat-chip-list>
 <div class="row">
   <div class="col-lg-4" *ngIf="editMode">
