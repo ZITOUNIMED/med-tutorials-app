@@ -1,16 +1,27 @@
-<mat-chip-list>
-  <mat-chip (click)="returnToSelectDocument.emit(true)">Back</mat-chip>
-</mat-chip-list>
-<mat-chip-list>
-  <mat-chip (click)="editMode = true;" color="primary">EDIT</mat-chip>
-</mat-chip-list>
-<div class="row">
-  <div class="col-lg-4" *ngIf="editMode">
-    <app-document-palette (onSubmitChange)="onSubmit($event)"></app-document-palette>
+<div class="card">
+  <div class="card-header bg-info text-white">
+    {{document.name}}
+    <div class="pull-right">
+      <mat-chip-list>
+        <mat-chip (click)="editMode = true;" color="primary">EDIT</mat-chip>
+      </mat-chip-list>
+    </div>
   </div>
-  <div [ngClass]="{'col-lg-8': editMode, 'col-lg-12': !editMode}">
-    <app-document-content [document]="document"
-    [editMode]="editMode"
-    (editModeChange)="onEditModeChange($event)"></app-document-content>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-lg-3" *ngIf="editMode">
+        <app-document-palette (onSubmitChange)="onSubmit($event)"></app-document-palette>
+      </div>
+      <div [ngClass]="{'col-lg-9': editMode, 'col-lg-12': !editMode}">
+        <app-document-content [document]="document"
+        [editMode]="editMode"
+        (editModeChange)="onEditModeChange($event)"></app-document-content>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <mat-chip-list>
+      <mat-chip (click)="returnToSelectDocument.emit(true)">Back</mat-chip>
+    </mat-chip-list>
   </div>
 </div>
