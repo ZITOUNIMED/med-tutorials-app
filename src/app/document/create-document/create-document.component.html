@@ -1,7 +1,22 @@
-<app-document-form
-(documentAdded)="onDocumentAdded($event)"
-></app-document-form>
-<app-document-list
-[documents]="documents"
-(selectDocument)="onSelectDocument($event)"
-></app-document-list>
+<div class="card">
+  <div class="card-header bg-info text-white">
+    Tutorials Documents
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-lg-4">
+        <app-document-form
+        (documentAdded)="onDocumentAdded($event)"
+        ></app-document-form>
+      </div>
+      <div class="col-lg-8">
+        <app-document-list
+        [documents]="documents"
+        (selectDocument)="onSelectDocument($event)"
+        (documentDeleted)="onDeleteDocument($event)"
+        ></app-document-list>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer"></div>
+</div>

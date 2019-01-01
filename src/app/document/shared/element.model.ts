@@ -5,4 +5,5 @@ export interface Element {
   id: number;
   type: ElementType;
   text: string;
+  row: number;
 }
