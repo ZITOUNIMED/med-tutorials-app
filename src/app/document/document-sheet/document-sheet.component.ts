@@ -34,4 +34,8 @@ export class DocumentSheetComponent implements OnInit {
     this.editMode = editMode;
   }
 
+  activeEditMode(){
+    this.editMode = true;
+  }
+
 }
