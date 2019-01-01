@@ -41,8 +41,10 @@ export class DocumentPaletteComponent implements OnInit {
     const element: Element = {
       id: null,
       type: type,
-      text: text
+      text: text,
+      row: 0
     };
+    this.elementForm.get("text").setValue("");
     this.onSubmitChange.emit(element);
   }
 

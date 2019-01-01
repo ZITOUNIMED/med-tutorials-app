@@ -1,6 +1,7 @@
 <form [formGroup]="documentForm">
-  <mat-form-field>
-    <input matInput placeholder="Document Name" formControlName="name" >
-  </mat-form-field>
+  <div class="form-group">
+    <label for="documentName">Create new document</label>
+    <input class="form-control" matInput name="documentName" placeholder="Put document name here!" formControlName="name">
+  </div>
   <button mat-stroked-button color="primary" (click)="onSubmit()" >ADD</button>
 </form>

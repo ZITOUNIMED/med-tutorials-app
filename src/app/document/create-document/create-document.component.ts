@@ -19,7 +19,11 @@ export class CreateDocumentComponent implements OnInit {
     this.loadDocuments();
   }
 
-  onDocumentAdded(document){
+  onDocumentAdded(added){
+    this.loadDocuments();
+  }
+
+  onDeleteDocument(deleted){
     this.loadDocuments();
   }
 

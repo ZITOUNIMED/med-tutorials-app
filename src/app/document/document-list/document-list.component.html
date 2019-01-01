@@ -1,4 +1,21 @@
-<mat-action-list>
-  <button mat-list-item *ngFor="let document of documents" (click)="onSelectDocument(document.id)">
-    {{document.name}}</button>
-</mat-action-list>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Document</th><th></th><th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let document of documents">
+      <td>{{document.name}}</td>
+      <td></td>
+      <td>
+        <button mat-stroked-button color="primary" (click)="onSelectDocument(document.id)">
+          <i class="fa fa-book" aria-hidden="true"></i>
+        </button>
+        <button mat-stroked-button color="warn" (click)="deleteDocument(document.id)">
+          <i class="fa fa-minus-circle"></i>
+        </button>
+     </td>
+    </tr>
+  </tbody>
+</table>

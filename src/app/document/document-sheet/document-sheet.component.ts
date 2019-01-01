@@ -26,6 +26,7 @@ export class DocumentSheetComponent implements OnInit {
       this.document.elements = [];
     }
 
+    element.row = this.document.elements.length;
     this.document.elements.push(element);
   }
 
