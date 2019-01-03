@@ -1,32 +1,34 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
 
-import { environment } from '../../../environments/environment';
+import { environment } from "../../../environments/environment";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class DocumentService {
+  url = environment.api_url + "/document";
 
-  url = environment.api_url + '/document';
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-  getDocuments(): Observable<any>{
+  getDocuments(): Observable<any> {
     return this.http.get(this.url);
   }
 
-  saveDocument(document): Observable<any>{
+  saveDocument(document): Observable<any> {
     return this.http.post(this.url, document);
   }
 
-  getDocument(id: number): Observable<any>{
-    return this.http.get(this.url+ `/${id}`);
+  getDocument(id: number): Observable<any> {
+    return this.http.get(this.url + `/${id}`);
   }
 
-  deleteDocument(id: number): Observable<any>{
+  deleteDocument(id: number): Observable<any> {
     return this.http.delete(this.url + `/${id}`);
   }
 
+  wakeUp(): Observable<any> {
+    return this.http.get(this.url + "/up");
+  }
 }
