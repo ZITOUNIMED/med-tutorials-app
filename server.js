@@ -25,7 +25,7 @@ function verifyServer() {
         }
       }
     );
-  }, 5 * 60 * 1000);
+  }, 2 * 60 * 1000);
 }
 
 console.log("App is listenning!");
