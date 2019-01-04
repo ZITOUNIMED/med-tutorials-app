@@ -5,18 +5,18 @@ const request = require("request");
 
 app.use(express.static(__dirname + "/dist/med-tutorials-app"));
 
-app.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT || 4200);
 
 app.get("/*", function(req, res) {
   res.sendFile(path.join(__dirname + "/dist/med-tutorials-app/index.html"));
 });
 
-verifyServer();
+wakeUpServer();
 
-function verifyServer() {
+function wakeUpServer() {
   setInterval(function() {
     request(
-      "https://med-tutorials-rest-api.herokuapp.com/api/wake-up-server",
+      "https://med-tutorials-app.herokuapp.com/",
       function(err, body) {
         if (err) {
           console.log("Can't call server!");
@@ -25,7 +25,7 @@ function verifyServer() {
         }
       }
     );
-  }, 2 * 60 * 1000);
+  }, 5 * 60 * 1000);
 }
 
 console.log("App is listenning!");
