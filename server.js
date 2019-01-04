@@ -12,6 +12,7 @@ app.get("/*", function(req, res) {
 });
 
 wakeUpServer();
+wakeUpRestApi();
 
 function wakeUpServer() {
   setInterval(function() {
@@ -26,6 +27,21 @@ function wakeUpServer() {
       }
     );
   }, 5 * 60 * 1000);
+}
+
+function wakeUpRestApi() {
+  setInterval(function() {
+    request(
+      "https://med-tutorials-rest-api.herokuapp.com/api/wake-up-server/",
+      function(err, body) {
+        if (err) {
+          console.log("Can't call Rest API!");
+        } else {
+          console.log("Rest API is awake.");
+        }
+      }
+    );
+  }, 6 * 60 * 1000);
 }
 
 console.log("App is listenning!");
