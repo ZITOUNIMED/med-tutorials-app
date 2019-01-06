@@ -8,7 +8,7 @@ import { DocumentService } from '../shared/document.service';
   templateUrl: './create-document.component.html',
   styleUrls: ['./create-document.component.css']
 })
-export class CreateDocumentComponent implements OnInit {
+export class CreateDocumentComponent implements OnInit, OnChanges {
 
   documents: Document[] = [];
   @Output() selectDocument = new EventEmitter<Document>();
@@ -35,6 +35,10 @@ export class CreateDocumentComponent implements OnInit {
 
   loadDocuments(){
     this.documentService.getDocuments().subscribe(documents => this.documents = documents);
+  }
+
+  onRenameDocumentChange(document){
+    this.document = document;
   }
 
 }

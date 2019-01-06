@@ -2,8 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { Document } from '../shared/document.model';
 import { ElementType } from '../shared/element-type';
-import { DocumentService } from '../shared/document.service';
-import { AppSnackbarService } from '../../shared/app-snackbar.service';
 
 @Component({
   selector: 'app-document-content',
@@ -17,9 +15,9 @@ export class DocumentContentComponent implements OnInit {
   @Input() editMode = false;
   @Output() editModeChange = new EventEmitter<boolean>();
   @Output() editElementChange = new EventEmitter<Element>();
+  @Output() saveDocumentChange = new EventEmitter<Document>();
 
-  constructor(private documentService: DocumentService,
-  private appSnackbarService: AppSnackbarService) { }
+  constructor() { }
 
   ngOnInit() {
     this.sortElements();
@@ -38,11 +36,7 @@ export class DocumentContentComponent implements OnInit {
   }
 
   save(){
-    this.documentService.saveDocument(this.document)
-    .subscribe(res => {
-      this.appSnackbarService.openSnackBar('Success!: Document Saved', 'save');
-      this.editModeChange.emit(false);
-    });
+    this.saveDocumentChange.emit(this.document);
   }
 
   moveUp(element){

@@ -3,5 +3,7 @@
     <label for="documentName">Create new document</label>
     <input class="form-control" matInput name="documentName" placeholder="Put document name here!" formControlName="name">
   </div>
-  <button mat-stroked-button color="primary" (click)="onSubmit()" >ADD</button>
+  <button mat-stroked-button color="primary" (click)="onSubmit()" >
+    {{document?.id ? 'SAVE' : 'ADD'}}
+  </button>
 </form>
