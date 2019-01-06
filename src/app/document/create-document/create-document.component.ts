@@ -8,10 +8,11 @@ import { DocumentService } from '../shared/document.service';
   templateUrl: './create-document.component.html',
   styleUrls: ['./create-document.component.css']
 })
-export class CreateDocumentComponent implements OnInit, OnChanges {
+export class CreateDocumentComponent implements OnInit {
 
   documents: Document[] = [];
   @Output() selectDocument = new EventEmitter<Document>();
+  document: Document;
 
   constructor(private documentService: DocumentService) { }
 
