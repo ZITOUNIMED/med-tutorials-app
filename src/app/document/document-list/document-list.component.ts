@@ -13,6 +13,7 @@ export class DocumentListComponent implements OnInit {
   @Input() documents: Document[] = [];
   @Output() selectDocument = new EventEmitter<number>();
   @Output() documentDeleted = new EventEmitter<boolean>();
+  @Output() renameDocumentChange = new EventEmitter<Document>();
 
   constructor(private documentService: DocumentService,
   private appSnackbarService: AppSnackbarService) { }
@@ -30,6 +31,10 @@ export class DocumentListComponent implements OnInit {
       this.appSnackbarService.openSnackBar('Success!: Document Deleted', 'delete');
       this.documentDeleted.emit(true);
     });
+  }
+
+  renameDocument(document){
+    this.renameDocumentChange.emit(document);
   }
 
 }
