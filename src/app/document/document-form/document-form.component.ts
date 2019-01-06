@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Document } from '../shared/document.model';
@@ -10,10 +10,11 @@ import { AppSnackbarService } from '../../shared/app-snackbar.service';
   templateUrl: './document-form.component.html',
   styleUrls: ['./document-form.component.css']
 })
-export class DocumentFormComponent implements OnInit {
+export class DocumentFormComponent implements OnInit, OnChanges {
 
   documentForm: FormGroup;
   @Output() documentAdded= new EventEmitter<boolean>();
+  @Input() document: Document;
 
   constructor(private fb: FormBuilder,
     private documentService: DocumentService,
@@ -27,18 +28,38 @@ export class DocumentFormComponent implements OnInit {
 
   onSubmit(){
     const name = this.documentForm.get('name').value;
-    const document: Document = {
-      id: null,
-      name: name,
-      elements: []
-    };
+    if(this.document && this.document.id){
+      this.document.name = name;
+    } else {
+      this.document = {
+        id: null,
+        name: name,
+        elements: []
+      } as Document;
+    }
 
-    this.documentService.saveDocument(document).subscribe(
+    this.documentService.saveDocument(this.document).subscribe(
       res => {
         this.appSnackbarService.openSnackBar('Success!: Document Saved', 'save');
         this.documentAdded.emit(true);
+        this.clearForm();
       }
     );
+  }
+
+  ngOnChanges(changes){
+    if(changes.document && this.documentForm){
+      this.patchDocumentValue(this.document);
+    }
+  }
+
+  clearForm(){
+    this.documentForm.reset();
+    this.document = null;
+  }
+
+  patchDocumentValue(document){
+    this.documentForm.get('name').patchValue(document.name);
   }
 
 }

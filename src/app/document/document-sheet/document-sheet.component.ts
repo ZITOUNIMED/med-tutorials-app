@@ -2,6 +2,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { Document } from '../shared/document.model';
 import { Element } from '../shared/element.model';
+import { DocumentService } from '../shared/document.service';
+import { AppSnackbarService } from '../../shared/app-snackbar.service';
 
 @Component({
   selector: 'app-document-sheet',
@@ -16,7 +18,8 @@ export class DocumentSheetComponent implements OnInit {
 
   element: Element;
 
-  constructor() { }
+  constructor(private documentService: DocumentService,
+  private appSnackbarService: AppSnackbarService) { }
 
   ngOnInit() {
   }
@@ -45,6 +48,22 @@ export class DocumentSheetComponent implements OnInit {
 
   onEditModeChange(editMode){
     this.editMode = editMode;
+  }
+
+  onSaveDocumentChange(document){
+    this.documentService.saveDocument(document)
+    .subscribe(res => {
+      this.appSnackbarService.openSnackBar('Success!: Document Saved', 'save');
+      this.loadDocument();
+    });
+  }
+
+  loadDocument(){
+    this.documentService.getDocument(this.document.id).subscribe(
+      document => {
+        this.document = document;
+      }
+    );
   }
 
   activeEditMode(){
