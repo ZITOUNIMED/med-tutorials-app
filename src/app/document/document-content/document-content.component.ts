@@ -16,12 +16,17 @@ export class DocumentContentComponent implements OnInit {
   ElementType = ElementType;
   @Input() editMode = false;
   @Output() editModeChange = new EventEmitter<boolean>();
+  @Output() editElementChange = new EventEmitter<Element>();
 
   constructor(private documentService: DocumentService,
   private appSnackbarService: AppSnackbarService) { }
 
   ngOnInit() {
     this.sortElements();
+  }
+
+  editElement(element){
+    this.editElementChange.emit(element);
   }
 
   sortElements(){

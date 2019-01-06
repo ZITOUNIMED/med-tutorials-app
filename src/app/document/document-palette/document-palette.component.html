@@ -28,11 +28,13 @@
     </div>
     <div *ngSwitchCase="elementChoiceKey === ElementType.BIG_TITLE ||
     elementChoiceKey === ElementType.MEDIUM_TITLE ||
-    elementChoiceKey === ElementType.SMALL_TITLE" class="form-group">
+    elementChoiceKey === ElementType.SMALL_TITLE ||
+    elementChoiceKey === ElementType.VERY_SMALL_TITLE" class="form-group">
       <mat-form-field>
         <input type="text" placeholder="Title Here!" matInput formControlName="text" />
       </mat-form-field>
     </div>
   </div>
-  <button mat-stroked-button (click)="onSubmit()" color="primary">ADD</button>
+  <button mat-stroked-button (click)="onSubmit()" color="primary">
+    {{element?.id ? 'SAVE' : 'ADD'}}</button>
 </form>

@@ -26,8 +26,21 @@ export class DocumentSheetComponent implements OnInit {
       this.document.elements = [];
     }
 
-    element.row = this.document.elements.length;
-    this.document.elements.push(element);
+    if(element.id){
+      this.document.elements.map(elt => {
+        if(elt.id === element.id) {
+          elt = element;
+        }
+        return elt;
+      });
+    } else {
+      element.row = this.document.elements.length;
+      this.document.elements.push(element);
+    }
+  }
+
+  onEditElementChange(element){
+    this.element = element;
   }
 
   onEditModeChange(editMode){
