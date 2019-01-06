@@ -1,3 +1,4 @@
+import { FormGroup } from '@angular/forms';
 
 import { ElementType } from './element-type';
 
@@ -6,4 +7,5 @@ export interface Element {
   type: ElementType;
   text: string;
   row: number;
+  form?: FormGroup
 }
