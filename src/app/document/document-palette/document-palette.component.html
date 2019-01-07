@@ -1,6 +1,6 @@
 <form [formGroup]="elementForm">
   <div class="form-group">
-    <mat-form-field>
+    <mat-form-field class="example-full-width">
       <mat-select
         placeholder="Select an element!"
         formControlName="type"
@@ -15,10 +15,14 @@
     </mat-form-field>
   </div>
   <div [ngSwitch]="true" *ngIf="elementChoiceKey">
-    <div *ngSwitchCase="elementChoiceKey === ElementType.SOURCE_CODE ||
-    elementChoiceKey === ElementType.TEXT"
-    class="form-group">
-      <mat-form-field>
+    <div
+      *ngSwitchCase="
+        elementChoiceKey === ElementType.SOURCE_CODE ||
+        elementChoiceKey === ElementType.TEXT
+      "
+      class="form-group"
+    >
+      <mat-form-field class="example-full-width">
         <textarea
           matInput
           placeholder="Text Content here!"
@@ -26,15 +30,26 @@
         ></textarea>
       </mat-form-field>
     </div>
-    <div *ngSwitchCase="elementChoiceKey === ElementType.BIG_TITLE ||
-    elementChoiceKey === ElementType.MEDIUM_TITLE ||
-    elementChoiceKey === ElementType.SMALL_TITLE ||
-    elementChoiceKey === ElementType.VERY_SMALL_TITLE" class="form-group">
-      <mat-form-field>
-        <input type="text" placeholder="Title Here!" matInput formControlName="text" />
+    <div
+      *ngSwitchCase="
+        elementChoiceKey === ElementType.BIG_TITLE ||
+        elementChoiceKey === ElementType.MEDIUM_TITLE ||
+        elementChoiceKey === ElementType.SMALL_TITLE ||
+        elementChoiceKey === ElementType.VERY_SMALL_TITLE
+      "
+      class="form-group"
+    >
+      <mat-form-field class="example-full-width">
+        <input
+          type="text"
+          placeholder="Title Here!"
+          matInput
+          formControlName="text"
+        />
       </mat-form-field>
     </div>
   </div>
   <button mat-stroked-button (click)="onSubmit()" color="primary">
-    {{element?.id ? 'SAVE' : 'ADD'}}</button>
+    {{ element?.id ? "SAVE" : "ADD" }}
+  </button>
 </form>
