@@ -1,24 +1,28 @@
 <div class="card">
   <div class="card-header bg-info text-white">
-    {{document.name}}
+    {{ document.name }}
     <div class="pull-right">
       <mat-chip-list>
-        <mat-chip (click)="editMode = true;" color="primary">EDIT</mat-chip>
+        <mat-chip (click)="editMode = true" color="primary">EDIT</mat-chip>
       </mat-chip-list>
     </div>
   </div>
   <div class="card-body">
     <div class="row">
-      <div class="col-lg-3" *ngIf="editMode">
-        <app-document-palette (onSubmitChange)="onSubmit($event)"
-        [element]="element"></app-document-palette>
+      <div class="col-lg-5" *ngIf="editMode">
+        <app-document-palette
+          (onSubmitChange)="onSubmit($event)"
+          [element]="element"
+        ></app-document-palette>
       </div>
-      <div [ngClass]="{'col-lg-9': editMode, 'col-lg-12': !editMode}">
-        <app-document-content [document]="document"
-        [editMode]="editMode"
-        (editModeChange)="onEditModeChange($event)"
-        (editElementChange)="onEditElementChange($event)"
-        (saveDocumentChange)="onSaveDocumentChange($event)"></app-document-content>
+      <div [ngClass]="{ 'col-lg-7': editMode, 'col-lg-12': !editMode }">
+        <app-document-content
+          [document]="document"
+          [editMode]="editMode"
+          (editModeChange)="onEditModeChange($event)"
+          (editElementChange)="onEditElementChange($event)"
+          (saveDocumentChange)="onSaveDocumentChange($event)"
+        ></app-document-content>
       </div>
     </div>
   </div>
