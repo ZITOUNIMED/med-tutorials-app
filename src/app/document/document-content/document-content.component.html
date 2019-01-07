@@ -1,14 +1,16 @@
 <div class="card">
   <div class="card-body" style="min-height: 400px;">
     <div class="row">
-      <!-- <div class="col-lg-3">
-        Content:
-        <div *ngFor="let element of document.elements">
-          <div  *ngIf="element.type === ElementType.BIG_TITLE ||
-          element.type === ElementType.MEDIUM_TITLE ||
-          element.type === ElementType.SMALL_TITLE">{{element.text}}</div>
+      <!--
+        <div class="col-lg-3">
+          Content:
+          <div *ngFor="let element of document.elements">
+            <div  *ngIf="element.type === ElementType.BIG_TITLE ||
+            element.type === ElementType.MEDIUM_TITLE ||
+            element.type === ElementType.SMALL_TITLE">{{element.text}}</div>
+          </div>
         </div>
-      </div> -->
+      -->
       <div class="col-lg-12">
         <table>
           <tbody>
@@ -16,51 +18,55 @@
               <td style="">
                 <div [ngSwitch]="element.type">
                   <div *ngSwitchCase="ElementType.SOURCE_CODE">
-                    <textarea rows="{{getRows(element.text)}}" cols="65" disabled="disabled">{{element.text}}
+                    <textarea
+                      rows="{{getRows(element.text)}}"
+                      cols="65"
+                      disabled="disabled"
+                    >
+                      {{ element.text }}
                     </textarea>
                   </div>
                   <div *ngSwitchCase="ElementType.TEXT">
-                    <div>
-                      {{element.text}}
-                    </div>
+                    <div>{{ element.text }}</div>
                   </div>
                   <div *ngSwitchCase="ElementType.BIG_TITLE">
-                    <h1>
-                      {{element.text}}
-                    </h1>
+                    <h1>{{ element.text }}</h1>
                   </div>
                   <div *ngSwitchCase="ElementType.MEDIUM_TITLE">
-                    <h2>
-                      {{element.text}}
-                    </h2>
+                    <h2>{{ element.text }}</h2>
                   </div>
                   <div *ngSwitchCase="ElementType.SMALL_TITLE">
-                    <h3>
-                      {{element.text}}
-                    </h3>
+                    <h3>{{ element.text }}</h3>
                   </div>
                   <div *ngSwitchCase="ElementType.VERY_SMALL_TITLE">
-                    <h4>
-                      {{element.text}}
-                    </h4>
+                    <h4>{{ element.text }}</h4>
                   </div>
                 </div>
               </td>
               <td *ngIf="editMode">
-                <div style="float: right; min-width: 50px;">
-                  <button class="btn btn-sm btn-primary" [disabled]="!element.id" (click)="editElement(element)">
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                  </button>
-                  <button class="btn btn-sm btn-default" (click)="deleteElement(element)">
-                    <i class="fa fa-times text-danger" aria-hidden="true"></i>
-                  </button>
-                  <button class="btn btn-sm btn-info" (click)="moveUp(element)">
-                    <i class="fa fa-chevron-up" aria-hidden="true"></i>
-                  </button>
-                  <button class="btn btn-sm btn-info" (click)="moveDown(element)">
-                    <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                  </button>
-                </div>
+                <button
+                  class="btn btn-sm btn-primary"
+                  [disabled]="!element.id"
+                  (click)="editElement(element)"
+                >
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                </button>
+              </td>
+              <td *ngIf="editMode" style="width: 30px;">
+                <button class="btn btn-sm btn-info" (click)="moveUp(element)">
+                  <i class="fa fa-chevron-up" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn-sm btn-info" (click)="moveDown(element)">
+                  <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                </button>
+              </td>
+              <td *ngIf="editMode">
+                <button
+                  class="btn btn-sm btn-default"
+                  (click)="deleteElement(element)"
+                >
+                  <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                </button>
               </td>
             </tr>
           </tbody>
