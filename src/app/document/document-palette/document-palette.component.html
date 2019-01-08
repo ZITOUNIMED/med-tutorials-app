@@ -50,7 +50,18 @@
       </mat-form-field>
     </div>
   </div>
-  <button mat-stroked-button (click)="onSubmit()" color="primary">
-    {{ element?.id ? "SAVE" : "ADD" }}
-  </button>
+  <div class="form-group">
+    <button mat-stroked-button (click)="onCancel()" color="primary">
+      Cancel
+    </button>
+    <button
+      [disabled]="elementForm.prestine || elementForm.invalid"
+      mat-flat-button
+      (click)="onSubmit()"
+      color="primary"
+      class="pull-right"
+    >
+      {{ element?.id ? "SAVE" : "ADD" }}
+    </button>
+  </div>
 </form>
