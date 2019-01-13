@@ -23,6 +23,7 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
   elementChoiceKey: string;
   elementForm: FormGroup;
   @Output() onSubmitChange = new EventEmitter<Element>();
+  @Output() cancelChange = new EventEmitter<boolean>();
   @Input() element: Element;
 
   constructor(private fb: FormBuilder) {}
@@ -42,7 +43,7 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
     const type = this.elementForm.get("type").value;
     const text = this.elementForm.get("text").value;
 
-    if (this.element && this.element.id) {
+    if (this.element) {
       this.element.type = type;
       this.element.text = text;
     } else {
@@ -50,7 +51,7 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
         id: null,
         type: type,
         text: text,
-        row: 0
+        row: -1
       } as Element;
     }
 
@@ -60,6 +61,7 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
 
   onCancel() {
     this.clearForm();
+    this.cancelChange.emit(true);
   }
 
   clearForm() {
