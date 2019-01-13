@@ -1,17 +1,23 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges
+} from "@angular/core";
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 
-import { ElementType } from '../shared/element-type';
-import { Element } from '../shared/element.model';
-import { ELEMENTS_CHOICES } from '../shared/element-choice';
+import { ElementType } from "../shared/element-type";
+import { Element } from "../shared/element.model";
+import { ELEMENTS_CHOICES } from "../shared/element-choice";
 
 @Component({
-  selector: 'app-document-palette',
-  templateUrl: './document-palette.component.html',
-  styleUrls: ['./document-palette.component.css']
+  selector: "app-document-palette",
+  templateUrl: "./document-palette.component.html",
+  styleUrls: ["./document-palette.component.css"]
 })
 export class DocumentPaletteComponent implements OnInit, OnChanges {
-
   ELEMENTS_CHOICES = ELEMENTS_CHOICES;
   ElementType = ElementType;
   elementChoiceKey: string;
@@ -36,7 +42,7 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
     const type = this.elementForm.get("type").value;
     const text = this.elementForm.get("text").value;
 
-    if(this.element && this.element.id){
+    if (this.element && this.element.id) {
       this.element.type = type;
       this.element.text = text;
     } else {
@@ -48,19 +54,23 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
       } as Element;
     }
 
-    this.clearForm();
     this.onSubmitChange.emit(this.element);
+    this.clearForm();
   }
 
-  clearForm(){
+  onCancel() {
+    this.clearForm();
+  }
+
+  clearForm() {
     this.elementForm.reset();
+    this.element = null;
   }
 
-  ngOnChanges(changes){
-    if(this.element && this.elementForm){
-      this.elementForm.get('type').patchValue(this.element.type);
-      this.elementForm.get('text').patchValue(this.element.text)
+  ngOnChanges(changes) {
+    if (this.element && this.elementForm) {
+      this.elementForm.get("type").patchValue(this.element.type);
+      this.elementForm.get("text").patchValue(this.element.text);
     }
   }
-
 }
