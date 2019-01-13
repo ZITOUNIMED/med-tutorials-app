@@ -13,6 +13,7 @@
         <app-document-palette
           (onSubmitChange)="onSubmit($event)"
           [element]="element"
+          (cancelChange)="onCancelChange($event)"
         ></app-document-palette>
       </div>
       <div [ngClass]="{ 'col-lg-7': editMode, 'col-lg-12': !editMode }">
@@ -21,7 +22,8 @@
           [editMode]="editMode"
           (editModeChange)="onEditModeChange($event)"
           (editElementChange)="onEditElementChange($event)"
-          (saveDocumentChange)="onSaveDocumentChange($event)"
+          [newOrEditElement]="newOrEditElement"
+          [shouldCancelChanges]="shouldCancelChanges"
         ></app-document-content>
       </div>
     </div>
