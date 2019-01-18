@@ -51,6 +51,7 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
         id: null,
         type: type,
         text: text,
+        page: 0,
         row: -1
       } as Element;
     }
