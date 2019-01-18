@@ -25,12 +25,12 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   @Output() editModeChange = new EventEmitter<boolean>();
   @Output() editElementChange = new EventEmitter<Element>();
   changedElements = [];
-  maxElementsPerPage = 3;
   currentPage = 0;
   currentPageElements = [];
   editedElementRow = -1;
   @Input() shouldCancelChanges = false;
   @Input() newOrEditElement: Element;
+  cantMoveUp = false;
 
   constructor(
     private documentService: DocumentService,
@@ -43,45 +43,38 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   }
 
   applyCurrentPageElements() {
-    const from = this.maxElementsPerPage * this.currentPage;
-    const to = this.maxElementsPerPage * (this.currentPage + 1);
-    if (to >= from && from >= 0) {
-      this.currentPageElements = this.document.elements.slice(from, to);
-    }
+    this.currentPageElements = this.document.elements.filter(
+      element => element.page === this.currentPage
+    );
   }
 
-  get totalPages() {
-    if (this.maxElementsPerPage > 0) {
-      let nbr = this.document.elements.length / this.maxElementsPerPage;
-      let integr = parseInt("" + nbr);
-      if (this.document.elements.length % this.maxElementsPerPage > 0) {
-        integr++;
-      }
-      return integr;
-    }
-    return -1;
+  isNextPage(): boolean {
+    return this.document.elements.some(
+      element => element.page > this.currentPage
+    );
   }
 
   nextPage() {
-    if (this.maxElementsPerPage > 0) {
-      if (this.currentPage + 1 < this.totalPages) {
-        this.currentPage++;
-        this.applyCurrentPageElements();
-      }
-    }
+    this.currentPage++;
+    this.applyCurrentPageElements();
   }
 
   lastPage() {
-    if (this.currentPage > 0) {
-      this.currentPage--;
-      this.applyCurrentPageElements();
-    }
+    this.currentPage--;
+    this.applyCurrentPageElements();
   }
 
   editElement(element) {
-    this.editedElementRow = element.row;
     this.markAsChangedElement(element);
     this.editElementChange.emit(element);
+  }
+
+  moveElement(element) {
+    if (this.editedElementRow >= 0) {
+      this.editedElementRow = -1;
+    } else {
+      this.editedElementRow = element.row;
+    }
   }
 
   sortElements() {
@@ -106,38 +99,62 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     });
   }
 
+  getBiggestRow(page): number {
+    const samePageElements = this.document.elements
+      .filter(elt => elt.page === page)
+      .sort((e1, e2) => e1.row - e2.row);
+    return samePageElements.length > 0
+      ? samePageElements[samePageElements.length - 1].row
+      : 0;
+  }
+
   moveUp(element) {
     const index = this.document.elements.indexOf(element);
-    if (index >= 1) {
+    const isTheFirst = !this.document.elements.some(
+      elt => elt.page === element.page && elt.row < element.row
+    );
+    if (isTheFirst) {
+      if (this.currentPage > 0) {
+        this.currentPage--;
+        const samePageElements = this.document.elements
+          .filter(elt => elt.page === element.page)
+          .sort((e1, e2) => e1.row - e2.row);
+        const row = this.getBiggestRow(element.page) + 1;
+        this.document.elements[index].row = row;
+        this.document.elements[index].page--;
+        this.editedElementRow = row;
+      } else {
+        this.cantMoveUp = true;
+      }
+    } else {
       this.editedElementRow--;
       this.document.elements[index].row--;
       this.document.elements[index - 1].row++;
-      if (
-        this.document.elements[index].row + 1 ==
-        this.currentPage * this.maxElementsPerPage
-      ) {
-        this.currentPage--;
-      }
-      this.sortElements();
-      this.applyCurrentPageElements();
     }
+    this.sortElements();
+    this.applyCurrentPageElements();
   }
 
   moveDown(element) {
     const index = this.document.elements.indexOf(element);
-    if (index < this.document.elements.length - 1) {
+    const isTheLast = !this.document.elements.some(
+      elt => elt.page === element.page && elt.row > element.row
+    );
+    if (isTheLast) {
+      this.document.elements[index].row = 0;
+      this.document.elements[index].page++;
+      this.currentPage++;
+      this.editedElementRow = 0;
+    } else {
       this.editedElementRow++;
       this.document.elements[index].row++;
       this.document.elements[index + 1].row--;
-      if (
-        this.document.elements[index].row ==
-        (this.currentPage + 1) * this.maxElementsPerPage
-      ) {
-        this.currentPage++;
-      }
-      this.sortElements();
-      this.applyCurrentPageElements();
     }
+
+    this.cantMoveUp = false;
+
+    this.sortElements();
+    this.applyCurrentPageElements();
   }
 
   deleteElement(element) {
@@ -185,23 +202,13 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   ngOnChanges(changes) {
     if (changes.newOrEditElement) {
       if (this.newOrEditElement && this.newOrEditElement.row === -1) {
-        const row =
-          this.currentPageElements[this.currentPageElements.length - 1].row + 1;
+        const row = this.getBiggestRow(this.currentPage) + 1;
+        this.newOrEditElement.row = row;
+        this.newOrEditElement.page = this.currentPage;
         this.document.elements.push(this.newOrEditElement);
-        this.document.elements = this.document.elements.map(elt => {
-          if (elt.row === -1) {
-            elt.row = row;
-          } else if (elt.row >= row) {
-            elt.row++;
-          }
-          return elt;
-        });
-        if (this.currentPageElements.length === this.maxElementsPerPage) {
-          this.currentPage++;
-        }
+        this.newOrEditElement = null;
         this.sortElements();
         this.applyCurrentPageElements();
-        this.newOrEditElement = null;
       }
     } else if (changes.shouldCancelChanges) {
       this.editedElementRow = -1;
