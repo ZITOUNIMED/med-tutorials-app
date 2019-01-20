@@ -27,7 +27,10 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   changedElements = [];
   currentPage = 0;
   currentPageElements = [];
-  editedElementRow = -1;
+  movedItem = {
+    page: -1,
+    row: -1
+  };
   @Input() shouldCancelChanges = false;
   @Input() newOrEditElement: Element;
   cantMoveUp = false;
@@ -38,18 +41,11 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
-    this.sortElements();
     this.applyCurrentPageElements();
   }
 
-  applyCurrentPageElements() {
-    this.currentPageElements = this.document.elements.filter(
-      element => element.page === this.currentPage
-    );
-  }
-
   isNextPage(): boolean {
-    return this.document.elements.some(
+    return this.document && this.document.elements && this.document.elements.some(
       element => element.page > this.currentPage
     );
   }
@@ -64,28 +60,41 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     this.applyCurrentPageElements();
   }
 
+  getRows(text) {
+    return text.split(/\r*\n/).length;
+  }
+
+  applyCurrentPageElements() {
+    this.sortElements();
+    if(this.document && this.document.elements){
+      this.currentPageElements = this.document.elements.filter(
+        element => element.page === this.currentPage
+      );
+    }
+  }
+
   editElement(element) {
     this.markAsChangedElement(element);
     this.editElementChange.emit(element);
   }
 
-  moveElement(element) {
-    if (this.editedElementRow >= 0) {
-      this.editedElementRow = -1;
-    } else {
-      this.editedElementRow = element.row;
+  deleteElement(element) {
+    this.document.elements = this.document.elements
+      .filter(elt => elt.row !== element.row || elt.page !== element.page)
+      .map(elt => {
+        if (elt.row > element.row && elt.page === element.page) {
+          elt.row--;
+        }
+        return elt;
+      });
+    if(this.movedItem.row === element.row && this.movedItem.page === element.page){
+      this.moveToPosition();
     }
+    this.currentPage = element.page;
+    this.applyCurrentPageElements();
   }
 
-  sortElements() {
-    this.document.elements.sort((e1, e2) => e1.row - e2.row);
-  }
-
-  getRows(text) {
-    return text.split(/\r*\n/).length;
-  }
-
-  save() {
+  saveElement() {
     this.changedElements = [];
     this.documentService.saveDocument(this.document).subscribe(res => {
       this.appSnackbarService.openSnackBar("Success!: Document Saved", "save");
@@ -99,56 +108,80 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     });
   }
 
-  getBiggestRow(page): number {
-    const samePageElements = this.document.elements
-      .filter(elt => elt.page === page)
-      .sort((e1, e2) => e1.row - e2.row);
-    return samePageElements.length > 0
-      ? samePageElements[samePageElements.length - 1].row
-      : 0;
+  cancel() {
+    this.cancelChanges();
+    this.editModeChange.emit(false);
+  }
+
+  moveElement(element) {
+    if (this.movedItem.row === element.row && this.movedItem.page === element.page) {
+      this.moveToPosition();
+    } else {
+      this.moveToPosition(element);
+    }
   }
 
   moveUp(element) {
-    const index = this.document.elements.indexOf(element);
+    const [row, page] = [element.row, element.page];
+
     const isTheFirst = !this.document.elements.some(
-      elt => elt.page === element.page && elt.row < element.row
+      elt => elt.page === page && elt.row < row
     );
-    if (isTheFirst) {
-      if (this.currentPage > 0) {
-        this.currentPage--;
-        const samePageElements = this.document.elements
-          .filter(elt => elt.page === element.page)
-          .sort((e1, e2) => e1.row - e2.row);
-        const row = this.getBiggestRow(element.page) + 1;
-        this.document.elements[index].row = row;
-        this.document.elements[index].page--;
-        this.editedElementRow = row;
+
+    if(isTheFirst){
+      if (page>0){
+        this.currentPage= page - 1;
+        const biggestRow = this.getBiggestRow(page - 1);
+        if(biggestRow>=0){
+          const p = { row: biggestRow + 1, page: page - 1 };
+
+          this.changeElementPosition(element, p);
+          this.moveToPosition(p);
+        } else {
+          const p = { row: 0, page: page - 1 };
+
+          this.changeElementPosition(element, p);
+          this.moveToPosition(p);
+        }
+        this.decreaseRows(page);
       } else {
         this.cantMoveUp = true;
+        this.currentPage= page;
+        const p = { row: 0, page: page};
+        this.moveToPosition(p);
       }
     } else {
-      this.editedElementRow--;
-      this.document.elements[index].row--;
-      this.document.elements[index - 1].row++;
+      const p1 = { row: row, page: page };
+      const p2 = { row: row - 1, page: page };
+      this.switchTowPositions(p1, p2);
+      this.moveToPosition(p2);
+      this.currentPage= page;
     }
+
     this.sortElements();
     this.applyCurrentPageElements();
   }
 
   moveDown(element) {
-    const index = this.document.elements.indexOf(element);
+    const [row, page] = [element.row, element.page];
+
     const isTheLast = !this.document.elements.some(
-      elt => elt.page === element.page && elt.row > element.row
+      elt => elt.page === page && elt.row > row
     );
+
     if (isTheLast) {
-      this.document.elements[index].row = 0;
-      this.document.elements[index].page++;
-      this.currentPage++;
-      this.editedElementRow = 0;
+      this.currentPage= page + 1;
+      this.increaseRows(page + 1);
+      const p = { row: 0, page: page + 1};
+
+      this.changeElementPosition(element, p);
+      this.moveToPosition(p);
     } else {
-      this.editedElementRow++;
-      this.document.elements[index].row++;
-      this.document.elements[index + 1].row--;
+      const p1 = { row: row, page: page };
+      const p2 = { row: row + 1, page: page };
+      this.switchTowPositions(p1, p2);
+      this.moveToPosition(p2);
+      this.currentPage= page;
     }
 
     this.cantMoveUp = false;
@@ -157,24 +190,64 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     this.applyCurrentPageElements();
   }
 
-  deleteElement(element) {
-    this.document.elements = this.document.elements
-      .filter(elt => elt.row !== element.row)
-      .map(elt => {
-        if (elt.row > element.row) {
-          elt.row--;
-        }
-        return elt;
-      });
-    this.applyCurrentPageElements();
+  getElementAtPosition(p: {row: number, page: number}): Element{
+    const elts = this.document.elements.filter(elt => elt.row === p.row && elt.page === p.page);
+    return elts && elts.length === 1 ? elts[0] : null;
   }
 
-  cancel() {
-    this.cancelChanges();
-    this.editModeChange.emit(false);
+  private sortElements() {
+    if(this.document && this.document.elements){
+      this.document.elements.sort((e1, e2) => e1.row - e2.row);
+    }
   }
 
-  markAsChangedElement(element: Element) {
+  private getBiggestRow(page): number {
+    const elts = this.document.elements.filter(elt => elt.page === page);
+    return elts && elts.length> 0 ? Math.max(...elts.map(elt => elt.row)) : -1;
+  }
+
+  private switchTowPositions(p1: {row: number, page: number}, p2: {row: number, page: number}){
+    let e1 = this.getElementAtPosition(p1);
+    let e2 = this.getElementAtPosition(p2);
+    this.changeElementPosition(e2, {row: -1, page: -1});
+    this.changeElementPosition(e1, p2);
+    this.changeElementPosition(e2, p1);
+  }
+
+  private increaseRows(page: number){
+    this.document.elements.filter(elt => elt.page === page)
+    .map(elt => {
+      elt.row++;
+      return elt;
+    });
+  }
+
+  private decreaseRows(page){
+    this.document.elements.filter(elt => elt.page === page)
+    .map(elt => {
+      elt.row--;
+      return elt;
+    });
+  }
+
+
+  private moveToPosition(p?: {row: number, page: number}){
+    if(p){
+      this.movedItem = {
+        row: p.row,
+        page: p.page
+      };
+    } else {
+      this.movedItem = {
+        row: -1,
+        page: -1
+      };
+    }
+  }
+
+
+
+  private markAsChangedElement(element: Element) {
     if (element.id) {
       const isExisting = this.changedElements.some(
         elt => elt.id === element.id
@@ -185,7 +258,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     }
   }
 
-  cancelChanges() {
+  private cancelChanges() {
     this.document.elements = this.document.elements
       .filter(elt => elt.id)
       .map(element => {
@@ -196,7 +269,16 @@ export class DocumentContentComponent implements OnInit, OnChanges {
       });
     this.changedElements = [];
     this.applyCurrentPageElements();
-    this.editedElementRow = -1;
+    this.moveToPosition();
+  }
+
+  private changeElementPosition(element: Element, p: {row: number, page: number}){
+    this.document.elements.filter(elt => elt.row === element.row && elt.page === element.page)
+    .map(elt => {
+      elt.row = p.row;
+      elt.page = p.page;
+      return elt;
+    });
   }
 
   ngOnChanges(changes) {
@@ -207,11 +289,14 @@ export class DocumentContentComponent implements OnInit, OnChanges {
         this.newOrEditElement.page = this.currentPage;
         this.document.elements.push(this.newOrEditElement);
         this.newOrEditElement = null;
-        this.sortElements();
         this.applyCurrentPageElements();
       }
     } else if (changes.shouldCancelChanges) {
-      this.editedElementRow = -1;
+      //this.editedElementRow = -1;
+      // this.movedItem = {
+      //   page: -1,
+      //   row: -1
+      // };
     }
   }
 }
