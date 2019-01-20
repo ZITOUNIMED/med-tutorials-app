@@ -49,7 +49,7 @@
           </div>
         </div>
         <div class="col-md-2" *ngIf="editMode">
-          <div *ngIf="element.row !== editedElementRow" class="btn-group">
+          <div *ngIf="element.row !== movedItem.row || element.page !== movedItem.page" class="btn-group">
             <button
               class="btn btn-xs btn-primary"
               (click)="editElement(element)"
@@ -57,30 +57,32 @@
               <i class="fa fa-pencil" aria-hidden="true"></i>
             </button>
             <button
-              class="btn btn-xs btn-default"
+              class="btn btn-xs btn-default btn-danger"
               (click)="deleteElement(element)"
             >
-              <i class="fa fa-times text-danger" aria-hidden="true"></i>
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-xs btn-default" (click)="moveElement(element)">
+              <i class="fa fa-arrows" aria-hidden="true"></i>
             </button>
           </div>
-          <div
-            *ngIf="element.row === editedElementRow"
-            class="btn-group-vertical"
-          >
-            <button
-              class="btn btn-xs btn-info"
-              [disabled]="cantMoveUp"
-              (click)="moveUp(element)"
-            >
-              <i class="fa fa-chevron-up" aria-hidden="true"></i>
-            </button>
-            <button class="btn btn-xs btn-info" (click)="moveDown(element)">
-              <i class="fa fa-chevron-down" aria-hidden="true"></i>
+          <div *ngIf="element.row === movedItem.row && element.page === movedItem.page">
+            <div class="btn-group-vertical">
+              <button
+                class="btn btn-xs btn-info"
+                [disabled]="cantMoveUp"
+                (click)="moveUp(element)"
+              >
+                <i class="fa fa-chevron-up" aria-hidden="true"></i>
+              </button>
+              <button class="btn btn-xs btn-info" (click)="moveDown(element)">
+                <i class="fa fa-chevron-down" aria-hidden="true"></i>
+              </button>
+            </div>
+            <button class="btn btn-xs btn-default" (click)="moveElement(element)">
+              <i class="fa fa-arrows" aria-hidden="true"></i>
             </button>
           </div>
-          <button class="btn btn-xs btn-default" (click)="moveElement(element)">
-            Move
-          </button>
         </div>
       </div>
     </div>
@@ -88,7 +90,7 @@
   <div class="card-footer">
     <div *ngIf="editMode" class="pull-right">
       <button mat-stroked-button (click)="cancel()">Cancel</button>
-      <button mat-flat-button color="primary" (click)="save()">Save</button>
+      <button mat-flat-button color="primary" (click)="saveElement()">Save</button>
     </div>
   </div>
 </div>
