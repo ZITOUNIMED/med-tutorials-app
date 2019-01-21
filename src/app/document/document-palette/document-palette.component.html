@@ -51,9 +51,15 @@
     </div>
   </div>
   <div class="form-group">
-    <button mat-stroked-button [disabled]="!element" (click)="onCancel()" color="primary">
+    <button
+      mat-stroked-button
+      [disabled]="!element"
+      (click)="onCancel()"
+      color="primary"
+    >
       Cancel
     </button>
+    Size: {{ textSize }}
     <button
       [disabled]="elementForm.pristine || elementForm.invalid"
       mat-flat-button
