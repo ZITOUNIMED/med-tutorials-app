@@ -31,7 +31,7 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.elementForm = this.fb.group({
       type: ["", Validators.required],
-      text: ["", Validators.required]
+      text: ["", [Validators.required, Validators.maxLength(1200)]]
     });
   }
 
@@ -75,5 +75,11 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
       this.elementForm.get("type").patchValue(this.element.type);
       this.elementForm.get("text").patchValue(this.element.text);
     }
+  }
+
+  get textSize() {
+    return this.elementForm.get("text") && this.elementForm.get("text").value
+      ? this.elementForm.get("text").value.length
+      : 0;
   }
 }
