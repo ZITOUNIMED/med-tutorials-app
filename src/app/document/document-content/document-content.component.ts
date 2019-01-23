@@ -240,6 +240,36 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     });
   }
 
+  isLastElement(element) {
+    const biggestRow = this.getBiggestRow(this.currentPage);
+    if (element.row === biggestRow) {
+      return true;
+    }
+    return false;
+  }
+
+  moveToNewPage(element) {
+    const page = element.page;
+    this.shiftPagesRight(page + 1);
+    const p = {
+      row: 0,
+      page: page + 1
+    };
+    this.changeElementPosition(element, p);
+    this.currentPage = page + 1;
+    this.sortElements();
+    this.applyCurrentPageElements();
+  }
+
+  private shiftPagesRight(page) {
+    this.document.elements = this.document.elements.map(element => {
+      if (element.page >= page) {
+        element.page++;
+      }
+      return element;
+    });
+  }
+
   private sortElements() {
     if (this.document && this.document.elements) {
       this.document.elements.sort((e1, e2) => e1.row - e2.row);
