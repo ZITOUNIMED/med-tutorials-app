@@ -25,13 +25,17 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
   @Output() onSubmitChange = new EventEmitter<Element>();
   @Output() cancelChange = new EventEmitter<boolean>();
   @Input() element: Element;
+  maxTextLength = 1200;
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
     this.elementForm = this.fb.group({
       type: ["", Validators.required],
-      text: ["", [Validators.required, Validators.maxLength(1200)]]
+      text: [
+        "",
+        [Validators.required, Validators.maxLength(this.maxTextLength)]
+      ]
     });
   }
 
