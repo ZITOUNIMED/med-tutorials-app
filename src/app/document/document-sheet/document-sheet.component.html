@@ -3,7 +3,9 @@
     {{ document.name }}
     <div class="pull-right">
       <mat-chip-list>
-        <mat-chip (click)="editMode = true" color="primary">EDIT</mat-chip>
+        <mat-chip (click)="editMode = !editMode" color="primary">
+          <span *ngIf="!editMode">EDIT</span> <span *ngIf="editMode">View</span>
+        </mat-chip>
       </mat-chip-list>
     </div>
   </div>
