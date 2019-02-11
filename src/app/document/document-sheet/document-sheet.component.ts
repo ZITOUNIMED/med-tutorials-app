@@ -18,6 +18,21 @@ export class DocumentSheetComponent implements OnInit {
 
   constructor(  ) {}
 
+  get options() {
+    return {
+      fieldSeparator: ',',
+      quoteStrings: '"',
+      decimalseparator: '.',
+      showLabels: false,
+      headers: [],
+      showTitle: true,
+      title: this.document.name,
+      useBom: false,
+      removeNewLines: true,
+      keys: ['type','text','row', 'page' ]
+    };
+  }
+
   ngOnInit() {}
 
   onSubmit(element) {

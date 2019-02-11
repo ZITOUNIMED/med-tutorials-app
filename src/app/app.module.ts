@@ -3,6 +3,7 @@ import { NgModule } from "@angular/core";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from '@angular/common/http';
+import { Angular2CsvModule } from 'angular2-csv';
 
 import { AppComponent } from "./app.component";
 import { AppMaterialmodule } from "./app.material.module";
@@ -12,6 +13,7 @@ import { DocumentSheetComponent } from './document/document-sheet/document-sheet
 import { CreateDocumentComponent } from './document/create-document/create-document.component';
 import { DocumentContentComponent } from './document/document-content/document-content.component';
 import { DocumentPaletteComponent } from './document/document-palette/document-palette.component';
+import { DownloadButtonDirective } from './download-button.directive';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { DocumentPaletteComponent } from './document/document-palette/document-p
     DocumentSheetComponent,
     CreateDocumentComponent,
     DocumentContentComponent,
-    DocumentPaletteComponent
+    DocumentPaletteComponent,
+    DownloadButtonDirective
   ],
   imports: [
     BrowserModule,
@@ -29,7 +32,8 @@ import { DocumentPaletteComponent } from './document/document-palette/document-p
     ReactiveFormsModule,
     NoopAnimationsModule,
     AppMaterialmodule,
-    HttpClientModule
+    HttpClientModule,
+    Angular2CsvModule
   ],
   providers: [],
   bootstrap: [AppComponent]
