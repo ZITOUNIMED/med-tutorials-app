@@ -4,7 +4,7 @@ import {MatDialog} from '@angular/material';
 import { DocumentService } from '../shared/document.service';
 import { AppSnackbarService } from '../../shared/app-snackbar.service';
 import { GenerecDialogComponent } from '../../generec-dialog/generec-dialog.component';
-import { Document } from '../../shared/document.model';
+import { Document } from '../shared/document.model';
 
 @Component({
   selector: 'app-document-list',
