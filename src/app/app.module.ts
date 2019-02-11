@@ -14,6 +14,7 @@ import { CreateDocumentComponent } from './document/create-document/create-docum
 import { DocumentContentComponent } from './document/document-content/document-content.component';
 import { DocumentPaletteComponent } from './document/document-palette/document-palette.component';
 import { DownloadButtonDirective } from './download-button.directive';
+import { GenerecDialogComponent } from './generec-dialog/generec-dialog.component';
 
 @NgModule({
   declarations: [
@@ -24,8 +25,10 @@ import { DownloadButtonDirective } from './download-button.directive';
     CreateDocumentComponent,
     DocumentContentComponent,
     DocumentPaletteComponent,
-    DownloadButtonDirective
+    DownloadButtonDirective,
+    GenerecDialogComponent
   ],
+  entryComponents: [GenerecDialogComponent],
   imports: [
     BrowserModule,
     FormsModule,
