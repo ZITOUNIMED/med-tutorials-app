@@ -26,7 +26,7 @@ function wakeUpServer() {
         }
       }
     );
-  }, 5 * 60 * 1000);
+  }, 25 * 60 * 1000);
 }
 
 function wakeUpRestApi() {
@@ -41,7 +41,7 @@ function wakeUpRestApi() {
         }
       }
     );
-  }, 6 * 60 * 1000);
+  }, 25 * 60 * 1000);
 }
 
 console.log("App is listenning!");
