@@ -1,49 +1,37 @@
-<div class="card">
-  <div class="card-header bg-info text-white">
-    {{ document.name }}
-    <div class="pull-right">
-      <mat-chip-list>
-        <mat-chip (click)="editMode = !editMode" color="primary">
-          <span *ngIf="!editMode">EDIT</span> <span *ngIf="editMode">View</span>
-        </mat-chip>
-      </mat-chip-list>
-    </div>
+<div>
+  <h2>{{ document.name }}</h2>
+    <mat-chip-list>
+      <mat-chip (click)="editMode = !editMode" color="primary">
+        <span *ngIf="!editMode">EDIT</span> <span *ngIf="editMode">View</span>
+      </mat-chip>
+    </mat-chip-list>
+<div>
+<div class="row" style="margin-to: 0px;">
+  <div class="col-lg-5" *ngIf="editMode">
+    <app-document-palette
+      (onSubmitChange)="onSubmit($event)"
+      [element]="element"
+      (cancelChange)="onCancelChange($event)"
+    ></app-document-palette>
   </div>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-lg-5" *ngIf="editMode">
-        <app-document-palette
-          (onSubmitChange)="onSubmit($event)"
-          [element]="element"
-          (cancelChange)="onCancelChange($event)"
-        ></app-document-palette>
-      </div>
-      <div [ngClass]="{ 'col-lg-7': editMode, 'col-lg-12': !editMode }">
-        <app-document-content
-          [document]="document"
-          [editMode]="editMode"
-          (editModeChange)="onEditModeChange($event)"
-          (editElementChange)="onEditElementChange($event)"
-          [newOrEditElement]="newOrEditElement"
-          [shouldCancelChanges]="shouldCancelChanges"
-        ></app-document-content>
-      </div>
-    </div>
+  <div [ngClass]="{ 'col-lg-7': editMode, 'col-lg-12': !editMode }">
+    <app-document-content
+      [document]="document"
+      [editMode]="editMode"
+      (editModeChange)="onEditModeChange($event)"
+      (editElementChange)="onEditElementChange($event)"
+      [newOrEditElement]="newOrEditElement"
+      [shouldCancelChanges]="shouldCancelChanges"
+    ></app-document-content>
   </div>
-  <div class="card-footer">
-    <div class="row">
-      <div class="col-md-6">
-        <mat-chip-list>
-          <mat-chip (click)="returnToSelectDocument.emit(true)">Back</mat-chip>
-        </mat-chip-list>
-      </div>
-      <div class="col-md-6">
-        <angular2csv appDownloadButton
-          [data]="document.elements"
-          filename="{{document.name}}"
-          [options]="options">
-        </angular2csv>
-      </div>
-    </div>
-  </div>
+</div>
+<div>
+  <mat-chip-list>
+    <mat-chip (click)="returnToSelectDocument.emit(true)">Back</mat-chip>
+  </mat-chip-list>
+  <angular2csv appDownloadButton
+    [data]="document.elements"
+    filename="{{document.name}}"
+    [options]="options">
+  </angular2csv>
 </div>
