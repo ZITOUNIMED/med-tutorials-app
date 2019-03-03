@@ -3,21 +3,19 @@
     Tutorials Documents
   </div>
   <div class="card-body">
-    <div class="row">
-      <div class="col-lg-4">
-        <app-document-form
-        (documentAdded)="onDocumentAdded($event)"
-        [document]="document"
-        ></app-document-form>
-      </div>
-      <div class="col-lg-8">
-        <app-document-list
-        [documents]="documents"
-        (selectDocument)="onSelectDocument($event)"
-        (documentDeleted)="onDeleteDocument($event)"
-        (renameDocumentChange)="onRenameDocumentChange($event)"
-        ></app-document-list>
-      </div>
+    <div>
+      <app-document-form
+      (documentAdded)="onDocumentAdded($event)"
+      [document]="document"
+      ></app-document-form>
+    </div>
+    <div style="margin-top: 20px;">
+      <app-document-list
+      [documents]="documents"
+      (selectDocument)="onSelectDocument($event)"
+      (documentDeleted)="onDeleteDocument($event)"
+      (renameDocumentChange)="onRenameDocumentChange($event)"
+      ></app-document-list>
     </div>
   </div>
   <div class="card-footer"></div>

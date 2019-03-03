@@ -8,14 +8,20 @@
       Before
     </button>
     <label>Page: </label>{{ currentPage + 1 }}
-    <button
-      mat-stroked-button
-      class="pull-right"
-      [disabled]="!isNextPage()"
-      (click)="nextPage()"
-    >
-      Next
-    </button>
+    <div class="pull-right">
+      <mat-chip (click)="editMode = !editMode;" color="primary">
+        <i *ngIf="!editMode" class="fa fa-pencil"></i>
+        <i *ngIf="editMode" class="fa fa-book" aria-hidden="true"></i>
+      </mat-chip>
+      <span>&nbsp;&nbsp;</span>
+      <button
+        mat-stroked-button
+        [disabled]="!isNextPage()"
+        (click)="nextPage()"
+      >
+        Next
+      </button>
+    </div>
   </div>
   <div class="card-body" style="min-height: 400px;">
     <div *ngFor="let element of currentPageElements">
