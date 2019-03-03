@@ -1,10 +1,10 @@
-<div>
+<div style="min-height: 30px;">
   <h2>{{ document.name }}</h2>
-    <mat-chip-list>
-      <mat-chip (click)="editMode = !editMode" color="primary">
-        <span *ngIf="!editMode">EDIT</span> <span *ngIf="editMode">View</span>
-      </mat-chip>
-    </mat-chip-list>
+  <mat-chip-list class="pull-right" style="position: relative; top: -35px;">
+    <mat-chip (click)="editMode = !editMode" color="primary">
+      <span *ngIf="!editMode">EDIT</span> <span *ngIf="editMode">View</span>
+    </mat-chip>
+  </mat-chip-list>
 <div>
 <div class="row" style="margin-to: 0px;">
   <div class="col-lg-5" *ngIf="editMode">
@@ -25,13 +25,15 @@
     ></app-document-content>
   </div>
 </div>
-<div>
+<div style="margin-top: 10px;">
   <mat-chip-list>
     <mat-chip (click)="returnToSelectDocument.emit(true)">Back</mat-chip>
   </mat-chip-list>
-  <angular2csv appDownloadButton
-    [data]="document.elements"
-    filename="{{document.name}}"
-    [options]="options">
-  </angular2csv>
+  <div style="position: relative; top: -30px;">
+    <angular2csv appDownloadButton
+      [data]="document.elements"
+      filename="{{document.name}}"
+      [options]="options">
+    </angular2csv>
+  </div>
 </div>
