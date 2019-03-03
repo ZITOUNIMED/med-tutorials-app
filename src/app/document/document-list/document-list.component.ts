@@ -51,4 +51,8 @@ export class DocumentListComponent {
     this.renameDocumentChange.emit(document);
   }
 
+  get documentNameList(){
+    return ['name1', 'name2'];//this.documents.map(document => document.name);
+  }
+
 }
