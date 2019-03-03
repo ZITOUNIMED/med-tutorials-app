@@ -226,6 +226,11 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     this.applyCurrentPageElements();
   }
 
+  changeEditMode(){
+    this.editMode = !this.editMode;
+    this.editModeChange.emit(this.editMode);
+  }
+
   private shiftPagesRight(page) {
     this.document.elements = this.document.elements.map(element => {
       if (element.page >= page) {
