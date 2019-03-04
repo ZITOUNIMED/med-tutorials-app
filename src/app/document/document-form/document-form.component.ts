@@ -13,7 +13,7 @@ import { AppSnackbarService } from '../../shared/app-snackbar.service';
 export class DocumentFormComponent implements OnInit, OnChanges {
 
   documentForm: FormGroup;
-  @Output() documentAdded= new EventEmitter<boolean>();
+  @Output() documentAdded = new EventEmitter<boolean>();
   @Input() document: Document;
 
   constructor(private fb: FormBuilder,
@@ -26,9 +26,9 @@ export class DocumentFormComponent implements OnInit, OnChanges {
     });
   }
 
-  onSubmit(){
+  onSubmit() {
     const name = this.documentForm.get('name').value;
-    if(this.document && this.document.id){
+    if (this.document && this.document.id) {
       this.document.name = name;
     } else {
       this.document = {
@@ -47,18 +47,18 @@ export class DocumentFormComponent implements OnInit, OnChanges {
     );
   }
 
-  ngOnChanges(changes){
-    if(changes.document && this.documentForm){
+  ngOnChanges(changes) {
+    if (changes.document && this.documentForm) {
       this.patchDocumentValue(this.document);
     }
   }
 
-  clearForm(){
+  clearForm() {
     this.documentForm.reset();
     this.document = null;
   }
 
-  patchDocumentValue(document){
+  patchDocumentValue(document) {
     this.documentForm.get('name').patchValue(document.name);
   }
 

@@ -7,10 +7,10 @@ export class DownloadButtonDirective implements OnInit {
 
   constructor(private elementRef: ElementRef) {}
 
-  ngOnInit(){
-    let btn= this.elementRef.nativeElement.children[0];
-    btn.className = "btn btn-sm bt-default pull-right";
-    btn.textContent = "Exporter";
+  ngOnInit() {
+    const btn = this.elementRef.nativeElement.children[0];
+    btn.className = 'btn btn-sm bt-default pull-right';
+    btn.textContent = 'Export';
     btn.style.color = 'blue';
   }
 }

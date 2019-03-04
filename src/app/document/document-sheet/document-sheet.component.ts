@@ -1,22 +1,24 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
-import { Document } from "../shared/document.model";
-import { Element } from "../shared/element.model";
+import { Document } from '../shared/document.model';
+import { Element } from '../shared/element.model';
+import {ActivatedRoute} from '@angular/router';
+import {filter, first, map} from 'rxjs/internal/operators';
 
 @Component({
-  selector: "app-document-sheet",
-  templateUrl: "./document-sheet.component.html",
-  styleUrls: ["./document-sheet.component.css"]
+  selector: 'app-document-sheet',
+  templateUrl: './document-sheet.component.html',
+  styleUrls: ['./document-sheet.component.css']
 })
 export class DocumentSheetComponent implements OnInit {
-  @Input() document: Document;
+  document: Document;
   @Output() returnToSelectDocument = new EventEmitter<boolean>();
   editMode = false;
   element: Element;
   newOrEditElement: Element;
   shouldCancelChanges = true;
 
-  constructor(  ) {}
+  constructor(private route: ActivatedRoute, ) {}
 
   get options() {
     return {
@@ -29,11 +31,21 @@ export class DocumentSheetComponent implements OnInit {
       title: this.document.name,
       useBom: false,
       removeNewLines: true,
-      keys: ['type','text','row', 'page' ]
+      keys: ['type', 'text', 'row', 'page' ]
     };
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.route.data
+      .pipe(
+        filter(data => data && !!data['document']),
+        first(),
+        map(data => data['document']),
+      )
+      .subscribe(document => {
+        this.document = document;
+      });
+  }
 
   onSubmit(element) {
     this.newOrEditElement = element;
@@ -47,7 +59,7 @@ export class DocumentSheetComponent implements OnInit {
     this.editMode = editMode;
   }
 
-  onCancelChange(cancel){
+  onCancelChange(cancel) {
     this.shouldCancelChanges = cancel;
   }
 }

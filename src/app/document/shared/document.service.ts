@@ -20,7 +20,7 @@ export class DocumentService {
     return this.http.post(this.url, document);
   }
 
-  getDocument(id: number): Observable<any> {
+  getDocument(id): Observable<any> {
     return this.http.get(this.url + `/${id}`);
   }
 

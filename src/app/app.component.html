@@ -2,13 +2,5 @@
   MED Tutorials App
 </mat-toolbar>
 <div class="container">
-  <div *ngIf="document; else createSelectDocument">
-      <app-document-sheet
-      [document]="document"
-      (returnToSelectDocument)="onReturnToSelectDocument($event)"
-      ></app-document-sheet>
-  </div>
-  <ng-template #createSelectDocument>
-    <app-create-document (selectDocument)="onSelectDocument($event)"></app-create-document>
-  </ng-template>
+  <router-outlet></router-outlet>
 </div>
