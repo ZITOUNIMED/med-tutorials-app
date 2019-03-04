@@ -205,6 +205,11 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     return elts && elts.length === 1 ? elts[0] : null;
   }
 
+  changeEditMode(){
+    this.editMode = !this.editMode;
+    this.editModeChange.emit(this.editMode);
+  }
+
   isLastElement(element) {
     const biggestRow = this.getBiggestRow(this.currentPage);
     if (element.row === biggestRow) {
@@ -224,11 +229,6 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     this.currentPage = page + 1;
     this.sortElements();
     this.applyCurrentPageElements();
-  }
-
-  changeEditMode(){
-    this.editMode = !this.editMode;
-    this.editModeChange.emit(this.editMode);
   }
 
   private shiftPagesRight(page) {
