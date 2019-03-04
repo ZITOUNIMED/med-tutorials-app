@@ -205,39 +205,9 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     return elts && elts.length === 1 ? elts[0] : null;
   }
 
-  isLastElement(element) {
-    const biggestRow = this.getBiggestRow(this.currentPage);
-    if (element.row === biggestRow) {
-      return true;
-    }
-    return false;
-  }
-
-  moveToNewPage(element) {
-    const page = element.page;
-    this.shiftPagesRight(page + 1);
-    const p = {
-      row: 0,
-      page: page + 1
-    };
-    this.changeElementPosition(element, p);
-    this.currentPage = page + 1;
-    this.sortElements();
-    this.applyCurrentPageElements();
-  }
-
   changeEditMode(){
     this.editMode = !this.editMode;
     this.editModeChange.emit(this.editMode);
-  }
-
-  private shiftPagesRight(page) {
-    this.document.elements = this.document.elements.map(element => {
-      if (element.page >= page) {
-        element.page++;
-      }
-      return element;
-    });
   }
 
   isLastElement(element) {
