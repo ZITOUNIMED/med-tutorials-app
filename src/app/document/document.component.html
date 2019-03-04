@@ -5,16 +5,15 @@
   <div class="card-body">
     <div>
       <app-document-form
-      (documentAdded)="onDocumentAdded($event)"
-      [document]="document"
+        (documentAdded)="onDocumentAdded($event)"
+        [document]="document"
       ></app-document-form>
     </div>
     <div style="margin-top: 20px;">
       <app-document-list
-      [documents]="documents"
-      (selectDocument)="onSelectDocument($event)"
-      (documentDeleted)="onDeleteDocument($event)"
-      (renameDocumentChange)="onRenameDocumentChange($event)"
+        [documents]="documents"
+        (documentDeleted)="onDeleteDocument($event)"
+        (renameDocumentChange)="onRenameDocumentChange($event)"
       ></app-document-list>
     </div>
   </div>

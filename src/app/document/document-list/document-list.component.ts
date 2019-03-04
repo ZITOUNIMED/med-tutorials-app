@@ -8,6 +8,7 @@ import { Document } from '../shared/document.model';
 import { FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-document-list',
@@ -17,20 +18,20 @@ import {map, startWith} from 'rxjs/operators';
 export class DocumentListComponent implements OnInit {
 
   @Input() documents: Document[] = [];
-  @Output() selectDocument = new EventEmitter<number>();
   @Output() documentDeleted = new EventEmitter<boolean>();
   @Output() renameDocumentChange = new EventEmitter<Document>();
   searchDocumentControl: FormControl;
-  filtredDocuments: Observable<Document[]>;
+  filteredDocuments: Observable<Document[]>;
 
   constructor(private documentService: DocumentService,
   private appSnackbarService: AppSnackbarService,
-  private dialog: MatDialog) { }
+  private dialog: MatDialog,
+              private router: Router) { }
 
   ngOnInit() {
     this.searchDocumentControl = new FormControl();
 
-    this.filtredDocuments = this.searchDocumentControl.valueChanges
+    this.filteredDocuments = this.searchDocumentControl.valueChanges
       .pipe(
         startWith<string | Document>(''),
         map(value => typeof value === 'string' ? value : value.name),
@@ -42,8 +43,9 @@ export class DocumentListComponent implements OnInit {
     const filterValue = name.toLocaleUpperCase();
     return this.documents.filter(document => document.name.toLocaleUpperCase().indexOf(filterValue) === 0);
   }
-  onSelectDocument(id) {
-    this.selectDocument.emit(id);
+
+  onOpenDocument(document: Document) {
+    this.router.navigateByUrl(`/document/${document.id}`);
   }
 
   openDialogDeleteDocument(document: Document) {

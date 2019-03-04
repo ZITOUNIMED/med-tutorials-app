@@ -21,14 +21,9 @@
   </div>
 </div>
 <div style="margin-top: 10px;">
-  <mat-chip-list>
-    <mat-chip (click)="returnToSelectDocument.emit(true)">Back</mat-chip>
-  </mat-chip-list>
-  <div style="position: relative; top: -30px;">
-    <angular2csv appDownloadButton
-      [data]="document.elements"
-      filename="{{document.name}}"
-      [options]="options">
-    </angular2csv>
-  </div>
+  <angular2csv appDownloadButton
+    [data]="document.elements"
+    filename="{{document.name}}"
+    [options]="options">
+  </angular2csv>
 </div>
