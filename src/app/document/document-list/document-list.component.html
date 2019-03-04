@@ -1,14 +1,17 @@
 <div class="list-group">
   <div class="list-group-item">
-    <form class="form-group">
-      <mat-form-field style="width: 100%">
-        <input type="text" placeholder="Document Name" aria-label="Number" matInput [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let document of documents" [value]="document.id + ' - ' + document.name">
+    <form class="example-form">
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Document Name" aria-label="Number" matInput [matAutocomplete]="auto" [formControl]="searchDocumentControl">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" class="example-full-width">
+          <mat-option *ngFor="let document of filtredDocuments | async" [value]="document">
             {{document.name}}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
+      <button [disabled]="!searchDocumentControl.value?.id" class="btn btn-default circleButton" (click)="onSelectDocument(searchDocumentControl.value.id)">
+        <i class="fa fa-book" aria-hidden="true"></i>
+      </button>
     </form>
   </div>
   <div *ngFor="let document of documents" class="list-group-item">
@@ -16,8 +19,8 @@
       <div class="col-md-6">{{document.name}}</div>
       <div class="col-md-6" >
         <button mat-stroked-button color="primary" (click)="onSelectDocument(document.id)">
-          <i class="fa fa-book" aria-hidden="true"></i>
-        </button>
+        <i class="fa fa-book" aria-hidden="true"></i>
+      </button>
         <button mat-stroked-button color="warn" (click)="openDialogDeleteDocument(document)">
           <i class="fa fa-minus-circle"></i>
         </button>
