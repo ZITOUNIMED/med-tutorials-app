@@ -1,14 +1,15 @@
 import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material';
 
-import { DocumentService } from '../shared/document.service';
+import { DocumentService } from '../shared/service/document.service';
 import { AppSnackbarService } from '../../shared/app-snackbar.service';
 import { GenerecDialogComponent } from '../../generec-dialog/generec-dialog.component';
-import { Document } from '../shared/document.model';
+import { Document } from '../shared/model/document.model';
 import { FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import {CreateUpdateDocumentModalComponent} from '../shared/modal/create-update-document-modal/create-update-document-modal.component';
 
 @Component({
   selector: 'app-document-list',
@@ -19,7 +20,7 @@ export class DocumentListComponent implements OnInit {
 
   @Input() documents: Document[] = [];
   @Output() documentDeleted = new EventEmitter<boolean>();
-  @Output() renameDocumentChange = new EventEmitter<Document>();
+  @Output() renameDocumentChange = new EventEmitter<boolean>();
   searchDocumentControl: FormControl;
   filteredDocuments: Observable<Document[]>;
 
@@ -61,16 +62,35 @@ export class DocumentListComponent implements OnInit {
    });
   }
 
+  openDialogCreateUpdateDocumentName(document) {
+    const dialogRef = this.dialog.open(CreateUpdateDocumentModalComponent, {
+      data: {
+        documentName: document.name
+      }
+    });
+    dialogRef.afterClosed().subscribe(name => {
+      if (name) {
+        document.name = name;
+        this.saveDocument(document);
+      }
+    });
+  }
+
+  private saveDocument(document){
+    this.documentService.saveDocument(document).subscribe(
+      res => {
+        this.appSnackbarService.openSnackBar('Success!: Document is saved', 'SAVE');
+        this.renameDocumentChange.emit(true);
+      }
+    );
+  }
+
   deleteDocument(id) {
     this.documentService.deleteDocument(id)
     .subscribe(res => {
       this.appSnackbarService.openSnackBar('Success!: Document Deleted', 'delete');
       this.documentDeleted.emit(true);
     });
-  }
-
-  renameDocument(document) {
-    this.renameDocumentChange.emit(document);
   }
 
   displayFn(document?: Document): string | undefined {

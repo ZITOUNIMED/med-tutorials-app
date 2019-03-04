@@ -5,18 +5,17 @@ import {
   Output,
   EventEmitter,
   OnChanges
-} from "@angular/core";
-
-import { Document } from "../shared/document.model";
-import { Element } from "../shared/element.model";
-import { ElementType } from "../shared/element-type";
-import { DocumentService } from "../shared/document.service";
-import { AppSnackbarService } from "../../shared/app-snackbar.service";
+} from '@angular/core';
+import {ElementType} from '../shared/element-type';
+import {DocumentService} from '../shared/service/document.service';
+import {AppSnackbarService} from '../../shared/app-snackbar.service';
+import {Document} from '../shared/model/document.model';
+import {Element} from '../shared/model/element.model';
 
 @Component({
-  selector: "app-document-content",
-  templateUrl: "./document-content.component.html",
-  styleUrls: ["./document-content.component.css"]
+  selector: 'app-document-content',
+  templateUrl: './document-content.component.html',
+  styleUrls: ['./document-content.component.css']
 })
 export class DocumentContentComponent implements OnInit, OnChanges {
   @Input() document: Document;
@@ -102,7 +101,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   saveElement() {
     this.changedElements = [];
     this.documentService.saveDocument(this.document).subscribe(res => {
-      this.appSnackbarService.openSnackBar("Success!: Document Saved", "save");
+      this.appSnackbarService.openSnackBar('Success!: Document Saved', 'save');
       this.loadDocument();
     });
   }

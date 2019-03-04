@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
-import { Document } from '../shared/document.model';
-import { Element } from '../shared/element.model';
+import { Document } from '../shared/model/document.model';
+import { Element } from '../shared/model/element.model';
 import {ActivatedRoute} from '@angular/router';
 import {filter, first, map} from 'rxjs/internal/operators';
 

@@ -4,10 +4,9 @@
   </div>
   <div class="card-body">
     <div>
-      <app-document-form
-        (documentAdded)="onDocumentAdded($event)"
-        [document]="document"
-      ></app-document-form>
+      <button mat-stroked-button color="primary" (click)="openCreateDocumentDialog()">
+        New
+      </button>
     </div>
     <div style="margin-top: 20px;">
       <app-document-list

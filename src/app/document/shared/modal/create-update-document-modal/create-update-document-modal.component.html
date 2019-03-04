@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>
+  {{ data && data.documentName ? 'Update' : 'New'}} document
+</h2>
+<mat-dialog-content class="mat-typography">
+  <form>
+    <div class="form-group">
+      <label for="documentName">Document Name</label>
+      <input class="form-control" matInput id="documentName" name="documentName" placeholder="Name ..." [formControl]="nameControl">
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close cdkFocusInitial>Cancel</button>
+  <button mat-button [mat-dialog-close]="nameControl.value" color="primary">{{ data && data.documentName ? 'Update' : 'Create'}}</button>
+</mat-dialog-actions>
