@@ -5,17 +5,16 @@ import {
   Output,
   EventEmitter,
   OnChanges
-} from "@angular/core";
-import { FormGroup, Validators, FormBuilder } from "@angular/forms";
-
-import { ElementType } from "../shared/element-type";
-import { Element } from "../shared/element.model";
-import { ELEMENTS_CHOICES } from "../shared/element-choice";
+} from '@angular/core';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import {ELEMENTS_CHOICES} from '../shared/element-choice';
+import {ElementType} from '../shared/element-type';
+import {Element} from '../shared/model/element.model';
 
 @Component({
-  selector: "app-document-palette",
-  templateUrl: "./document-palette.component.html",
-  styleUrls: ["./document-palette.component.css"]
+  selector: 'app-document-palette',
+  templateUrl: './document-palette.component.html',
+  styleUrls: ['./document-palette.component.css']
 })
 export class DocumentPaletteComponent implements OnInit, OnChanges {
   ELEMENTS_CHOICES = ELEMENTS_CHOICES;
@@ -31,21 +30,21 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.elementForm = this.fb.group({
-      type: ["", Validators.required],
+      type: ['', Validators.required],
       text: [
-        "",
+        '',
         [Validators.required, Validators.maxLength(this.maxTextLength)]
       ]
     });
   }
 
   selectElement() {
-    this.elementChoiceKey = this.elementForm.get("type").value;
+    this.elementChoiceKey = this.elementForm.get('type').value;
   }
 
   onSubmit() {
-    const type = this.elementForm.get("type").value;
-    const text = this.elementForm.get("text").value;
+    const type = this.elementForm.get('type').value;
+    const text = this.elementForm.get('text').value;
 
     if (this.element) {
       this.element.type = type;
@@ -76,14 +75,14 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes) {
     if (this.element && this.elementForm) {
-      this.elementForm.get("type").patchValue(this.element.type);
-      this.elementForm.get("text").patchValue(this.element.text);
+      this.elementForm.get('type').patchValue(this.element.type);
+      this.elementForm.get('text').patchValue(this.element.text);
     }
   }
 
   get textSize() {
-    return this.elementForm.get("text") && this.elementForm.get("text").value
-      ? this.elementForm.get("text").value.length
+    return this.elementForm.get('text') && this.elementForm.get('text').value
+      ? this.elementForm.get('text').value.length
       : 0;
   }
 }

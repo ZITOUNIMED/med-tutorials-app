@@ -1,11 +1,11 @@
-import {Injectable} from "@angular/core";
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from "@angular/router";
-import {Document} from "./document.model";
-import {Observable} from "rxjs";
-import {DocumentService} from "./document.service";
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
+import {Observable} from 'rxjs';
+import {DocumentService} from './document.service';
+import {Document} from '../model/document.model';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class DocumentResolverService implements Resolve<Document>{
   constructor(private documentService: DocumentService){}

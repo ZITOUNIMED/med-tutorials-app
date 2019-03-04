@@ -1,14 +1,13 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
-
-import { environment } from "../../../environments/environment";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class DocumentService {
-  url = environment.api_url + "/document";
+  url = environment.api_url + '/document';
 
   constructor(private http: HttpClient) {}
 
@@ -29,6 +28,6 @@ export class DocumentService {
   }
 
   wakeUp(): Observable<any> {
-    return this.http.get(this.url + "/up");
+    return this.http.get(this.url + '/up');
   }
 }

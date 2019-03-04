@@ -7,7 +7,6 @@ import { Angular2CsvModule } from 'angular2-csv';
 
 import { AppComponent } from './app.component';
 import { AppMaterialmodule } from './app.material.module';
-import { DocumentFormComponent } from './document/document-form/document-form.component';
 import { DocumentListComponent } from './document/document-list/document-list.component';
 import { DocumentSheetComponent } from './document/document-sheet/document-sheet.component';
 import { DocumentContentComponent } from './document/document-content/document-content.component';
@@ -16,7 +15,8 @@ import { DownloadButtonDirective } from './download-button.directive';
 import { GenerecDialogComponent } from './generec-dialog/generec-dialog.component';
 import { DocumentComponent } from './document/document.component';
 import {RouterModule, Routes} from '@angular/router';
-import {DocumentResolverService} from './document/shared/document-resolver.service';
+import {DocumentResolverService} from './document/shared/service/document-resolver.service';
+import { CreateUpdateDocumentModalComponent } from './document/shared/modal/create-update-document-modal/create-update-document-modal.component';
 
 const appRoutes: Routes = [
   {
@@ -39,16 +39,19 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    DocumentFormComponent,
     DocumentListComponent,
     DocumentSheetComponent,
     DocumentContentComponent,
     DocumentPaletteComponent,
     DownloadButtonDirective,
     GenerecDialogComponent,
-    DocumentComponent
+    DocumentComponent,
+    CreateUpdateDocumentModalComponent
   ],
-  entryComponents: [GenerecDialogComponent],
+  entryComponents: [
+    GenerecDialogComponent,
+    CreateUpdateDocumentModalComponent
+  ],
   imports: [
     BrowserModule,
     FormsModule,

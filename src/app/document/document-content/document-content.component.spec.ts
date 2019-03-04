@@ -1,11 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DocumentContentComponent } from './document-content.component';
-import { DocumentService } from "../shared/document.service";
-import { AppSnackbarService } from "../../shared/app-snackbar.service";
-import { Document } from "../shared/document.model";
-import { Element } from "../shared/element.model";
-import { ElementType } from "../shared/element-type";
+import { ElementType } from '../shared/element-type';
+import {DocumentService} from '../shared/service/document.service';
+import {AppSnackbarService} from '../../shared/app-snackbar.service';
 
 fdescribe('DocumentContentComponent', () => {
   let component: DocumentContentComponent;
