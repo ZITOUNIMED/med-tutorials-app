@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 import {
   MatFormFieldModule,
   MatSelectModule,
@@ -9,8 +9,11 @@ import {
   MatSnackBarModule,
   MatChipsModule,
   MatDialogModule,
-  MatAutocompleteModule
-} from "@angular/material";
+  MatAutocompleteModule,
+  MatIconModule,
+  MatMenuModule,
+  MatSidenavModule,
+} from '@angular/material';
 
 const modules = [
   MatFormFieldModule,
@@ -22,7 +25,12 @@ const modules = [
   MatSnackBarModule,
   MatChipsModule,
   MatDialogModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
+  MatIconModule,
+  MatMenuModule,
+  MatSidenavModule,
+  MatToolbarModule,
+  MatIconModule
 ];
 
 @NgModule({

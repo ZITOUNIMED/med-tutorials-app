@@ -17,6 +17,8 @@ import { DocumentComponent } from './document/document.component';
 import {RouterModule, Routes} from '@angular/router';
 import {DocumentResolverService} from './document/shared/service/document-resolver.service';
 import { CreateUpdateDocumentModalComponent } from './document/shared/modal/create-update-document-modal/create-update-document-modal.component';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { ToolBarComponent } from './tool-bar/tool-bar.component';
 
 const appRoutes: Routes = [
   {
@@ -46,7 +48,9 @@ const appRoutes: Routes = [
     DownloadButtonDirective,
     GenerecDialogComponent,
     DocumentComponent,
-    CreateUpdateDocumentModalComponent
+    CreateUpdateDocumentModalComponent,
+    NavBarComponent,
+    ToolBarComponent
   ],
   entryComponents: [
     GenerecDialogComponent,
