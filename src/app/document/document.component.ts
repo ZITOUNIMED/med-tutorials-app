@@ -4,6 +4,9 @@ import {DocumentService} from './shared/service/document.service';
 import {MatDialog} from '@angular/material';
 import {AppSnackbarService} from '../shared/app-snackbar.service';
 import {CreateUpdateDocumentModalComponent} from './shared/modal/create-update-document-modal/create-update-document-modal.component';
+import {Store} from "@ngrx/store";
+import {StopLoadingAction} from "../shared/stop-loading.action";
+import {StartLoadingAction} from "../shared/start-loading.action";
 
 @Component({
   selector: 'app-document',
@@ -17,7 +20,8 @@ export class DocumentComponent implements OnInit {
 
   constructor(private documentService: DocumentService,
               public dialog: MatDialog,
-              private appSnackbarService: AppSnackbarService) { }
+              private appSnackbarService: AppSnackbarService,
+              private store: Store) { }
 
   ngOnInit() {
     this.loadDocuments();
@@ -56,7 +60,11 @@ export class DocumentComponent implements OnInit {
   }
 
   loadDocuments() {
-    this.documentService.getDocuments().subscribe(documents => this.documents = documents);
+    this.store.dispatch(new StartLoadingAction());
+    this.documentService.getDocuments().subscribe(documents => {
+      this.documents = documents;
+      this.store.dispatch(new StopLoadingAction());
+    });
   }
 
   onRenameDocumentChange(isChanged) {

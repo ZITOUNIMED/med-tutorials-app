@@ -14,29 +14,13 @@ import { DocumentPaletteComponent } from './document/document-palette/document-p
 import { DownloadButtonDirective } from './download-button.directive';
 import { GenerecDialogComponent } from './generec-dialog/generec-dialog.component';
 import { DocumentComponent } from './document/document.component';
-import {RouterModule, Routes} from '@angular/router';
-import {DocumentResolverService} from './document/shared/service/document-resolver.service';
 import { CreateUpdateDocumentModalComponent } from './document/shared/modal/create-update-document-modal/create-update-document-modal.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { ToolBarComponent } from './tool-bar/tool-bar.component';
-
-const appRoutes: Routes = [
-  {
-    path: 'document',
-    component: DocumentComponent
-  },
-  { path: '',
-    redirectTo: '/document',
-    pathMatch: 'full'
-  },
-  {
-    path: 'document/:id',
-    component: DocumentSheetComponent,
-    resolve: {
-      document: DocumentResolverService
-    }
-  }
-];
+import {AppModuleRouting} from './app.module.routing';
+import { LoginComponent } from './login/login.component';
+import {StoreModule} from '@ngrx/store';
+import {loadingReducer} from './shared/loading.reducer';
 
 @NgModule({
   declarations: [
@@ -50,7 +34,8 @@ const appRoutes: Routes = [
     DocumentComponent,
     CreateUpdateDocumentModalComponent,
     NavBarComponent,
-    ToolBarComponent
+    ToolBarComponent,
+    LoginComponent,
   ],
   entryComponents: [
     GenerecDialogComponent,
@@ -64,7 +49,10 @@ const appRoutes: Routes = [
     AppMaterialmodule,
     HttpClientModule,
     Angular2CsvModule,
-    RouterModule.forRoot(appRoutes)
+    AppModuleRouting,
+    StoreModule.forRoot({
+      loading: loadingReducer
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
