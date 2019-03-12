@@ -1,0 +1,22 @@
+<mat-nav-list>
+  <mat-toolbar>
+    <span class="toolbar-filler"></span>
+    <mat-icon aria-label="Side nav toggle icon" (click)="drawer.close()">
+      <i class="fa fa-times"></i>
+    </mat-icon>
+  </mat-toolbar>
+  <h2 matSubheader>
+    <mat-icon matListIcon >
+      <i class="fa fa-book"></i>
+    </mat-icon>
+    Documents
+  </h2>
+  <a  mat-list-item (click)="drawer.close()" routerLink="/document">Gérer les documents</a>
+  <h2 matSubheader>
+    <mat-icon matListIcon color="warn">
+      <i class="fa fa-star-o" aria-hidden="true"></i>
+    </mat-icon>
+    Favoris
+  </h2>
+  <a *ngFor="let document of documents" mat-list-item (click)="drawer.close()" routerLink="/document/{{document.id}}">{{document.name}}</a>
+</mat-nav-list>
