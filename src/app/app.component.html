@@ -1,6 +1,11 @@
-<mat-toolbar>
-  MED Tutorials App
-</mat-toolbar>
-<div class="container">
-  <router-outlet></router-outlet>
-</div>
+<mat-drawer-container class="crm-navigation-bar" [hasBackdrop]="true">
+  <mat-drawer #drawer [mode]="'over'">
+    <app-nav-bar [drawer]="drawer"></app-nav-bar>
+  </mat-drawer>
+  <mat-drawer-content>
+    <app-tool-bar [drawer]="drawer"></app-tool-bar>
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>
