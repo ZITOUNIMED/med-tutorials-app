@@ -3,7 +3,7 @@ import {Action} from '@ngrx/store';
 import {LoadingState} from './loading.state';
 import {STOP_LOADING_ACTION_TYPE} from "./stop-loading.action";
 
-export const loadingReducer = (state: LoadingState, action: Action): LoadingState => {
+export function loadingReducer(state: LoadingState, action: Action) {
   switch (action.type) {
     case START_LOADING_ACTION_TYPE:
       return {
