@@ -19,22 +19,14 @@ export class AppComponent implements OnInit {
               private store: Store<LoadingState>) {}
 
   ngOnInit() {
-    this.store.select('loading')
-      .subscribe((loading) => {
-        this.showLoadignIcon = loading;
+    this.store.select('load')
+      .subscribe((loadingState: LoadingState) => {
+        this.showLoadignIcon = loadingState && loadingState.loading;
       });
   }
 
   onSelectDocument(document) {
     this.document = document;
-  }
-
-  show() {
-    this.store.dispatch(new StartLoadingAction());
-  }
-
-  hide() {
-    this.store.dispatch(new StopLoadingAction());
   }
 
   onReturnToSelectDocument(doReturn: boolean) {

@@ -51,7 +51,7 @@ import {loadingReducer} from './shared/loading.reducer';
     Angular2CsvModule,
     AppModuleRouting,
     StoreModule.forRoot({
-      loading: loadingReducer
+      load: loadingReducer
     })
   ],
   providers: [],
