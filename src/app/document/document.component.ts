@@ -7,6 +7,7 @@ import {CreateUpdateDocumentModalComponent} from './shared/modal/create-update-d
 import {Store} from "@ngrx/store";
 import {StopLoadingAction} from "../shared/stop-loading.action";
 import {StartLoadingAction} from "../shared/start-loading.action";
+import {LoadingState} from '../shared/loading.state';
 
 @Component({
   selector: 'app-document',
@@ -21,7 +22,7 @@ export class DocumentComponent implements OnInit {
   constructor(private documentService: DocumentService,
               public dialog: MatDialog,
               private appSnackbarService: AppSnackbarService,
-              private store: Store) { }
+              private store: Store<LoadingState>) { }
 
   ngOnInit() {
     this.loadDocuments();

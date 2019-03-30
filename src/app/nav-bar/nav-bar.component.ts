@@ -4,6 +4,7 @@ import {Document} from '../document/shared/model/document.model';
 import {Store} from "@ngrx/store";
 import {StartLoadingAction} from "../shared/start-loading.action";
 import {StopLoadingAction} from "../shared/stop-loading.action";
+import {LoadingState} from '../shared/loading.state';
 
 @Component({
   selector: 'app-nav-bar',
@@ -17,7 +18,7 @@ export class NavBarComponent implements OnInit {
   @Input() drawer;
 
   constructor(private documentService: DocumentService,
-              private store: Store) { }
+              private store: Store<LoadingState>) { }
 
   ngOnInit() {
     this.loadDocuments();
