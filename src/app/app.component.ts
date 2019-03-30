@@ -16,10 +16,10 @@ export class AppComponent implements OnInit {
   showLoadignIcon = false;
 
   constructor(private router: Router,
-              private store: Store) {}
+              private store: Store<LoadingState>) {}
 
   ngOnInit() {
-    this.store.select('loading')
+    this.store.select('load')
       .subscribe((loadingState: LoadingState) => {
         this.showLoadignIcon = loadingState && loadingState.loading;
       });
@@ -27,14 +27,6 @@ export class AppComponent implements OnInit {
 
   onSelectDocument(document) {
     this.document = document;
-  }
-
-  show() {
-    this.store.dispatch(new StartLoadingAction());
-  }
-
-  hide() {
-    this.store.dispatch(new StopLoadingAction());
   }
 
   onReturnToSelectDocument(doReturn: boolean) {
