@@ -3,7 +3,5 @@ heroku:
  only:
  - master
  script:
- - git remote add heroku https://heroku:c5e2d36f-4f44-4589-b04d-ee4ecbd78928@git.heroku.com/med-tutorials-app.git
- - git push -f heroku HEAD:master
- - echo "Deployed to production server"
+ - echo "Wake up prod server"
  - curl 'https://med-tutorials-app.herokuapp.com/'
