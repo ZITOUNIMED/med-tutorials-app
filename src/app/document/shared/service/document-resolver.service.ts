@@ -7,13 +7,14 @@ import {Store} from '@ngrx/store';
 import {StartLoadingAction} from '../../../shared/start-loading.action';
 import {StopLoadingAction} from '../../../shared/stop-loading.action';
 import {tap} from 'rxjs/internal/operators';
+import {LoadingState} from '../../../shared/loading.state';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DocumentResolverService implements Resolve<Document> {
   constructor(private documentService: DocumentService,
-              private store: Store) {
+              private store: Store<LoadingState>) {
   }
 
   resolve(route: ActivatedRouteSnapshot, unused: RouterStateSnapshot): Observable<Document> {
