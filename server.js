@@ -11,11 +11,14 @@ app.get("/*", function(req, res) {
   res.sendFile(path.join(__dirname + "/dist/med-tutorials-app/index.html"));
 });
 
-wakeUpServer();
-wakeUpRestApi();
+const wakeUpServerInterval = setInterval(wakeUpServer, 25 * 60 * 1000);
 
 function wakeUpServer() {
-  setInterval(function() {
+	const now = new Date();
+	var endHour = new Date();
+	endHour.setHours(23,30,0);
+
+	if(now < endHour ){
     request(
       "https://med-tutorials-app.herokuapp.com/",
       function(err, body) {
@@ -26,11 +29,19 @@ function wakeUpServer() {
         }
       }
     );
-  }, 25 * 60 * 1000);
+	} else {
+    clearInterval(wakeUpServerInterval);
+  }
 }
 
+const wakeUpRestApiInterval = setInterval(wakeUpRestApi, 25 * 60 * 1000);
+
 function wakeUpRestApi() {
-  setInterval(function() {
+	const now = new Date();
+
+	var endHour = new Date();
+	endHour.setHours(23,30,0);
+	if(now < endHour ){
     request(
       "https://med-tutorials-rest-api.herokuapp.com/api/wake-up-server/",
       function(err, body) {
@@ -41,7 +52,9 @@ function wakeUpRestApi() {
         }
       }
     );
-  }, 25 * 60 * 1000);
+	} else {
+    clearInterval(wakeUpRestApiInterval);
+  }
 }
 
 console.log("App is listenning!");
