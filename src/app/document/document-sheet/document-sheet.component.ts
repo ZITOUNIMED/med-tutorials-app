@@ -81,11 +81,15 @@ export class DocumentSheetComponent implements OnInit {
       const elements = this.document.elements.filter(e => e.page === page);
       elements.sort((e1, e2) => (e1.row - e2.row));
       elements.forEach(element => {
+        doc.setFontSize(12);
         const titletag = titlesMap.get(element.type);
         if (titletag) {
           doc.fromHTML(`<${titletag}>${element.text}</${titletag}>`, element.row * 10 + 20);
         } else if (element.type === ElementType.SOURCE_CODE) {
-          doc.fromHTML(`<textarea>${element.text}</textarea>`, element.row * 10 + 20);
+          // const lines = element.text.split(/\r*\n/).length;
+          // doc.fromHTML("<textarea rows='4'>" + element.text + '</textarea>', element.row * 10 + 20);
+          doc.setFontSize(10);
+          doc.text(element.text, 20, element.row * 10 + 20);
         } else {
           doc.text(element.text, 20, element.row * 10 + 20);
         }
