@@ -204,7 +204,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     return elts && elts.length === 1 ? elts[0] : null;
   }
 
-  changeEditMode(){
+  changeEditMode() {
     this.editMode = !this.editMode;
     this.editModeChange.emit(this.editMode);
   }
@@ -254,8 +254,8 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     p1: { row: number; page: number },
     p2: { row: number; page: number }
   ) {
-    let e1 = this.getElementAtPosition(p1);
-    let e2 = this.getElementAtPosition(p2);
+    const e1 = this.getElementAtPosition(p1);
+    const e2 = this.getElementAtPosition(p2);
     this.changeElementPosition(e2, { row: -1, page: -1 });
     this.changeElementPosition(e1, p2);
     this.changeElementPosition(e2, p1);
@@ -342,7 +342,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
         this.applyCurrentPageElements();
       }
     } else if (changes.shouldCancelChanges) {
-      //this.editedElementRow = -1;
+      // this.editedElementRow = -1;
       // this.movedItem = {
       //   page: -1,
       //   row: -1

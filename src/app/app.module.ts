@@ -21,6 +21,7 @@ import {AppModuleRouting} from './app.module.routing';
 import { LoginComponent } from './login/login.component';
 import {StoreModule} from '@ngrx/store';
 import {loadingReducer} from './shared/loading.reducer';
+import {SharedModule} from "./shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import {loadingReducer} from './shared/loading.reducer';
     AppModuleRouting,
     StoreModule.forRoot({
       load: loadingReducer
-    })
+    }),
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

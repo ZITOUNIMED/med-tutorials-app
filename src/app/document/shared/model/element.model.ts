@@ -1,6 +1,6 @@
-import { FormGroup } from "@angular/forms";
+import { FormGroup } from '@angular/forms';
 
-import { ElementType } from "../element-type";
+import { ElementType } from '../element-type';
 
 export interface Element {
   id: number;

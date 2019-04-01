@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {StartLoadingAction} from './shared/start-loading.action';
 import {LoadingState} from './shared/loading.state';
-import {StopLoadingAction} from "./shared/stop-loading.action";
+import {StopLoadingAction} from './shared/stop-loading.action';
 
 @Component({
   selector: 'app-root',

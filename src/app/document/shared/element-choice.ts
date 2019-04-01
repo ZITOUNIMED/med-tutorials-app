@@ -1,31 +1,31 @@
 
 import { ElementType } from './element-type';
 
-export interface ElementChoice{
+export interface ElementChoice {
   key: ElementType;
   value: string;
 }
 
 export const ELEMENTS_CHOICES = [{
   key: ElementType.TEXT,
-  value: "Text"
+  value: 'Text'
 },
 {
   key: ElementType.SOURCE_CODE,
-  value: "Source code"
+  value: 'Source code'
 },
 {
   key: ElementType.BIG_TITLE,
-  value: "Titre grand"
+  value: 'Titre grand'
 },
 {
   key: ElementType.MEDIUM_TITLE,
-  value: "Titre moyen"
-},{
+  value: 'Titre moyen'
+}, {
   key: ElementType.SMALL_TITLE,
-  value: "Titre petit"
+  value: 'Titre petit'
 },
 {
   key: ElementType.VERY_SMALL_TITLE,
-  value: "Très petit titre"
+  value: 'Très petit titre'
 }];

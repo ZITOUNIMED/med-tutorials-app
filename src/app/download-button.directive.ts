@@ -9,8 +9,8 @@ export class DownloadButtonDirective implements OnInit {
 
   ngOnInit() {
     const btn = this.elementRef.nativeElement.children[0];
-    btn.className = 'btn btn-sm bt-default pull-right';
-    btn.textContent = 'Export';
-    btn.style.color = 'blue';
+    btn.className = 'btn btn-default';
+    btn.textContent = 'Excel';
+    // btn.style.color = 'blue';
   }
 }

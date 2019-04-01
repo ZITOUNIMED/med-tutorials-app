@@ -116,7 +116,7 @@ fdescribe('DocumentContentComponent', () => {
       expect(component.movedItem).toEqual({row: e20_.row, page: e20_.page});
     });
 
-    it("shouldn't move up the first item in the first page", () => {
+    it('shouldn\'t move up the first item in the first page', () => {
       // Given
       const e00 = {
           id: null,
@@ -150,7 +150,7 @@ fdescribe('DocumentContentComponent', () => {
   });
 
   describe('moveDown', () => {
-    it('should move down in the same page',() => {
+    it('should move down in the same page', () => {
       // Given
       const e00 = {
           id: null,
@@ -257,7 +257,7 @@ fdescribe('DocumentContentComponent', () => {
       expect(e01_.text).toEqual('t01');
     });
 
-    it("should return null when element doesn't existing", () => {
+    it('should return null when element doesn\'t existing', () => {
       // Given
       const e00 = {
           id: null,
@@ -342,7 +342,7 @@ fdescribe('DocumentContentComponent', () => {
     });
   });
 
-  function initComponent(){
+  function initComponent() {
     component.document = {
       id: null,
       name: name,
