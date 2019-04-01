@@ -27,7 +27,7 @@ export class DocumentListComponent implements OnInit {
   constructor(private documentService: DocumentService,
               private appSnackbarService: AppSnackbarService,
               private dialog: MatDialog,
-              private router: Router,) {
+              private router: Router, ) {
   }
 
   ngOnInit() {

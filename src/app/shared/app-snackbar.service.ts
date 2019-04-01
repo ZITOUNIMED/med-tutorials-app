@@ -10,7 +10,7 @@ export class AppSnackbarService {
 
   openSnackBar(message: string, action: string, duration?: number) {
     this.snackBar.open(message, action, {
-      duration: duration? duration : 3000,
+      duration: duration ? duration : 3000,
     });
   }
 }

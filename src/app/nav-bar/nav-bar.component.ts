@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DocumentService} from '../document/shared/service/document.service';
 import {Document} from '../document/shared/model/document.model';
-import {Store} from "@ngrx/store";
-import {StartLoadingAction} from "../shared/start-loading.action";
-import {StopLoadingAction} from "../shared/stop-loading.action";
+import {Store} from '@ngrx/store';
+import {StartLoadingAction} from '../shared/start-loading.action';
+import {StopLoadingAction} from '../shared/stop-loading.action';
 import {LoadingState} from '../shared/loading.state';
 
 @Component({

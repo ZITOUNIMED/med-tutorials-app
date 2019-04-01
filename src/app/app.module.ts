@@ -11,7 +11,6 @@ import { DocumentListComponent } from './document/document-list/document-list.co
 import { DocumentSheetComponent } from './document/document-sheet/document-sheet.component';
 import { DocumentContentComponent } from './document/document-content/document-content.component';
 import { DocumentPaletteComponent } from './document/document-palette/document-palette.component';
-import { DownloadButtonDirective } from './download-button.directive';
 import { GenerecDialogComponent } from './generec-dialog/generec-dialog.component';
 import { DocumentComponent } from './document/document.component';
 import { CreateUpdateDocumentModalComponent } from './document/shared/modal/create-update-document-modal/create-update-document-modal.component';
@@ -21,6 +20,7 @@ import {AppModuleRouting} from './app.module.routing';
 import { LoginComponent } from './login/login.component';
 import {StoreModule} from '@ngrx/store';
 import {loadingReducer} from './shared/loading.reducer';
+import {SharedModule} from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -29,7 +29,6 @@ import {loadingReducer} from './shared/loading.reducer';
     DocumentSheetComponent,
     DocumentContentComponent,
     DocumentPaletteComponent,
-    DownloadButtonDirective,
     GenerecDialogComponent,
     DocumentComponent,
     CreateUpdateDocumentModalComponent,
@@ -52,7 +51,8 @@ import {loadingReducer} from './shared/loading.reducer';
     AppModuleRouting,
     StoreModule.forRoot({
       load: loadingReducer
-    })
+    }),
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]
