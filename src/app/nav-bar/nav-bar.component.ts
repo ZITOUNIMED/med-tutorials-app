@@ -21,7 +21,7 @@ export class NavBarComponent implements OnInit {
               private store: Store<LoadingState>) { }
 
   ngOnInit() {
-    this.loadDocuments();
+    // this.loadDocuments();
   }
 
   loadDocuments() {

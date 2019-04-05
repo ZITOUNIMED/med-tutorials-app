@@ -17,10 +17,12 @@ import { CreateUpdateDocumentModalComponent } from './document/shared/modal/crea
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { ToolBarComponent } from './tool-bar/tool-bar.component';
 import {AppModuleRouting} from './app.module.routing';
-import { LoginComponent } from './login/login.component';
 import {StoreModule} from '@ngrx/store';
 import {loadingReducer} from './shared/loading.reducer';
 import {SharedModule} from './shared/shared.module';
+import {AuthenticationModule} from "./authentication/authentication.module";
+import { HomeComponent } from './home/home.component';
+import {AccountModule} from "./account/account.module";
 
 @NgModule({
   declarations: [
@@ -34,7 +36,7 @@ import {SharedModule} from './shared/shared.module';
     CreateUpdateDocumentModalComponent,
     NavBarComponent,
     ToolBarComponent,
-    LoginComponent,
+    HomeComponent,
   ],
   entryComponents: [
     GenerecDialogComponent,
@@ -52,7 +54,9 @@ import {SharedModule} from './shared/shared.module';
     StoreModule.forRoot({
       load: loadingReducer
     }),
-    SharedModule
+    SharedModule,
+    AuthenticationModule,
+    AccountModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

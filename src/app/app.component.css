@@ -17,12 +17,14 @@
   bottom : 0;
   right : 0;
   top : 0;
+  display: flex;
+  justify-content: center;
 }
 
 .loading-image{
-  left : 40%;
   top : 35%;
   position : absolute;
   z-index : 101;
   width : 150px;
+  height : 150px;
 }
