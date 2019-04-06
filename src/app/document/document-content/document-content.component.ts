@@ -332,21 +332,16 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes) {
-    if (changes.newOrEditElement) {
-      if (this.newOrEditElement && this.newOrEditElement.row === -1) {
-        const row = this.getBiggestRow(this.currentPage) + 1;
-        this.newOrEditElement.row = row;
-        this.newOrEditElement.page = this.currentPage;
-        this.document.elements.push(this.newOrEditElement);
-        this.newOrEditElement = null;
-        this.applyCurrentPageElements();
-      }
-    } else if (changes.shouldCancelChanges) {
-      // this.editedElementRow = -1;
-      // this.movedItem = {
-      //   page: -1,
-      //   row: -1
-      // };
+    if (changes.newOrEditElement && this.newOrEditElement && this.newOrEditElement.row === -1) {
+      const row = this.getBiggestRow(this.currentPage) + 1;
+      this.newOrEditElement.row = row;
+      this.newOrEditElement.page = this.currentPage;
+      this.document.elements.push(this.newOrEditElement);
+      this.newOrEditElement = null;
+      this.applyCurrentPageElements();
+    }
+    if (changes.document) {
+      this.applyCurrentPageElements();
     }
   }
 }

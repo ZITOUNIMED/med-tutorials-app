@@ -4,7 +4,7 @@ import * as jsPDF from 'jspdf';
 import { Document } from '../shared/model/document.model';
 import { Element } from '../shared/model/element.model';
 import {ActivatedRoute} from '@angular/router';
-import {filter, first, map} from 'rxjs/internal/operators';
+import {filter, map} from 'rxjs/internal/operators';
 import {ElementType} from '../shared/element-type';
 
 @Component({
@@ -41,7 +41,6 @@ export class DocumentSheetComponent implements OnInit {
     this.route.data
       .pipe(
         filter(data => data && !!data['document']),
-        first(),
         map(data => data['document']),
       )
       .subscribe(document => {
