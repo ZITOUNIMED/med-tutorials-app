@@ -11,12 +11,13 @@
     </mat-icon>
     Mes documents
   </h2>
-  <a  mat-list-item (click)="drawer.close()" routerLink="/document">Gérer les documents</a>
+  <a  mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'document'}}]">Gérer les documents</a>
   <h2 matSubheader>
     <mat-icon matListIcon color="warn">
       <i class="fa fa-star-o" aria-hidden="true"></i>
     </mat-icon>
     Favoris
   </h2>
-  <a *ngFor="let document of documents" mat-list-item (click)="drawer.close()" [routerLink]="'/document/' + document.id" routerLinkActive="true">{{document.name}}</a>
+  <a *ngFor="let document of documents" mat-list-item (click)="drawer.close()" [routerLink]="['/home', {outlets: { homeOutlet: 'document/' + document.id}}]">{{document.name}}</a>
+  <a href="" mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'account'}}]">Account</a>
 </mat-nav-list>

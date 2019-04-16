@@ -1,0 +1,16 @@
+<mat-drawer-container class="crm-navigation-bar" [hasBackdrop]="true">
+  <mat-drawer #drawer [mode]="'over'">
+    <app-nav-bar [drawer]="drawer"></app-nav-bar>
+  </mat-drawer>
+  <mat-drawer-content>
+    <app-tool-bar [drawer]="drawer"></app-tool-bar>
+    <div class="container">
+      <div class="loading-div" [hidden]="!showLoadignIcon">
+        <img class="loading-image" [src]="'assets/img/loading-transparent.gif'">
+      </div>
+      <div>
+        <router-outlet name="homeOutlet"></router-outlet>
+      </div>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>
