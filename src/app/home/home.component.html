@@ -8,7 +8,9 @@
       <div class="loading-div" [hidden]="!showLoadignIcon">
         <img class="loading-image" [src]="'assets/img/loading-transparent.gif'">
       </div>
-      <router-outlet name="home"></router-outlet>
+      <div>
+        <router-outlet name="homeOutlet"></router-outlet>
+      </div>
     </div>
   </mat-drawer-content>
 </mat-drawer-container>

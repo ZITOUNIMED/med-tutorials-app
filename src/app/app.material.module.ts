@@ -37,4 +37,4 @@ const modules = [
   imports: modules,
   exports: modules
 })
-export class AppMaterialmodule {}
+export class AppMaterialModule {}

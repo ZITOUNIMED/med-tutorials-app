@@ -1,36 +1,37 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {LoginComponent} from './authentication/login/login.component';
-import {DocumentRoutingModule} from './document/document.routing.module';
+import {AccountComponent} from './account/account.component';
 import {HomeComponent} from './home/home.component';
-import {AuthenticationGuardService} from "./authentication/authentication-guard.service";
-import {AccountComponent} from "./account/account/account.component";
+import {DocumentComponent} from './document/document.component';
+import {DocumentResolverService} from './document/shared/service/document-resolver.service';
+import {DocumentSheetComponent} from './document/document-sheet/document-sheet.component';
+import {AuthenticationGuardService} from './authentication/authentication-guard.service';
 
 const appRoutes: Routes = [
-  {
-    path: 'login',
-    component: LoginComponent
-  },
+  { path: 'authentication', loadChildren: './authentication/authentication.routed.module#AuthenticationRoutedModule'},
   {
     path: 'home',
     canActivate: [AuthenticationGuardService],
-    component: HomeComponent
+    component: HomeComponent,
+    children: [
+      { path: 'account', component: AccountComponent, outlet: 'homeOutlet'},
+      { path: 'document', component: DocumentComponent, outlet: 'homeOutlet'},
+      { path: '', component: DocumentComponent, outlet: 'homeOutlet'},
+      {
+        path: 'document/:id',
+        outlet: 'homeOutlet',
+        component: DocumentSheetComponent,
+        resolve: {
+          document: DocumentResolverService
+        }
+      },
+    ]
   },
-  {
-    path: 'account',
-    component: AccountComponent,
-    outlet: 'home'
-  },
-  {
-    path: '',
-    redirectTo: '/home',
-    pathMatch: 'full'
-  },
+  { path: '', redirectTo: '/home', pathMatch: 'full'},
 ];
 
 @NgModule({
   imports: [
-    DocumentRoutingModule,
     RouterModule.forRoot(appRoutes)
   ],
   exports: [
