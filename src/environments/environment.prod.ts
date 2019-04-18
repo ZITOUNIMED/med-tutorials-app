@@ -1,4 +1,6 @@
 export const environment = {
   production: true,
-  api_url: 'https://med-tutorials-rest-api.herokuapp.com/api'
+  base: 'https://med-tutorials-rest-api.herokuapp.com',
+  api: '/api',
+  auth: '/auth'
 };
