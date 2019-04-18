@@ -1,9 +1,8 @@
-import {START_LOADING_ACTION_TYPE} from './start-loading.action';
-import {Action} from '@ngrx/store';
+import {LoadingActions, START_LOADING_ACTION_TYPE, STOP_LOADING_ACTION_TYPE} from './loading.actions';
+import {ActionReducer} from '@ngrx/store';
 import {LoadingState} from './loading.state';
-import {STOP_LOADING_ACTION_TYPE} from './stop-loading.action';
 
-export function loadingReducer(state: LoadingState, action: Action) {
+export const loadingReducer: ActionReducer<LoadingState> = (state: LoadingState, action: LoadingActions) => {
   switch (action.type) {
     case START_LOADING_ACTION_TYPE:
       return {
@@ -15,4 +14,4 @@ export function loadingReducer(state: LoadingState, action: Action) {
       };
     default: return state;
   }
-}
+};

@@ -47,7 +47,7 @@ export class DocumentListComponent implements OnInit {
   }
 
   onOpenDocument(document: Document) {
-    this.router.navigate(['/document', document.id]);
+    this.router.navigate(['/home', {outlets: { homeOutlet: `document/${document.id}`}}]);
   }
 
   openDialogDeleteDocument(document: Document) {

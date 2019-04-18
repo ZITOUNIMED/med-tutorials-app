@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit {
   constructor(private store: Store<LoadingState>) { }
 
   ngOnInit() {
-    this.store.select('load')
+    this.store.select('loadingState')
       .subscribe((loadingState: LoadingState) => {
         this.showLoadignIcon = loadingState && loadingState.loading;
       });
