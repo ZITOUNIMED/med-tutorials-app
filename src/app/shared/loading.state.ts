@@ -1,5 +1,5 @@
 
 
 export interface LoadingState {
-  readonly loading: boolean;
+  loading: boolean;
 }

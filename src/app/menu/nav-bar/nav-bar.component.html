@@ -6,6 +6,7 @@
     </mat-icon>
   </mat-toolbar>
   <a href="" mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'account'}}]">Account</a>
+  <a href="" mat-list-item (click)="signout()">Sign Out</a>
   <a href="" mat-list-item (click)="drawer.close()" routerLink="/auth/login">Sign In</a>
   <a href="" mat-list-item (click)="drawer.close()" [routerLink]="['/auth/signup']">Sign Up</a>
   <h2 matSubheader>

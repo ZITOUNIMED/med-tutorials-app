@@ -3,7 +3,9 @@ import {DocumentService} from '../../document/shared/service/document.service';
 import {Document} from '../../document/shared/model/document.model';
 import {Store} from '@ngrx/store';
 import {StartLoadingAction, StopLoadingAction} from '../../shared/loading.actions';
-import {LoadingState} from '../../shared/loading.state';
+import {Router} from '@angular/router';
+import {AppState} from '../../shared/app.state';
+import {PrincipalCleanAction} from '../../authentication/shared/principal.actions';
 
 @Component({
   selector: 'app-nav-bar',
@@ -17,7 +19,8 @@ export class NavBarComponent implements OnInit {
   @Input() drawer;
 
   constructor(private documentService: DocumentService,
-              private store: Store<LoadingState>) { }
+              private store: Store<AppState>,
+              private router: Router) { }
 
   ngOnInit() {
     this.loadDocuments();
@@ -29,6 +32,11 @@ export class NavBarComponent implements OnInit {
       this.documents = documents;
       this.store.dispatch(new StopLoadingAction());
     });
+  }
+
+  signout() {
+    this.store.dispatch(new PrincipalCleanAction(true));
+    // this.router.navigate(['/auth/login']);
   }
 
 }

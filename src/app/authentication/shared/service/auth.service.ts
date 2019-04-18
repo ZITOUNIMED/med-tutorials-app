@@ -2,9 +2,10 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../../environments/environment';
-import {SignInRequest} from "../model/signin.request.model";
-import {SignUpRequest} from "../model/signup.request.model";
-import {Principal} from "../model/principal.model";
+import {SignInRequest} from '../model/signin.request.model';
+import {SignUpRequest} from '../model/signup.request.model';
+import {Principal} from '../model/principal.model';
+import {RegistrationRule} from '../model/registration-rule.model';
 
 @Injectable()
 export class AuthService {
@@ -17,5 +18,9 @@ export class AuthService {
 
   signUp(request: SignUpRequest): Observable<any> {
     return this.http.post(this.authUrl + '/signup', request);
+  }
+
+  getRegistrationRules(): Observable<RegistrationRule[]> {
+    return this.http.get<RegistrationRule[]>(this.authUrl + '/registration-rules');
   }
 }
