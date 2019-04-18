@@ -1,9 +1,7 @@
-import {ActionReducer} from '@ngrx/store';
-
 import { PrincipalState } from './principal.state';
 import {PrincipalActions, PRINCIPAL_SAVE, PRINCIPAL_CLEAN} from './principal.actions';
 
-export const principalReducer: ActionReducer<PrincipalState> = (state: PrincipalState, action: PrincipalActions) => {
+export function principalReducer(state: PrincipalState, action: PrincipalActions) {
   switch (action.type) {
     case PRINCIPAL_SAVE:
       return {
@@ -15,4 +13,4 @@ export const principalReducer: ActionReducer<PrincipalState> = (state: Principal
     default:
       return state;
   }
-};
+}
