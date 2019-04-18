@@ -5,6 +5,9 @@
       <i class="fa fa-times"></i>
     </mat-icon>
   </mat-toolbar>
+  <a href="" mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'account'}}]">Account</a>
+  <a href="" mat-list-item (click)="drawer.close()" routerLink="/auth/login">Sign In</a>
+  <a href="" mat-list-item (click)="drawer.close()" [routerLink]="['/auth/signup']">Sign Up</a>
   <h2 matSubheader>
     <mat-icon matListIcon >
       <i class="fa fa-book"></i>
@@ -19,5 +22,4 @@
     Favoris
   </h2>
   <a *ngFor="let document of documents" mat-list-item (click)="drawer.close()" [routerLink]="['/home', {outlets: { homeOutlet: 'document/' + document.id}}]">{{document.name}}</a>
-  <a href="" mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'account'}}]">Account</a>
 </mat-nav-list>

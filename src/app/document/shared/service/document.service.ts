@@ -7,7 +7,7 @@ import {environment} from '../../../../environments/environment';
   providedIn: 'root'
 })
 export class DocumentService {
-  url = environment.api_url + '/document';
+  url = environment.base + environment.api + '/document';
 
   constructor(private http: HttpClient) {}
 

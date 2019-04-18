@@ -8,7 +8,7 @@ import {DocumentSheetComponent} from './document/document-sheet/document-sheet.c
 import {AuthenticationGuardService} from './authentication/authentication-guard.service';
 
 const appRoutes: Routes = [
-  { path: 'authentication', loadChildren: './authentication/authentication.routed.module#AuthenticationRoutedModule'},
+  { path: 'auth', loadChildren: './authentication/authentication.routed.module#AuthenticationRoutedModule'},
   {
     path: 'home',
     canActivate: [AuthenticationGuardService],

@@ -4,8 +4,7 @@ import {Observable} from 'rxjs';
 import {DocumentService} from './document.service';
 import {Document} from '../model/document.model';
 import {Store} from '@ngrx/store';
-import {StartLoadingAction} from '../../../shared/start-loading.action';
-import {StopLoadingAction} from '../../../shared/stop-loading.action';
+import {StartLoadingAction, StopLoadingAction} from '../../../shared/loading.actions';
 import {tap} from 'rxjs/internal/operators';
 import {LoadingState} from '../../../shared/loading.state';
 
