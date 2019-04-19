@@ -18,7 +18,7 @@
     <div class="row">
       <div class="col-md-6">{{document.name}}</div>
       <div class="col-md-6" >
-        <a mat-raised-button routerLink="/document/{{document.id}}">
+        <a mat-raised-button [routerLink]="['/home', {outlets: { homeOutlet: 'document/' + document.id}}]">
           <i class="fa fa-book" aria-hidden="true"></i>
         </a>
         <button mat-stroked-button color="warn" (click)="openDialogDeleteDocument(document)">
