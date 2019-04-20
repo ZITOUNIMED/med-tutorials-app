@@ -3,11 +3,10 @@ import {MAT_DIALOG_DATA} from '@angular/material';
 import {FormControl} from '@angular/forms';
 
 @Component({
-  selector: 'app-create-update-document-modal',
-  templateUrl: './create-update-document-modal.component.html',
-  styleUrls: ['./create-update-document-modal.component.css']
+  selector: 'app-create-update-document',
+  templateUrl: './create-update-document.component.html',
 })
-export class CreateUpdateDocumentModalComponent implements OnInit {
+export class CreateUpdateDocumentComponent implements OnInit {
 
   nameControl: FormControl = new FormControl();
   constructor(@Inject(MAT_DIALOG_DATA) public data: {documentName: string}) {  }

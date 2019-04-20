@@ -11,6 +11,7 @@ import {DocumentSheetComponent} from './document-sheet/document-sheet.component'
 import {DocumentComponent} from './document.component';
 import {AppMaterialModule} from '../app.material.module';
 import {SharedModule} from '../shared/shared.module';
+import { CreateUpdateDocumentComponent } from './shared/modal/create-update-document/create-update-document.component';
 
 
 @NgModule({
@@ -27,6 +28,8 @@ import {SharedModule} from '../shared/shared.module';
     DocumentContentComponent,
     DocumentPaletteComponent,
     DocumentComponent,
-  ]
+    CreateUpdateDocumentComponent,
+  ],
+  entryComponents: [CreateUpdateDocumentComponent]
 })
 export class DocumentModule {}

@@ -9,7 +9,7 @@ import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {Router} from '@angular/router';
-import {CreateUpdateDocumentModalComponent} from '../shared/modal/create-update-document-modal/create-update-document-modal.component';
+import { CreateUpdateDocumentComponent } from '../shared/modal/create-update-document/create-update-document.component';
 
 @Component({
   selector: 'app-document-list',
@@ -63,8 +63,8 @@ export class DocumentListComponent implements OnInit {
     });
   }
 
-  openDialogCreateUpdateDocumentName(document) {
-    const dialogRef = this.dialog.open(CreateUpdateDocumentModalComponent, {
+  openDialogCreateUpdateDocumentName(document: Document) {
+    const dialogRef = this.dialog.open(CreateUpdateDocumentComponent, {
       data: {
         documentName: document.name
       }
@@ -77,7 +77,7 @@ export class DocumentListComponent implements OnInit {
     });
   }
 
-  private saveDocument(document) {
+  private saveDocument(document: Document) {
     this.documentService.saveDocument(document).subscribe(
       res => {
         this.appSnackbarService.openSnackBar('Success!: Document is saved', 'SAVE');
@@ -86,7 +86,7 @@ export class DocumentListComponent implements OnInit {
     );
   }
 
-  deleteDocument(id) {
+  deleteDocument(id: number) {
     this.documentService.deleteDocument(id)
       .subscribe(res => {
         this.appSnackbarService.openSnackBar('Success!: Document Deleted', 'delete');

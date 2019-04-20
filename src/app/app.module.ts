@@ -7,7 +7,6 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { AppMaterialModule } from './app.material.module';
 import { GenerecDialogComponent } from './generec-dialog/generec-dialog.component';
-import { CreateUpdateDocumentModalComponent } from './document/shared/modal/create-update-document-modal/create-update-document-modal.component';
 import {AppModuleRouting} from './app.module.routing';
 import {StoreModule} from '@ngrx/store';
 import {AuthenticationModule} from './authentication/authentication.module';
@@ -16,19 +15,22 @@ import {DocumentModule} from './document/document.module';
 import {HomeComponent} from './home/home.component';
 import {AccountComponent} from './account/account.component';
 import {appReducer} from './shared/app.reducer';
-import {XhrInterceptor} from "./authentication/xhr.interceptor";
+import {XhrInterceptor} from './authentication/xhr.interceptor';
+import { UserComponent } from './user/user.component';
+import { CreateUpdateUserComponent } from './user/shared/modal/create-update-user/create-update-user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GenerecDialogComponent,
-    CreateUpdateDocumentModalComponent,
     HomeComponent,
     AccountComponent,
+    UserComponent,
+    CreateUpdateUserComponent,
   ],
   entryComponents: [
     GenerecDialogComponent,
-    CreateUpdateDocumentModalComponent
+    CreateUpdateUserComponent,
   ],
   imports: [
     BrowserModule,

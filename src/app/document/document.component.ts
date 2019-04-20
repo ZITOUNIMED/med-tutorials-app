@@ -3,10 +3,10 @@ import {Document} from './shared/model/document.model';
 import {DocumentService} from './shared/service/document.service';
 import {MatDialog} from '@angular/material';
 import {AppSnackbarService} from '../shared/app-snackbar.service';
-import {CreateUpdateDocumentModalComponent} from './shared/modal/create-update-document-modal/create-update-document-modal.component';
 import {Store} from '@ngrx/store';
 import {StartLoadingAction, StopLoadingAction} from '../shared/loading.actions';
 import {LoadingState} from '../shared/loading.state';
+import { CreateUpdateDocumentComponent } from './shared/modal/create-update-document/create-update-document.component';
 
 @Component({
   selector: 'app-document',
@@ -28,7 +28,7 @@ export class DocumentComponent implements OnInit {
   }
 
   openCreateDocumentDialog() {
-    const dialogRef = this.dialog.open(CreateUpdateDocumentModalComponent);
+    const dialogRef = this.dialog.open(CreateUpdateDocumentComponent);
     dialogRef.afterClosed().subscribe(name => {
       if (name) {
         this.saveNewDocument(name);
