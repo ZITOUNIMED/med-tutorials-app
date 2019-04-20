@@ -6,6 +6,7 @@
     </mat-icon>
   </mat-toolbar>
   <a href="" mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'account'}}]">Account</a>
+  <a href="" mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'user'}}]">G&eacute;rer les utilisateurs</a>
   <a href="" mat-list-item (click)="signout()">Sign Out</a>
   <a href="" mat-list-item (click)="drawer.close()" routerLink="/auth/login">Sign In</a>
   <a href="" mat-list-item (click)="drawer.close()" [routerLink]="['/auth/signup']">Sign Up</a>
@@ -15,7 +16,7 @@
     </mat-icon>
     Mes documents
   </h2>
-  <a  mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'document'}}]">Gérer les documents</a>
+  <a  mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'document'}}]">G&eacute;rer les documents</a>
   <h2 matSubheader>
     <mat-icon matListIcon color="warn">
       <i class="fa fa-star-o" aria-hidden="true"></i>
