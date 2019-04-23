@@ -18,7 +18,7 @@ const appRoutes: Routes = [
       { path: 'account', component: AccountComponent, outlet: 'homeOutlet'},
       { path: 'user', component: UserComponent, outlet: 'homeOutlet'},
       { path: 'document', component: DocumentComponent, outlet: 'homeOutlet'},
-      { path: '', component: UserComponent, outlet: 'homeOutlet'},
+      { path: '', component: DocumentComponent, outlet: 'homeOutlet'},
       {
         path: 'document/:id',
         outlet: 'homeOutlet',

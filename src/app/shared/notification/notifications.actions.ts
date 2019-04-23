@@ -14,7 +14,7 @@ export class NotificationsAddAction implements Action {
 
 export class NotificationsRemoveAction implements Action {
   readonly type = NOTIFICATIONS_REMOVE;
-  constructor(public payload: string) {}
+  constructor(public payload: Notification) {}
 }
 
 export class NotificationsCleanAction implements Action {

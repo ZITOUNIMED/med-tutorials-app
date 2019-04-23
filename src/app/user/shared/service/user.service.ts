@@ -1,25 +1,31 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { User } from '../model/user.model';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {User} from '../model/user.model';
+import {HttpClient} from '@angular/common/http';
+import {environment} from 'src/environments/environment';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class UserService {
-    url = environment.base + environment.api + '/user';
-    constructor(private http: HttpClient) {}
+  url = environment.base + environment.api + '/user';
 
-    getAllUsers(): Observable<User[]> {
-        return this.http.get<User[]>(this.url);
-    }
+  constructor(private http: HttpClient) {
+  }
 
-    saveUser(user: User): Observable<any> {
-        return this.http.post(this.url, user);
-    }
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.url);
+  }
 
-    deleteUser(id: number): Observable<any> {
+  saveUser(user: User): Observable<any> {
+    return this.http.post(this.url, user);
+  }
+
+  deleteUser(id: number): Observable<any> {
     return this.http.delete(this.url + `/${id}`);
+  }
+
+  findByUsername(username: string): Observable<User> {
+    return this.http.get<User>(this.url + `/by-username/${username}`);
   }
 }

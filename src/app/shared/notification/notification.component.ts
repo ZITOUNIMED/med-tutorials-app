@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Store} from '@ngrx/store';
 import {NotificationsState} from './notifications.state';
-import {Notification} from './notification.model';
+import {Notification, NotificationTypes} from './notification.model';
+import {NotificationsRemoveAction} from "./notifications.actions";
 
 @Component({
   selector: 'app-notifications',
@@ -10,6 +11,7 @@ import {Notification} from './notification.model';
 })
 export class NotificationComponent implements OnInit {
   notifications: Notification[];
+  NotificationTypes = NotificationTypes;
 
   constructor(private store: Store<NotificationsState>) { }
 
@@ -17,6 +19,10 @@ export class NotificationComponent implements OnInit {
     this.store.select('notificationsState').subscribe(notificationsState => {
       this.notifications = notificationsState && notificationsState.notifications || [];
     });
+  }
+
+  removeNotification(notif: Notification) {
+    this.store.dispatch(new NotificationsRemoveAction(notif));
   }
 
 }

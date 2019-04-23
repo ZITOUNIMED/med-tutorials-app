@@ -1,9 +1,8 @@
-<ul>
-  <li *ngFor="let notif of notifications">
-    <p>
-      Type: {{notif.type}}<br/>
-      Code: {{notif.code}}<br/>
-      Message: {{notif.message}}
-    </p>
-  </li>
-</ul>
+<div *ngFor="let notif of notifications" class="alert alert-dismissible fade show"
+     [ngClass]="{'alert-danger': notif.type == NotificationTypes.ERROR, 'alert-warning': notif.type == NotificationTypes.WARNING, 'alert-success': notif.type == NotificationTypes.SUCCESS}"
+     role="alert">
+  <strong>{{notif.type}}!</strong> {{notif.message}}
+  <button type="button" class="close" (click)="removeNotification(notif)">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
