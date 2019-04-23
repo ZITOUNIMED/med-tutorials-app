@@ -1,19 +1,19 @@
-<h1>Login</h1>
-<form [formGroup]="loginForm">
-  <table>
-    <tr>
-      <td>User:</td>
-      <td><input type='text' formControlName="username"></td>
-    </tr>
-    <tr>
-      <td>Password:</td>
-      <td><input type='password' formControlName="password" /></td>
-    </tr>
-    <tr>
-      <td><button (click)="login()">Login</button></td>
-    </tr>
-  </table>
-  <div>
-    <a href=""  [routerLink]="['/auth/signup']">Sign Up</a>
-  </div>
-</form>
+<div class="login-form">
+  <form [formGroup]="loginForm">
+    <h2 class="text-center">Log in</h2>
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Username" formControlName="username">
+    </div>
+    <div class="form-group">
+      <input type="password" class="form-control" placeholder="Password" formControlName="password">
+    </div>
+    <div class="form-group">
+      <button (click)="login()" class="btn btn-primary btn-block">Log in</button>
+    </div>
+    <div class="clearfix">
+      <label class="pull-left checkbox-inline"><input type="checkbox"> Remember me</label>
+      <a href="#" class="pull-right">Forgot Password?</a>
+    </div>
+  </form>
+  <p class="text-center"><a href=""  [routerLink]="['/auth/signup']">Create an Account</a></p>
+</div>
