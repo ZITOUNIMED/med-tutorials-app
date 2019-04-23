@@ -14,7 +14,7 @@ export function notificationsReducer(state: NotificationsState, action: Notifica
       const notifications = state && state.notifications ? state.notifications : [];
       return {
         ...state,
-        notifications: notifications.filter(notif => notif.code !== action.payload)
+        notifications: notifications.filter(notif => notif !== action.payload)
       };
     case NOTIFICATIONS_CLEAN:
       return action.payload ? null : state;
