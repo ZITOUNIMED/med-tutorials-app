@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {SignInRequest} from '../shared/model/signin.request.model';
 import {AuthService} from '../shared/service/auth.service';
-import {PrincipalState} from '../shared/principal.state';
 import {Store} from '@ngrx/store';
 import {PrincipalSaveAction} from '../shared/principal.actions';
 import {Principal} from '../shared/model/principal.model';
 import {Router} from '@angular/router';
+import {AppState} from '../../shared/app.state';
+import {StartLoadingAction, StopLoadingAction} from '../../shared/loading.actions';
+import {NotificationsAddAction} from '../../shared/notification/notifications.actions';
+import { NotificationTypes} from '../../shared/notification/notification.model';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +23,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
   constructor(private authService: AuthService,
-              private store: Store<PrincipalState>,
+              private store: Store<AppState>,
               private router: Router) { }
 
   ngOnInit() {
@@ -45,8 +48,16 @@ export class LoginComponent implements OnInit {
       password: password
     };
 
+    this.store.dispatch(new StartLoadingAction());
     this.authService.signIn(signInRequest).subscribe(res => {
       this.store.dispatch(new PrincipalSaveAction(res));
+    }, error => {
+      this.store.dispatch(new NotificationsAddAction({
+        code: error.status,
+        type: NotificationTypes.ERROR,
+        message: error.message
+      }));
+      this.store.dispatch(new StopLoadingAction());
     });
   }
 

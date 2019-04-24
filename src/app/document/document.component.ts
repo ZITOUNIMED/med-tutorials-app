@@ -7,6 +7,7 @@ import {Store} from '@ngrx/store';
 import {StartLoadingAction, StopLoadingAction} from '../shared/loading.actions';
 import {LoadingState} from '../shared/loading.state';
 import { CreateUpdateDocumentComponent } from './shared/modal/create-update-document/create-update-document.component';
+import {ImportDocumentFileComponent} from "./shared/modal/import-document-file/import-document-file.component";
 
 @Component({
   selector: 'app-document',
@@ -36,6 +37,15 @@ export class DocumentComponent implements OnInit {
     });
   }
 
+  openImportDocumentFileDialog() {
+    const dialogRef = this.dialog.open(ImportDocumentFileComponent);
+    dialogRef.afterClosed().subscribe(document => {
+      if (document) {
+        this.saveDocument(document);
+      }
+    });
+  }
+
   private saveNewDocument(name) {
     const document = {
       id: null,
@@ -43,10 +53,19 @@ export class DocumentComponent implements OnInit {
       elements: []
     } as Document;
 
+    this.saveDocument(document);
+  }
+
+  saveDocument(document: Document) {
+    this.store.dispatch(new StartLoadingAction());
     this.documentService.saveDocument(document).subscribe(
       res => {
         this.appSnackbarService.openSnackBar('Success!: New Document is added', 'ADD');
         this.loadDocuments();
+      },
+      error => {
+        this.appSnackbarService.openSnackBar('ERROR!: An error was occured on creating document', 'ADD');
+        this.store.dispatch(new StopLoadingAction());
       }
     );
   }
@@ -63,6 +82,9 @@ export class DocumentComponent implements OnInit {
     this.store.dispatch(new StartLoadingAction());
     this.documentService.getDocuments().subscribe(documents => {
       this.documents = documents;
+      this.store.dispatch(new StopLoadingAction());
+    }, error => {
+      this.appSnackbarService.openSnackBar('ERROR!: An error was occured on loading documents', 'LOAD');
       this.store.dispatch(new StopLoadingAction());
     });
   }
