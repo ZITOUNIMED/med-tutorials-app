@@ -5,9 +5,6 @@
   <mat-drawer-content>
     <app-tool-bar [drawer]="drawer"></app-tool-bar>
     <div class="container">
-      <div class="loading-div" [hidden]="!showLoadignIcon">
-        <img class="loading-image" [src]="'assets/img/loading-transparent.gif'">
-      </div>
       <div>
         <router-outlet name="homeOutlet"></router-outlet>
       </div>

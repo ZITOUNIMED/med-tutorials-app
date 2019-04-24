@@ -36,7 +36,6 @@ export class NavBarComponent implements OnInit {
 
   signout() {
     this.store.dispatch(new PrincipalCleanAction(true));
-    // this.router.navigate(['/auth/login']);
   }
 
 }
