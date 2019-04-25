@@ -30,11 +30,11 @@ export class ImportDocumentFileComponent implements OnInit {
         if (csvRecordsArray && csvRecordsArray.length > 2) {
           const elements = [];
           for (let i = 1; i < csvRecordsArray.length; i++) {
-            const dataCsv = csvRecordsArray[i].split(',');
+            const dataCsv = csvRecordsArray[i].split('#');
             const element = {
               id: null,
-              type: dataCsv[0] && dataCsv[0].replace(/\"/g, ''),
-              text: dataCsv[1] && dataCsv[1].replace(/\"/g, ''),
+              type: dataCsv[0],
+              text: dataCsv[1] && dataCsv[1].replace(/¤/g, '\n'),
               row: Number(dataCsv[2]),
               page: Number(dataCsv[3]),
             } as Element;
