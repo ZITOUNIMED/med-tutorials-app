@@ -24,8 +24,8 @@ export class DocumentSheetComponent implements OnInit {
 
   get options() {
     return {
-      fieldSeparator: ',',
-      quoteStrings: '"',
+      fieldSeparator: '#',
+      quoteStrings: '',
       decimalseparator: '.',
       showLabels: false,
       headers: [],
@@ -96,5 +96,15 @@ export class DocumentSheetComponent implements OnInit {
       page++;
     } while ( this.document.elements.some(e => e.page >= page) );
     doc.save(this.document.name + '.pdf');
+  }
+
+  formatElements() {
+    return this.document.elements.map(element => {
+      const text = element.text ? element.text.replace(/\n/g, '¤') : '';
+      return {
+        ...element,
+        text: text
+      };
+    });
   }
 }
