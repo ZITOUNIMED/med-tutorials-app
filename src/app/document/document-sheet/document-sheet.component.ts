@@ -6,6 +6,7 @@ import { Element } from '../shared/model/element.model';
 import {ActivatedRoute} from '@angular/router';
 import {filter, map} from 'rxjs/internal/operators';
 import {ElementType} from '../shared/element-type';
+import {excelReportConfig} from '../../../environments/report/excel.config';
 
 @Component({
   selector: 'app-document-sheet',
@@ -24,15 +25,8 @@ export class DocumentSheetComponent implements OnInit {
 
   get options() {
     return {
-      fieldSeparator: '#',
-      quoteStrings: '',
-      decimalseparator: '.',
-      showLabels: false,
-      headers: [],
-      showTitle: true,
+      ...excelReportConfig,
       title: this.document.name,
-      useBom: false,
-      removeNewLines: true,
       keys: ['type', 'text', 'row', 'page' ]
     };
   }
@@ -100,7 +94,7 @@ export class DocumentSheetComponent implements OnInit {
 
   formatElements() {
     return this.document.elements.map(element => {
-      const text = element.text ? element.text.replace(/\n/g, '¤') : '';
+      const text = element.text ? element.text.replace(/\n/g, excelReportConfig.sourceCodeNewLineSeparator) : '';
       return {
         ...element,
         text: text

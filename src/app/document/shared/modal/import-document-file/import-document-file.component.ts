@@ -4,6 +4,7 @@ import {FormControl} from '@angular/forms';
 import {Document} from '../../model/document.model';
 import {Element} from '../../model/element.model';
 import {ElementType} from '../../element-type';
+import {excelReportConfig} from "../../../../../environments/report/excel.config";
 
 @Component({
   templateUrl: './import-document-file.component.html'
@@ -30,11 +31,11 @@ export class ImportDocumentFileComponent implements OnInit {
         if (csvRecordsArray && csvRecordsArray.length > 2) {
           const elements = [];
           for (let i = 1; i < csvRecordsArray.length; i++) {
-            const dataCsv = csvRecordsArray[i].split('#');
+            const dataCsv = csvRecordsArray[i].split(excelReportConfig.options.fieldSeparator);
             const element = {
               id: null,
               type: dataCsv[0],
-              text: dataCsv[1] && dataCsv[1].replace(/¤/g, '\n'),
+              text: dataCsv[1] && dataCsv[1].replace(new RegExp(excelReportConfig.sourceCodeNewLineSeparator, 'g'), '\n'),
               row: Number(dataCsv[2]),
               page: Number(dataCsv[3]),
             } as Element;
