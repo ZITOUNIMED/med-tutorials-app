@@ -67,7 +67,7 @@
   padding-left: 10px;
 }
 .signup-form a{
-  color: #fff;
+  /* color: #fff; */
   text-decoration: underline;
 }
 .signup-form a:hover{
