@@ -18,6 +18,7 @@ import {appReducer} from './shared/app.reducer';
 import {XhrInterceptor} from './authentication/xhr.interceptor';
 import { UserComponent } from './user/user.component';
 import { CreateUpdateUserComponent } from './user/shared/modal/create-update-user/create-update-user.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { CreateUpdateUserComponent } from './user/shared/modal/create-update-use
     AuthenticationModule,
     AppMenuModule,
     DocumentModule,
+    SharedModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true},

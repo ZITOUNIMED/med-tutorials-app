@@ -60,7 +60,8 @@ export class ImportDocumentFileComponent implements OnInit {
     this._document = {
       id: null,
       name: '',
-      elements: []
+      elements: [],
+      owner: null,
     };
   }
 }
