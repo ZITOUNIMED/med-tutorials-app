@@ -1,17 +1,20 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'app-tool-bar',
   templateUrl: './tool-bar.component.html',
   styleUrls: ['./tool-bar.component.css']
 })
-export class ToolBarComponent implements OnInit {
+export class ToolBarComponent {
 
   @Input() drawer;
+  @Output() toolBarOpenClicked = new EventEmitter<boolean>();
+  private value = true;
 
   constructor() { }
 
-  ngOnInit() {
+  open() {
+    this.toolBarOpenClicked.emit(this.value);
+    this.value = !this.value;
   }
-
 }
