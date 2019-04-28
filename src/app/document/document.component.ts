@@ -107,7 +107,7 @@ export class DocumentComponent implements OnInit {
     this.loadDocuments();
   }
 
-  onDeleteDocument() {
+  onDeleteDocument(deleted) {
     this.loadDocuments();
   }
 
