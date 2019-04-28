@@ -12,7 +12,7 @@ export class DocumentService {
 
   constructor(private http: HttpClient) {}
 
-  private getDocuments(): Observable<Document[]> {
+  getDocuments(): Observable<Document[]> {
     return this.http.get<Document[]>(this.url);
   }
 

@@ -114,6 +114,7 @@ export class DocumentComponent implements OnInit {
   loadDocuments() {
     if (this.user && this.user.username) {
     this.store.dispatch(new StartLoadingAction());
+
     this.documentService.findByOwnerUsername(this.user.username).subscribe(documents => {
       this.documents = documents;
       this.store.dispatch(new StopLoadingAction());
