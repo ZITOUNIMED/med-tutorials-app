@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
 import {AuthService} from '../shared/service/auth.service';
 import {SignUpRequest} from '../shared/model/signup.request.model';
 import {NotificationsState} from '../../shared/notification/notifications.state';
 import {Store} from '@ngrx/store';
 import {NotificationsAddAction} from '../../shared/notification/notifications.actions';
-import { NotificationTypes} from '../../shared/notification/notification.model';
+import {NotificationTypes} from '../../shared/notification/notification.model';
 import {RegistrationRule} from '../shared/model/registration-rule.model';
+import {AppStoreService} from '../../shared/service/app.store.service';
 
 @Component({
   selector: 'app-signup',
@@ -19,7 +20,9 @@ export class SignupComponent implements OnInit {
   rules: RegistrationRule[];
 
   constructor(private authService: AuthService,
-              private store: Store<NotificationsState>) { }
+              private store: Store<NotificationsState>,
+              private appStoreService: AppStoreService) {
+  }
 
   ngOnInit() {
     this.signupForm = new FormGroup({
@@ -52,6 +55,8 @@ export class SignupComponent implements OnInit {
       email: email
     };
 
+    this.appStoreService.startLoading();
+
     this.authService.signUp(request).subscribe(
       res => {
         this.store.dispatch(new NotificationsAddAction({
@@ -61,12 +66,10 @@ export class SignupComponent implements OnInit {
         }));
         this.signupForm.reset();
       },
-        error => {
-        this.store.dispatch(new NotificationsAddAction({
-          code: error.status,
-          type: NotificationTypes.ERROR,
-          message: error.error
-        }));
+      error => {
+        this.appStoreService.addErrorNotif(error.status, error.error);
+      }, () => {
+        this.appStoreService.stopLoading();
       });
   }
 }

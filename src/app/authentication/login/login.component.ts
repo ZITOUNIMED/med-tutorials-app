@@ -7,9 +7,7 @@ import {PrincipalSaveAction} from '../shared/principal.actions';
 import {Principal} from '../shared/model/principal.model';
 import {Router} from '@angular/router';
 import {AppState} from '../../shared/app.state';
-import {StartLoadingAction, StopLoadingAction} from '../../shared/loading.actions';
-import {NotificationsAddAction} from '../../shared/notification/notifications.actions';
-import { NotificationTypes} from '../../shared/notification/notification.model';
+import {AppStoreService} from '../../shared/service/app.store.service';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +22,8 @@ export class LoginComponent implements OnInit {
 
   constructor(private authService: AuthService,
               private store: Store<AppState>,
-              private router: Router) { }
+              private router: Router,
+              private appStoreService: AppStoreService) { }
 
   ngOnInit() {
     this.loginForm = new FormGroup({
@@ -48,16 +47,13 @@ export class LoginComponent implements OnInit {
       password: password
     };
 
-    this.store.dispatch(new StartLoadingAction());
+    this.appStoreService.startLoading();
     this.authService.signIn(signInRequest).subscribe(res => {
       this.store.dispatch(new PrincipalSaveAction(res));
     }, error => {
-      this.store.dispatch(new NotificationsAddAction({
-        code: error.status,
-        type: NotificationTypes.ERROR,
-        message: error.message
-      }));
-      this.store.dispatch(new StopLoadingAction());
+      this.appStoreService.addErrorNotif(error.status, error.message);
+    }, () => {
+      this.appStoreService.stopLoading();
     });
   }
 

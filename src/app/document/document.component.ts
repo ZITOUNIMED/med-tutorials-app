@@ -5,14 +5,14 @@ import {MatDialog} from '@angular/material';
 import {AppSnackbarService} from '../shared/app-snackbar.service';
 import {Store} from '@ngrx/store';
 import {StartLoadingAction, StopLoadingAction} from '../shared/loading.actions';
-import { CreateUpdateDocumentComponent } from './shared/modal/create-update-document/create-update-document.component';
+import {CreateUpdateDocumentComponent} from './shared/modal/create-update-document/create-update-document.component';
 import {ImportDocumentFileComponent} from './shared/modal/import-document-file/import-document-file.component';
-import { AppState } from '../shared/app.state';
-import { UserService } from '../user/shared/service/user.service';
-import { combineLatest } from 'rxjs';
-import { User } from '../user/shared/model/user.model';
-import { UserSaveAction } from '../user/shared/user.actions';
-import { AppStoreService } from '../shared/service/app.store.service';
+import {AppState} from '../shared/app.state';
+import {UserService} from '../user/shared/service/user.service';
+import {combineLatest} from 'rxjs';
+import {User} from '../user/shared/model/user.model';
+import {UserSaveAction} from '../user/shared/user.actions';
+import {AppStoreService} from '../shared/service/app.store.service';
 
 @Component({
   selector: 'app-document',
@@ -30,30 +30,34 @@ export class DocumentComponent implements OnInit {
               private appSnackbarService: AppSnackbarService,
               private store: Store<AppState>,
               private userService: UserService,
-              private appStoreService: AppStoreService) { }
+              private appStoreService: AppStoreService) {
+  }
 
   ngOnInit() {
     combineLatest(
       this.store.select('userState'),
       this.store.select('principalState')).subscribe(([userState, principalState]) => {
-        if (!userState || !userState.user) {
-          if (principalState && principalState.principal) {
-            this.loadUser(principalState.principal.username);
-          }
-        } else {
-          this.user = userState.user;
+      if (!userState || !userState.user) {
+        if (principalState && principalState.principal) {
+          this.loadUser(principalState.principal.username);
         }
-        this.loadDocuments();
+      } else {
+        this.user = userState.user;
+      }
+      this.loadDocuments();
     });
   }
 
   loadUser(username: string) {
+    this.appStoreService.startLoading();
     this.userService.findByUsername(username)
       .subscribe(user => {
         this.user = user;
         this.store.dispatch(new UserSaveAction(user));
       }, error => {
         this.appStoreService.addErrorNotif(error.status, error.message);
+      }, () => {
+        // this.appStoreService.stopLoading();
       });
   }
 
@@ -90,7 +94,7 @@ export class DocumentComponent implements OnInit {
     if (document) {
       document.owner = this.user;
     }
-    this.store.dispatch(new StartLoadingAction());
+    this.appStoreService.startLoading();
     this.documentService.saveDocument(document).subscribe(
       () => {
         this.appSnackbarService.openSnackBar('Success!: New Document is added', 'ADD');
@@ -98,9 +102,9 @@ export class DocumentComponent implements OnInit {
       },
       error => {
         this.appStoreService.addErrorNotif(error.status, error.message);
-        this.store.dispatch(new StopLoadingAction());
-      }
-    );
+      }, () => {
+        // this.appStoreService.stopLoading();
+      });
   }
 
   onDocumentAdded() {
@@ -113,15 +117,15 @@ export class DocumentComponent implements OnInit {
 
   loadDocuments() {
     if (this.user && this.user.username) {
-    this.store.dispatch(new StartLoadingAction());
-
-    this.documentService.findByOwnerUsername(this.user.username).subscribe(documents => {
-      this.documents = documents;
-      this.store.dispatch(new StopLoadingAction());
-    }, () => {
-      this.appSnackbarService.openSnackBar('ERROR!: An error was occured on loading documents', 'LOAD');
-      this.store.dispatch(new StopLoadingAction());
-    });
+      this.appStoreService.startLoading();
+      this.documentService.findByOwnerUsername(this.user.username).subscribe(documents => {
+        this.documents = documents;
+        this.appSnackbarService.openSnackBar('SUCCESS!: Loading documents', 'LOAD');
+      }, () => {
+        this.appSnackbarService.openSnackBar('ERROR!: An error was occured on loading documents', 'LOAD');
+      }, () => {
+        // this.appStoreService.stopLoading();
+      });
     }
   }
 
