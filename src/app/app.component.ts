@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {LoadingState} from "./shared/loading.state";
-import {Store} from "@ngrx/store";
+import {LoadingState} from './shared/loading.state';
+import {Store} from '@ngrx/store';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   showLoadignIcon = false;
   constructor(private store: Store<LoadingState>) { }
 

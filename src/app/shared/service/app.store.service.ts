@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../app.state';
 import { Notification, NotificationTypes } from '../notification/notification.model';
 import { NotificationsAddAction } from '../notification/notifications.actions';
+import {StartLoadingAction, StopLoadingAction} from '../loading.actions';
 
 @Injectable()
 export class AppStoreService {
@@ -15,5 +16,13 @@ export class AppStoreService {
             message: message
         };
         this.store.dispatch(new NotificationsAddAction(notif));
+    }
+
+    startLoading() {
+      this.store.dispatch(new StartLoadingAction());
+    }
+
+    stopLoading() {
+      this.store.dispatch(new StopLoadingAction());
     }
 }

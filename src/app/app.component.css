@@ -1,7 +1,7 @@
 .loading-div {
   display : block;
   position : fixed;
-  z-index: 100;
+  z-index: 998;
   opacity : 0.7;
   background-position : center;
   left : 0;
@@ -15,7 +15,7 @@
 .loading-image{
   top : 30%;
   position : absolute;
-  z-index : 101;
+  z-index : 999;
   width : 150px;
   height : 150px;
 }
