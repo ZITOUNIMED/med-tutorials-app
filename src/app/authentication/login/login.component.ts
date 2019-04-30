@@ -49,10 +49,10 @@ export class LoginComponent implements OnInit {
 
     this.appStoreService.startLoading();
     this.authService.signIn(signInRequest).subscribe(res => {
+      this.appStoreService.stopLoading();
       this.store.dispatch(new PrincipalSaveAction(res));
     }, error => {
       this.appStoreService.addErrorNotif(error.status, error.message);
-    }, () => {
       this.appStoreService.stopLoading();
     });
   }
