@@ -13,6 +13,7 @@ import {AppMaterialModule} from '../app.material.module';
 import {SharedModule} from '../shared/shared.module';
 import { CreateUpdateDocumentComponent } from './shared/modal/create-update-document/create-update-document.component';
 import {ImportDocumentFileComponent} from "./shared/modal/import-document-file/import-document-file.component";
+import {AppDirectivesModule} from "../directive/app-directives.module";
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import {ImportDocumentFileComponent} from "./shared/modal/import-document-file/i
     ReactiveFormsModule,
     FormsModule,
     Angular2CsvModule,
-    SharedModule],
+    SharedModule,
+    AppDirectivesModule],
   declarations: [
     DocumentListComponent,
     DocumentSheetComponent,

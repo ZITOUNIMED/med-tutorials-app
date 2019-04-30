@@ -1,6 +1,10 @@
 <p>
-  Firstname: {{user.firstname}} <br/>
-  Lastname: {{user.lastname}} <br/>
-  Username: {{user.username}} <br/>
-  E-mail: {{user.email}}
+  Firstname: {{user?.firstname}} <br/>
+  Lastname: {{user?.lastname}} <br/>
+  Username: {{user?.username}} <br/>
+  E-mail: {{user?.email}}
 </p>
+Roles:<br/>
+<ul>
+  <li *ngFor="let role of user?.roles">{{role.name}}</li>
+</ul>

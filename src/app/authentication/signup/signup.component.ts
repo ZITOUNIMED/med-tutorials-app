@@ -59,6 +59,7 @@ export class SignupComponent implements OnInit {
 
     this.authService.signUp(request).subscribe(
       res => {
+        this.appStoreService.stopLoading();
         this.store.dispatch(new NotificationsAddAction({
           code: null,
           type: NotificationTypes.SUCCESS,
@@ -67,9 +68,8 @@ export class SignupComponent implements OnInit {
         this.signupForm.reset();
       },
       error => {
-        this.appStoreService.addErrorNotif(error.status, error.error);
-      }, () => {
         this.appStoreService.stopLoading();
+        this.appStoreService.addErrorNotif(error.status, error.error);
       });
   }
 }

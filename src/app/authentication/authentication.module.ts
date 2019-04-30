@@ -8,16 +8,17 @@ import { HttpClientModule} from '@angular/common/http';
 import {RouterModule} from '@angular/router';
 import {SharedModule} from '../shared/shared.module';
 import {CommonModule} from '@angular/common';
-import { AppPermissionDirective } from './permission/app-permission.directive';
+import {AppDirectivesModule} from '../directive/app-directives.module';
 
 @NgModule({
   imports: [ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
     SharedModule,
-    CommonModule
+    CommonModule,
+    AppDirectivesModule
   ],
-  declarations: [LoginComponent, SignupComponent, AppPermissionDirective],
+  declarations: [LoginComponent, SignupComponent],
   providers: [
     AuthenticationGuardService,
     AuthService,
