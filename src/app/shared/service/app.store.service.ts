@@ -4,6 +4,9 @@ import { AppState } from '../app.state';
 import { Notification, NotificationTypes } from '../notification/notification.model';
 import { NotificationsAddAction } from '../notification/notifications.actions';
 import {StartLoadingAction, StopLoadingAction} from '../loading.actions';
+import {map} from 'rxjs/internal/operators';
+import {UserState} from '../../user/shared/user.state';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class AppStoreService {
@@ -25,4 +28,18 @@ export class AppStoreService {
     stopLoading() {
       this.store.dispatch(new StopLoadingAction());
     }
+
+  getUserPermissions(): Observable<{roles: string[], permissions: string []}> {
+      return this.store.select('userState')
+        .pipe(map((userState: UserState) => {
+          if (userState && userState.user) {
+            const permissions = {
+              roles: userState.user.roles && userState.user.roles.map(role => role.name),
+              permissions: ['']
+            };
+            return permissions;
+          }
+          return null;
+        }));
+  }
 }

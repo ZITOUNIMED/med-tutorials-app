@@ -6,7 +6,7 @@
     </mat-icon>
   </mat-toolbar>
   <a href="" mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'account'}}]">Account</a>
-  <a href="" mat-list-item appPermission="{roles: ['admin']}" (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'user'}}]">G&eacute;rer les
+  <a href="" mat-list-item [appPermissions]="{roles: ['ROLE_ADMIN'], permissions: []}"  (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'user'}}]">G&eacute;rer les
     utilisateurs</a>
   <a href="" mat-list-item (click)="signout()">Sign Out</a>
   <a href="" mat-list-item (click)="drawer.close()" routerLink="/auth/login">Sign In</a>
@@ -26,5 +26,5 @@
     Favoris
   </h2>
   <a *ngFor="let sample of documentsSamples" mat-list-item (click)="drawer.close()"
-    [routerLink]="['/home', {outlets: { homeOutlet: 'document/' + sample.id}}]">{{sample.name}}</a>
+     [routerLink]="['/home', {outlets: { homeOutlet: 'document/' + sample.id}}]">{{sample.name}}</a>
 </mat-nav-list>
