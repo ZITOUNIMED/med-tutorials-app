@@ -1,0 +1,28 @@
+<div [ngSwitch]="element.type">
+  <div *ngSwitchCase="ElementType.SOURCE_CODE">
+      <textarea class="sourceCodeArea"
+        rows="{{textLines.length}}"
+        disabled="disabled"
+                [value]="element.text"
+      ></textarea>
+  </div>
+  <div *ngSwitchCase="ElementType.TEXT">
+    <div>
+      <span *ngFor="let line of textLines">
+        <i [innerHTML]="line"></i><br/>
+      </span>
+    </div>
+  </div>
+  <div *ngSwitchCase="ElementType.BIG_TITLE">
+    <h1>{{ element.text }}</h1>
+  </div>
+  <div *ngSwitchCase="ElementType.MEDIUM_TITLE">
+    <h2>{{ element.text }}</h2>
+  </div>
+  <div *ngSwitchCase="ElementType.SMALL_TITLE">
+    <h3>{{ element.text }}</h3>
+  </div>
+  <div *ngSwitchCase="ElementType.VERY_SMALL_TITLE">
+    <h4>{{ element.text }}</h4>
+  </div>
+</div>
