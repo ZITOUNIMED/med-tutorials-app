@@ -4,3 +4,7 @@
     line-height  : .5;
     border-radius : .2rem;
 }
+
+.contentBady {
+  min-height: 400px;
+}

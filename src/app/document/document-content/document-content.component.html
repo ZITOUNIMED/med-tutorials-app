@@ -1,66 +1,24 @@
-<div class="card">
+<div class="card" *ngIf="getTotalPages()>0; else empty">
   <div class="card-header">
-    <button
-      mat-stroked-button
-      [disabled]="currentPage <= 0"
-      (click)="lastPage()"
-    >
-      Before
-    </button>
-    <label>Page: </label>{{ currentPage + 1 }}
+    <button mat-stroked-button [disabled]="currentPage <= 0" (click)="previousPage()">Before</button>
+    <label>Page: </label>{{ currentPage + 1 }}/{{getTotalPages()}}
     <div class="pull-right">
       <mat-chip (click)="changeEditMode()" color="primary">
         <i *ngIf="!editMode" class="fa fa-pencil"></i>
         <i *ngIf="editMode" class="fa fa-book" aria-hidden="true"></i>
       </mat-chip>
       <span>&nbsp;&nbsp;</span>
-      <button
-        mat-stroked-button
-        [disabled]="!isNextPage()"
-        (click)="nextPage()"
-      >
-        Next
-      </button>
+      <button mat-stroked-button [disabled]="!isNextPage()" (click)="nextPage()">Next</button>
     </div>
   </div>
-  <div class="card-body" style="min-height: 400px;">
+  <div class="card-body contentBady">
     <div *ngFor="let element of currentPageElements">
       <div class="row">
         <div [ngClass]="{ 'col-md-10': editMode, 'col-md-12': !editMode }">
-          <div [ngSwitch]="element.type">
-            <div *ngSwitchCase="ElementType.SOURCE_CODE">
-              <textarea
-                style="width: 100%"
-                rows="{{getRows(element.text)}}"
-                disabled="disabled"
-              >
-                {{ element.text }}
-              </textarea>
-            </div>
-            <div *ngSwitchCase="ElementType.TEXT">
-              <div>{{ element.text }}</div>
-            </div>
-            <div *ngSwitchCase="ElementType.BIG_TITLE">
-              <h1>{{ element.text }}</h1>
-            </div>
-            <div *ngSwitchCase="ElementType.MEDIUM_TITLE">
-              <h2>{{ element.text }}</h2>
-            </div>
-            <div *ngSwitchCase="ElementType.SMALL_TITLE">
-              <h3>{{ element.text }}</h3>
-            </div>
-            <div *ngSwitchCase="ElementType.VERY_SMALL_TITLE">
-              <h4>{{ element.text }}</h4>
-            </div>
-          </div>
+          <app-element-text-sheet [element]="element"></app-element-text-sheet>
         </div>
         <div class="col-md-2" *ngIf="editMode">
-          <div
-            *ngIf="
-              element.row !== movedItem.row || element.page !== movedItem.page
-            "
-            class="btn-group"
-          >
+          <div *ngIf="element.row !== movedItem.row || element.page !== movedItem.page" class="btn-group">
             <button
               class="btn btn-xs btn-primary"
               (click)="editElement(element)"
@@ -119,7 +77,7 @@
                     href=""
                     data-toggle="collapse"
                     (click)="moveDown(element)"
-                    ><i class="fa fa-chevron-right" aria-hidden="true"></i> Next
+                  ><i class="fa fa-chevron-right" aria-hidden="true"></i> Next
                     Page</a
                   >
                   <a
@@ -127,7 +85,7 @@
                     href=""
                     data-toggle="collapse"
                     (click)="moveToNewPage(element)"
-                    ><i class="fa fa-map-o" aria-hidden="true"></i> New page
+                  ><i class="fa fa-map-o" aria-hidden="true"></i> New page
                   </a>
                 </div>
               </div>
@@ -152,3 +110,18 @@
     </div>
   </div>
 </div>
+<ng-template #empty>
+  <div class="card" >
+    <div class="card-header">
+      <div class="pull-right">
+        <mat-chip (click)="changeEditMode()" color="primary">
+          <i *ngIf="!editMode" class="fa fa-pencil"></i>
+          <i *ngIf="editMode" class="fa fa-book" aria-hidden="true"></i>
+        </mat-chip>
+      </div>
+    </div>
+    <div class="card-body contentBady">
+      Empty document!
+    </div>
+  </div>
+</ng-template>

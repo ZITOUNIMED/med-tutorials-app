@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  OnChanges
-} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {ElementType} from '../shared/element-type';
 import {DocumentService} from '../shared/service/document.service';
 import {AppSnackbarService} from '../../shared/app-snackbar.service';
@@ -24,7 +17,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   @Output() editModeChange = new EventEmitter<boolean>();
   @Output() editElementChange = new EventEmitter<Element>();
   changedElements = [];
-  currentPage = 0;
+  _currentPage = 0;
   currentPageElements = [];
   movedItem = {
     page: -1,
@@ -34,13 +27,20 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   @Input() newOrEditElement: Element;
   cantMoveUp = false;
 
-  constructor(
-    private documentService: DocumentService,
-    private appSnackbarService: AppSnackbarService
-  ) {}
+  constructor(private documentService: DocumentService,
+              private appSnackbarService: AppSnackbarService) {
+  }
 
   ngOnInit() {
     this.applyCurrentPageElements();
+  }
+
+  get currentPage() {
+    return this._currentPage;
+  }
+
+  set currentPage(currentPage: number) {
+    this._currentPage = currentPage;
   }
 
   isNextPage(): boolean {
@@ -51,18 +51,22 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     );
   }
 
+  getTotalPages() {
+    let total = 0;
+    if (this.document && this.document.elements && this.document.elements.length > 0) {
+      total = this.document.elements.sort((e1, e2) => e2.page - e1.page)[0].page + 1;
+    }
+    return total;
+  }
+
   nextPage() {
     this.currentPage++;
     this.applyCurrentPageElements();
   }
 
-  lastPage() {
+  previousPage() {
     this.currentPage--;
     this.applyCurrentPageElements();
-  }
-
-  getRows(text) {
-    return text.split(/\r*\n/).length;
   }
 
   applyCurrentPageElements() {
@@ -140,12 +144,12 @@ export class DocumentContentComponent implements OnInit, OnChanges {
         this.currentPage = page - 1;
         const biggestRow = this.getBiggestRow(page - 1);
         if (biggestRow >= 0) {
-          const p = { row: biggestRow + 1, page: page - 1 };
+          const p = {row: biggestRow + 1, page: page - 1};
 
           this.changeElementPosition(element, p);
           this.moveToPosition(p);
         } else {
-          const p = { row: 0, page: page - 1 };
+          const p = {row: 0, page: page - 1};
 
           this.changeElementPosition(element, p);
           this.moveToPosition(p);
@@ -154,12 +158,12 @@ export class DocumentContentComponent implements OnInit, OnChanges {
       } else {
         this.cantMoveUp = true;
         this.currentPage = page;
-        const p = { row: 0, page: page };
+        const p = {row: 0, page: page};
         this.moveToPosition(p);
       }
     } else {
-      const p1 = { row: row, page: page };
-      const p2 = { row: row - 1, page: page };
+      const p1 = {row: row, page: page};
+      const p2 = {row: row - 1, page: page};
       this.switchTowPositions(p1, p2);
       this.moveToPosition(p2);
       this.currentPage = page;
@@ -179,13 +183,13 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     if (isTheLast) {
       this.currentPage = page + 1;
       this.increaseRows(page + 1);
-      const p = { row: 0, page: page + 1 };
+      const p = {row: 0, page: page + 1};
 
       this.changeElementPosition(element, p);
       this.moveToPosition(p);
     } else {
-      const p1 = { row: row, page: page };
-      const p2 = { row: row + 1, page: page };
+      const p1 = {row: row, page: page};
+      const p2 = {row: row + 1, page: page};
       this.switchTowPositions(p1, p2);
       this.moveToPosition(p2);
       this.currentPage = page;
@@ -250,13 +254,11 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     return elts && elts.length > 0 ? Math.max(...elts.map(elt => elt.row)) : -1;
   }
 
-  private switchTowPositions(
-    p1: { row: number; page: number },
-    p2: { row: number; page: number }
-  ) {
+  private switchTowPositions(p1: { row: number; page: number },
+                             p2: { row: number; page: number }) {
     const e1 = this.getElementAtPosition(p1);
     const e2 = this.getElementAtPosition(p2);
-    this.changeElementPosition(e2, { row: -1, page: -1 });
+    this.changeElementPosition(e2, {row: -1, page: -1});
     this.changeElementPosition(e1, p2);
     this.changeElementPosition(e2, p1);
   }
@@ -318,10 +320,8 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     this.moveToPosition();
   }
 
-  private changeElementPosition(
-    element: Element,
-    p: { row: number; page: number }
-  ) {
+  private changeElementPosition(element: Element,
+                                p: { row: number; page: number }) {
     this.document.elements
       .filter(elt => elt.row === element.row && elt.page === element.page)
       .map(elt => {

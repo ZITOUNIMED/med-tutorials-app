@@ -12,8 +12,9 @@ import {DocumentComponent} from './document.component';
 import {AppMaterialModule} from '../app.material.module';
 import {SharedModule} from '../shared/shared.module';
 import { CreateUpdateDocumentComponent } from './shared/modal/create-update-document/create-update-document.component';
-import {ImportDocumentFileComponent} from "./shared/modal/import-document-file/import-document-file.component";
-import {AppDirectivesModule} from "../directive/app-directives.module";
+import {ImportDocumentFileComponent} from './shared/modal/import-document-file/import-document-file.component';
+import {AppDirectivesModule} from '../directive/app-directives.module';
+import { ElementTextSheetComponent } from './document-content/element-text-sheet/element-text-sheet.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import {AppDirectivesModule} from "../directive/app-directives.module";
     DocumentComponent,
     CreateUpdateDocumentComponent,
     ImportDocumentFileComponent,
+    ElementTextSheetComponent,
   ],
   entryComponents: [CreateUpdateDocumentComponent,
     ImportDocumentFileComponent]
