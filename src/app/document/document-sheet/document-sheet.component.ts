@@ -56,13 +56,7 @@ export class DocumentSheetComponent implements OnInit {
   }
 
   formatElements() {
-    return this.document.elements.map(element => {
-      const text = element.text ? element.text.replace(/\n/g, excelReportConfig.sourceCodeNewLineSeparator) : '';
-      return {
-        ...element,
-        text: text
-      };
-    });
+    return this.exportDocumentService.formatElementsTextForExcelExporting(this.document.elements);
   }
 
   getOptions() {

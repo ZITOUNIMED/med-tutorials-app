@@ -3,6 +3,7 @@ import {Element} from '../model/element.model';
 import {ElementType} from '../element-type';
 import * as jsPDF from 'jspdf';
 import {Injectable} from '@angular/core';
+import {excelReportConfig} from '../../../../environments/report/excel.config';
 
 @Injectable()
 export class ExportDocumentService {
@@ -93,5 +94,15 @@ export class ExportDocumentService {
       return subTexts.map(txt => `<textarea>${txt}</textarea><br/>`);
     }
     return [];
+  }
+
+  formatElementsTextForExcelExporting(elements: Element[]): Element[] {
+    const excelData = [];
+    elements.forEach(element => {
+      const text = element.text ? element.text.replace(/\n/g, excelReportConfig.sourceCodeNewLineSeparator) : '';
+      element.text = text;
+      excelData.push(element);
+    });
+    return excelData;
   }
 }
