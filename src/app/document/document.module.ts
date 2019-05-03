@@ -15,6 +15,7 @@ import { CreateUpdateDocumentComponent } from './shared/modal/create-update-docu
 import {ImportDocumentFileComponent} from './shared/modal/import-document-file/import-document-file.component';
 import {AppDirectivesModule} from '../directive/app-directives.module';
 import { ElementTextSheetComponent } from './document-content/element-text-sheet/element-text-sheet.component';
+import {ExportDocumentService} from './shared/service/export-document.service';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { ElementTextSheetComponent } from './document-content/element-text-sheet
     ImportDocumentFileComponent,
     ElementTextSheetComponent,
   ],
+  providers: [ExportDocumentService],
   entryComponents: [CreateUpdateDocumentComponent,
     ImportDocumentFileComponent]
 })
