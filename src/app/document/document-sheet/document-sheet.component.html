@@ -4,7 +4,7 @@
 <div class="row">
   <div class="col-lg-5" *ngIf="editMode">
     <app-document-palette
-      (onSubmitChange)="onSubmit($event)"
+      (onSubmitChange)="saveElementChange($event)"
       [element]="element"
       (cancelChange)="onCancelChange($event)"
     ></app-document-palette>
