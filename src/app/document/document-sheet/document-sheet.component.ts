@@ -35,7 +35,7 @@ export class DocumentSheetComponent implements OnInit {
       });
   }
 
-  onSubmit(element) {
+  saveElementChange(element) {
     this.newOrEditElement = element;
   }
 
