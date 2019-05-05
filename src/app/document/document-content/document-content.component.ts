@@ -15,17 +15,14 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   ElementType = ElementType;
   @Input() editMode = false;
   @Output() editModeChange = new EventEmitter<boolean>();
-  @Output() editElementChange = new EventEmitter<Element>();
-  changedElements = [];
   _currentPage = 0;
   currentPageElements = [];
   movedItem = {
     page: -1,
     row: -1
   };
-  @Input() shouldCancelChanges = false;
-  @Input() newOrEditElement: Element;
   cantMoveUp = false;
+  editableElement: Element;
 
   constructor(private documentService: DocumentService,
               private appSnackbarService: AppSnackbarService) {
@@ -59,13 +56,41 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     return total;
   }
 
+  saveElementChange(element: Element) {
+    if (element.row === -1) {
+      const row = this.getBiggestRow(this.currentPage) + 1;
+      element.row = row;
+      element.page = this.currentPage;
+      this.document.elements.push(element);
+    } else {
+      this.document.elements
+      .filter(elt => elt.row === element.row && elt.page === element.page)
+      .map(elt => {
+        elt.type = element.type;
+        elt.text = element.text;
+        return elt;
+      });
+      this.editableElement = null;
+    }
+    this.applyCurrentPageElements();
+  }
+
   nextPage() {
     this.currentPage++;
+    this.editableElement = null;
     this.applyCurrentPageElements();
   }
 
   previousPage() {
     this.currentPage--;
+    this.editableElement = null;
+    this.applyCurrentPageElements();
+  }
+
+  insertPage(){
+    this.currentPage++;
+    this.shiftPagesRight(this.currentPage);
+    this.sortElements();
     this.applyCurrentPageElements();
   }
 
@@ -78,12 +103,11 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     }
   }
 
-  editElement(element) {
-    this.markAsChangedElement(element);
-    this.editElementChange.emit(element);
+  editElement(element: Element) {
+    this.editableElement = Object.assign({}, element);
   }
 
-  deleteElement(element) {
+  deleteElement(element: Element) {
     this.document.elements = this.document.elements
       .filter(elt => elt.row !== element.row || elt.page !== element.page)
       .map(elt => {
@@ -102,8 +126,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     this.applyCurrentPageElements();
   }
 
-  saveElement() {
-    this.changedElements = [];
+  saveDocument() {
     this.documentService.saveDocument(this.document).subscribe(res => {
       this.appSnackbarService.openSnackBar('Success!: Document Saved', 'save');
       this.loadDocument();
@@ -116,12 +139,15 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     });
   }
 
-  cancel() {
-    this.cancelChanges();
-    this.editModeChange.emit(false);
+  cancel() {}
+
+  onCancelEditElement(cancel: boolean) {
+    if (cancel) {
+      this.editableElement = null;
+    }
   }
 
-  moveElement(element) {
+  moveElement(element: Element) {
     if (
       this.movedItem.row === element.row &&
       this.movedItem.page === element.page
@@ -295,31 +321,6 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     }
   }
 
-  private markAsChangedElement(element: Element) {
-    if (element.id) {
-      const isExisting = this.changedElements.some(
-        elt => elt.id === element.id
-      );
-      if (!isExisting) {
-        this.changedElements.push(Object.assign({}, element));
-      }
-    }
-  }
-
-  private cancelChanges() {
-    this.document.elements = this.document.elements
-      .filter(elt => elt.id)
-      .map(element => {
-        const foundElement = this.changedElements.find(
-          elt => elt.id === element.id
-        );
-        return foundElement ? foundElement : element;
-      });
-    this.changedElements = [];
-    this.applyCurrentPageElements();
-    this.moveToPosition();
-  }
-
   private changeElementPosition(element: Element,
                                 p: { row: number; page: number }) {
     this.document.elements
@@ -332,14 +333,6 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes) {
-    if (changes.newOrEditElement && this.newOrEditElement && this.newOrEditElement.row === -1) {
-      const row = this.getBiggestRow(this.currentPage) + 1;
-      this.newOrEditElement.row = row;
-      this.newOrEditElement.page = this.currentPage;
-      this.document.elements.push(this.newOrEditElement);
-      this.newOrEditElement = null;
-      this.applyCurrentPageElements();
-    }
     if (changes.document) {
       this.applyCurrentPageElements();
     }

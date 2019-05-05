@@ -26,7 +26,7 @@
         <textarea
           matInput
           placeholder="Text Content here!"
-          rows="15"
+          rows="7"
           formControlName="text"
         ></textarea>
       </mat-form-field>
@@ -67,7 +67,7 @@
       color="primary"
       class="pull-right"
     >
-      {{ element?.id ? "SAVE" : "ADD" }}
+      {{ isEditElement ? "SAVE" : "ADD" }}
     </button>
   </div>
 </form>

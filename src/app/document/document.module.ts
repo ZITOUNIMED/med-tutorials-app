@@ -6,7 +6,7 @@ import {Angular2CsvModule} from 'angular2-csv';
 
 import {DocumentListComponent} from './document-list/document-list.component';
 import {DocumentContentComponent} from './document-content/document-content.component';
-import {DocumentPaletteComponent} from './document-palette/document-palette.component';
+import {DocumentPaletteComponent} from './document-content/document-palette/document-palette.component';
 import {DocumentSheetComponent} from './document-sheet/document-sheet.component';
 import {DocumentComponent} from './document.component';
 import {AppMaterialModule} from '../app.material.module';
@@ -16,6 +16,7 @@ import {ImportDocumentFileComponent} from './shared/modal/import-document-file/i
 import {AppDirectivesModule} from '../directive/app-directives.module';
 import { ElementTextSheetComponent } from './document-content/element-text-sheet/element-text-sheet.component';
 import {ExportDocumentService} from './shared/service/export-document.service';
+import { DisplayPdfReportComponent } from './shared/modal/display-pdf-report/display-pdf-report.document';
 
 
 @NgModule({
@@ -36,9 +37,12 @@ import {ExportDocumentService} from './shared/service/export-document.service';
     CreateUpdateDocumentComponent,
     ImportDocumentFileComponent,
     ElementTextSheetComponent,
+    DisplayPdfReportComponent,
   ],
   providers: [ExportDocumentService],
-  entryComponents: [CreateUpdateDocumentComponent,
-    ImportDocumentFileComponent]
+  entryComponents: [
+    CreateUpdateDocumentComponent,
+    ImportDocumentFileComponent,
+    DisplayPdfReportComponent]
 })
 export class DocumentModule {}
