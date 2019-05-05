@@ -7,9 +7,9 @@ import {
   OnChanges
 } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import {ELEMENTS_CHOICES} from '../shared/element-choice';
-import {ElementType} from '../shared/element-type';
-import {Element} from '../shared/model/element.model';
+import {ELEMENTS_CHOICES} from '../../shared/element-choice';
+import {ElementType} from '../../shared/element-type';
+import {Element} from '../../shared/model/element.model';
 
 @Component({
   selector: 'app-document-palette',
@@ -25,6 +25,7 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
   @Output() cancelChange = new EventEmitter<boolean>();
   @Input() element: Element;
   maxTextLength = 1200;
+  isEditElement = false;
 
   constructor(private fb: FormBuilder) {}
 
@@ -45,21 +46,14 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
   onSubmit() {
     const type = this.elementForm.get('type').value;
     const text = this.elementForm.get('text').value;
-
-    if (this.element) {
-      this.element.type = type;
-      this.element.text = text;
-    } else {
-      this.element = {
-        id: null,
-        type: type,
-        text: text,
-        page: 0,
-        row: -1
-      } as Element;
+    const element: Element = {
+      id: null,
+      type: type,
+      text: text,
+      row: this.element ? this.element.row : -1,
+      page: this.element ? this.element.page : -1,
     }
-
-    this.onSubmitChange.emit(this.element);
+    this.onSubmitChange.emit(element);
     this.clearForm();
   }
 
@@ -70,13 +64,16 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
 
   clearForm() {
     this.elementForm.reset();
+    this.isEditElement = false;
     this.element = null;
   }
 
-  ngOnChanges(changes) {
-    if (this.element && this.elementForm) {
-      this.elementForm.get('type').patchValue(this.element.type);
-      this.elementForm.get('text').patchValue(this.element.text);
+  ngOnChanges(changes: any) {
+    if(changes.element &&changes.element.currentValue && this.elementForm){
+      const element = changes.element.currentValue;
+      this.isEditElement = true;
+      this.elementForm.get('type').patchValue(element.type);
+      this.elementForm.get('text').patchValue(element.text);
     }
   }
 

@@ -2,13 +2,13 @@ import {Document} from '../model/document.model';
 import {Element} from '../model/element.model';
 import {ElementType} from '../element-type';
 import * as jsPDF from 'jspdf';
-import {Injectable} from '@angular/core';
+import {Injectable, ElementRef} from '@angular/core';
 import {excelReportConfig} from '../../../../environments/report/excel.config';
 
 @Injectable()
 export class ExportDocumentService {
 
-  exportAsPdf(document: Document) {
+  exportAsPdf(document: Document): any {
     const doc = new jsPDF();
     const htmlStringNodes = this.convertDocumentElementstoHtmlNodes(document.elements);
     let nextLine = 0;
@@ -23,7 +23,10 @@ export class ExportDocumentService {
         nextLine += 10;
       }
     }
-    doc.save(document.name + '.pdf');
+
+    // iframe.nativeElement.src = doc.output('datauristring');
+    // doc.save(document.name + '.pdf');
+    return doc;
   }
 
   private convertDocumentElementstoHtmlNodes(elements: Element[]): string[] {

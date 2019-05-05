@@ -1,11 +1,12 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {MatDialog} from '@angular/material';
 
 import {Document} from '../shared/model/document.model';
-import {Element} from '../shared/model/element.model';
 import {ActivatedRoute} from '@angular/router';
 import {filter, map} from 'rxjs/internal/operators';
 import {excelReportConfig} from '../../../environments/report/excel.config';
 import {ExportDocumentService} from '../shared/service/export-document.service';
+import { DisplayPdfReportComponent } from '../shared/modal/display-pdf-report/display-pdf-report.document';
 
 @Component({
   selector: 'app-document-sheet',
@@ -16,12 +17,10 @@ export class DocumentSheetComponent implements OnInit {
   document: Document;
   @Output() returnToSelectDocument = new EventEmitter<boolean>();
   editMode = false;
-  element: Element;
-  newOrEditElement: Element;
-  shouldCancelChanges = true;
 
   constructor(private route: ActivatedRoute,
-              private exportDocumentService: ExportDocumentService) {
+              private exportDocumentService: ExportDocumentService,
+              public dialog: MatDialog,) {
   }
 
   ngOnInit() {
@@ -35,24 +34,24 @@ export class DocumentSheetComponent implements OnInit {
       });
   }
 
-  onSubmit(element) {
-    this.newOrEditElement = element;
-  }
-
-  onEditElementChange(element) {
-    this.element = element;
-  }
-
-  onEditModeChange(editMode) {
+  onEditModeChange(editMode: boolean) {
     this.editMode = editMode;
   }
 
-  onCancelChange(cancel) {
-    this.shouldCancelChanges = cancel;
-  }
-
   exportAsPdf() {
-    this.exportDocumentService.exportAsPdf(this.document);
+    const doc = this.exportDocumentService.exportAsPdf(this.document);
+    const dialogRef = this.dialog.open(DisplayPdfReportComponent, {
+      height: '700px',
+      width: '900px',
+      data: {
+        doc: doc
+      }
+    });
+    dialogRef.afterClosed().subscribe(res => {
+      if (res) {
+        console.log(res);
+      }
+    });
   }
 
   formatElements() {
