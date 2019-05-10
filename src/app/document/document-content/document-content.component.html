@@ -1,49 +1,49 @@
-<div class="card" *ngIf="getTotalPages()>0 || editMode; else empty">
+<div class="card" *ngIf="documentWrapper?.biggerPageIndex>=0 || editMode; else empty">
   <div class="card-header">
-    <button mat-stroked-button [disabled]="currentPage <= 0" (click)="previousPage()">Before</button>
-    <label>Page: </label>{{ currentPage + 1 }}/{{getTotalPages()}}
+    <button mat-stroked-button [disabled]="!documentWrapper.canReturnToPreviousPage()" (click)="documentWrapper.returnToPreviousPage()">Before</button>
+    <label>Page: </label>{{ documentWrapper.currentPageIndex + 1 }}/{{documentWrapper.biggerPageIndex + 1}}
     <div class="pull-right">
       <button class="btn btn-xs btn-default" (click)="changeEditMode()">
         <i *ngIf="!editMode" class="fa fa-pencil"></i>
         <i *ngIf="editMode" class="fa fa-book" aria-hidden="true"></i>
       </button>
-      <button *ngIf="editMode" class="btn btn-xs btn-success" (click)="insertPage()">
+      <button *ngIf="editMode" class="btn btn-sm btn-success" (click)="documentWrapper.insertPage()">
         Insert
       </button>
       <span>&nbsp;&nbsp;</span>
-      <button mat-stroked-button [disabled]="!isNextPage()" (click)="nextPage()">Next</button>
+      <button mat-stroked-button [disabled]="!documentWrapper.canGoToNextPage()" (click)="documentWrapper.goToNextPage()">Next</button>
     </div>
   </div>
   <div class="card-body contentBady">
-    <div *ngFor="let element of currentPageElements">
+    <div *ngFor="let element of documentWrapper?.currentPageElements">
       <div class="row"
         [hidden]="editableElement?.row === element.row && editableElement?.page === element.page && editMode">
         <div [ngClass]="{ 'col-md-10': editMode, 'col-md-12': !editMode }">
           <app-element-text-sheet [element]="element"></app-element-text-sheet>
         </div>
         <div class="col-md-2" *ngIf="editMode">
-          <div *ngIf="element.row !== movedItem.row || element.page !== movedItem.page" class="btn-group">
+          <div *ngIf="element.row !== documentWrapper?.movedItem.row || element.page !== documentWrapper?.movedItem.page" class="btn-group">
             <button class="btn btn-xs btn-primary" (click)="editElement(element)">
               <i class="fa fa-pencil" aria-hidden="true"></i>
             </button>
             <button class="btn btn-xs btn-default btn-danger" (click)="deleteElement(element)">
               <i class="fa fa-times" aria-hidden="true"></i>
             </button>
-            <button class="btn btn-xs btn-default" (click)="moveElement(element)">
+            <button class="btn btn-xs btn-default" (click)="documentWrapper.moveElement(element)">
               <i class="fa fa-arrows" aria-hidden="true"></i>
             </button>
           </div>
           <div *ngIf="
-              element.row === movedItem.row && element.page === movedItem.page
+              element.row === documentWrapper?.movedItem.row && element.page === documentWrapper?.movedItem.page
             ">
             <div class="btn-group-vertical">
-              <button class="btn btn-xs btn-info" [disabled]="cantMoveUp" (click)="moveUp(element)">
+              <button class="btn btn-xs btn-info" [disabled]="documentWrapper?.cantMoveUp" (click)="documentWrapper.moveUp(element)">
                 <i class="fa fa-chevron-up" aria-hidden="true"></i>
               </button>
-              <button class="btn btn-xs btn-info" (click)="moveDown(element)" *ngIf="!isLastElement(element)">
+              <button class="btn btn-xs btn-info" (click)="moveDown(element)" *ngIf="!documentWrapper.isLastElement(element)">
                 <i class="fa fa-chevron-down" aria-hidden="true"></i>
               </button>
-              <div class="btn-group" role="group" *ngIf="isLastElement(element)">
+              <div class="btn-group" role="group" *ngIf="documentWrapper.isLastElement(element)">
                 <button id="btnGroupDrop1" type="button" class="btn btn-xs btn-info dropdown-toggle"
                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
