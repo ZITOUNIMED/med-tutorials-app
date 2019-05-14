@@ -2,60 +2,96 @@ import {Element} from '../model/element.model';
 import {Document} from '../model/document.model';
 
 export class DocumentWrapper {
+
+
   movedItem = {
     page: -1,
     row: -1
   };
 
-  cantMoveUp = false;
+  private cantMoveUp = false;
+  private elements: Element[];
+  private _currentPage = 0;
+  private _currentPageElements = [];
 
-  get currentPageElements(): Element[] {
-    const page = this.pagesMap.get(this._currentPageIndex);
-    if (page) {
-      return page.elements;
+  constructor(document: Document) {
+    this.buildWrapper(document ? document.elements : []);
+  }
+
+  buildWrapper(elements: Element[]) {
+    this.elements = elements || [];
+    this.applyCurrentPageElements();
+  }
+
+  get currentPage() {
+    if (this._currentPage > this.biggerPageIndex) {
+      this._currentPage = this.biggerPageIndex;
     }
-    return [];
+    return this._currentPage;
   }
 
   get biggerPageIndex() {
-    if (this.pagesMap) {
-      return Math.max(...Array.from(this.pagesMap.keys()));
-    }
-    return -1;
+    return this.elements.sort((e1, e2) => e2.page - e1.page)[0].page;
   }
 
-  get currentPageIndex(): number {
-    return this._currentPageIndex;
+  get currentPageElements() {
+    return this._currentPageElements || [];
   }
 
-  private _currentPageIndex = 0;
-  private pagesMap: Map<number, Page>;
-  constructor(document: Document) {
-    this.buildWrapper(document);
-    this.sortPagesElements();
-  }
-
-  canReturnToPreviousPage(): boolean {
-    return !!(this._currentPageIndex > 0);
+  canReturnToPreviousPage() {
+    return !!(this.currentPage > 0);
   }
 
   returnToPreviousPage() {
-    this._currentPageIndex--;
+    this._currentPage--;
+    this.applyCurrentPageElements();
   }
 
   canGoToNextPage() {
-    return !!(this._currentPageIndex < this.biggerPageIndex);
+    return (
+      this.elements &&
+      this.elements.some(element => element.page > this.currentPage)
+    );
   }
 
   goToNextPage() {
-    this._currentPageIndex++;
+    this._currentPage++;
+    this.applyCurrentPageElements();
   }
 
   insertPage() {
-    if (this.pagesMap) {
-      this._currentPageIndex++;
-      this.pagesMap.set(this._currentPageIndex, new Page([]));
+    this._currentPage++;
+    this.shiftPagesRight(this.currentPage);
+    this.sortElements();
+    this.applyCurrentPageElements();
+  }
+
+  applyCurrentPageElements() {
+    this.sortElements();
+    if (this.elements) {
+      this._currentPageElements = this.elements.filter(
+        element => element.page === this.currentPage
+      );
     }
+  }
+
+  deleteElement(element: Element) {
+    this.elements = this.elements
+      .filter(elt => elt.row !== element.row || elt.page !== element.page)
+      .map(elt => {
+        if (elt.row > element.row && elt.page === element.page) {
+          elt.row--;
+        }
+        return elt;
+      });
+    if (
+      this.movedItem.row === element.row &&
+      this.movedItem.page === element.page
+    ) {
+      this.moveToPosition();
+    }
+    this._currentPage = element.page;
+    this.applyCurrentPageElements();
   }
 
   moveElement(element: Element) {
@@ -69,89 +105,170 @@ export class DocumentWrapper {
     }
   }
 
+  moveUp(element) {
+    const [row, page] = [element.row, element.page];
+
+    const isTheFirst = !this.elements.some(
+      elt => elt.page === page && elt.row < row
+    );
+
+    if (isTheFirst) {
+      if (page > 0) {
+        this._currentPage = page - 1;
+        const biggestRow = this.getBiggestRow(page - 1);
+        if (biggestRow >= 0) {
+          const p = {row: biggestRow + 1, page: page - 1};
+
+          this.changeElementPosition(element, p);
+          this.moveToPosition(p);
+        } else {
+          const p = {row: 0, page: page - 1};
+
+          this.changeElementPosition(element, p);
+          this.moveToPosition(p);
+        }
+        this.decreaseRows(page);
+      } else {
+        this.cantMoveUp = true;
+        this._currentPage = page;
+        const p = {row: 0, page: page};
+        this.moveToPosition(p);
+      }
+    } else {
+      const p1 = {row: row, page: page};
+      const p2 = {row: row - 1, page: page};
+      this.switchTowPositions(p1, p2);
+      this.moveToPosition(p2);
+      this._currentPage = page;
+    }
+
+    this.sortElements();
+    this.applyCurrentPageElements();
+  }
+
+  moveDown(element) {
+    const [row, page] = [element.row, element.page];
+
+    const isTheLast = !this.elements.some(
+      elt => elt.page === page && elt.row > row
+    );
+
+    if (isTheLast) {
+      this._currentPage = page + 1;
+      this.increaseRows(page + 1);
+      const p = {row: 0, page: page + 1};
+
+      this.changeElementPosition(element, p);
+      this.moveToPosition(p);
+    } else {
+      const p1 = {row: row, page: page};
+      const p2 = {row: row + 1, page: page};
+      this.switchTowPositions(p1, p2);
+      this.moveToPosition(p2);
+      this._currentPage = page;
+    }
+
+    this.cantMoveUp = false;
+
+    this.sortElements();
+    this.applyCurrentPageElements();
+  }
+
+  getElementAtPosition(p: { row: number; page: number }): Element {
+    const elts = this.elements.filter(
+      elt => elt.row === p.row && elt.page === p.page
+    );
+    return elts && elts.length === 1 ? elts[0] : null;
+  }
+
   isLastElement(element) {
-    const biggestRow = Math.max(...this.currentPageElements.map(e => e.row));
+    const biggestRow = this.getBiggestRow(this.currentPage);
     if (element.row === biggestRow) {
       return true;
     }
     return false;
   }
 
-  moveUp(element) {
-    const [row, page] = [element.row, element.page];
+  moveToNewPage(element) {
+    const page = element.page;
+    this.shiftPagesRight(page + 1);
+    const p = {
+      row: 0,
+      page: page + 1
+    };
+    this.changeElementPosition(element, p);
+    this._currentPage = page + 1;
+    this.sortElements();
+    this.applyCurrentPageElements();
+  }
 
-    if (row === 0) {
-      if (page > 0) {
-  //       this.currentPage = page - 1;
-  //       const biggestRow = this.getBiggestRow(page - 1);
-  //       if (biggestRow >= 0) {
-  //         const p = {row: biggestRow + 1, page: page - 1};
-  //
-  //         this.changeElementPosition(element, p);
-  //         this.moveToPosition(p);
-  //       } else {
-  //         const p = {row: 0, page: page - 1};
-  //
-  //         this.changeElementPosition(element, p);
-  //         this.moveToPosition(p);
-  //       }
-  //       this.decreaseRows(page);
-      } else {
-        this.cantMoveUp = true;
-        // const p = {row: 0, page: page};
-        // this.currantPage = page;
-        // this.moveToPosition(p);
-      }
+  applyElementChanges(element: Element) {
+    if (element.row === -1) {
+      const row = this.getBiggestRow(this.currentPage) + 1;
+      element.row = row;
+      element.page = this.currentPage;
+      this.elements.push(element);
     } else {
-      const p1 = {row: row, page: page};
-      const p2 = {row: row - 1, page: page};
-      this.switchTowPositions(p1, p2);
-  //     this.moveToPosition(p2);
-  //     this.currentPage = page;
+      this.elements
+        .filter(elt => elt.row === element.row && elt.page === element.page)
+        .map(elt => {
+          elt.type = element.type;
+          elt.text = element.text;
+          return elt;
+        });
     }
-  //
-  //   this.sortElements();
-  //   this.applyCurrentPageElements();
+    this.applyCurrentPageElements();
+  }
+
+  applyWrapperElements(document: Document) {
+    document.elements = this.elements;
+  }
+
+  private shiftPagesRight(page) {
+    this.elements = this.elements.map(element => {
+      if (element.page >= page) {
+        element.page++;
+      }
+      return element;
+    });
+  }
+
+  private sortElements() {
+    if (this.elements) {
+      this.elements.sort((e1, e2) => e1.row - e2.row);
+    }
+  }
+
+  private getBiggestRow(page): number {
+    const elts = this.elements.filter(elt => elt.page === page);
+    return elts && elts.length > 0 ? Math.max(...elts.map(elt => elt.row)) : -1;
   }
 
   private switchTowPositions(p1: { row: number; page: number },
                              p2: { row: number; page: number }) {
     const e1 = this.getElementAtPosition(p1);
     const e2 = this.getElementAtPosition(p2);
-    this.changeElementPosition(e2, {row: -1, page: -1});//???
+    this.changeElementPosition(e2, {row: -1, page: -1});
     this.changeElementPosition(e1, p2);
     this.changeElementPosition(e2, p1);
   }
 
-  private getElementAtPosition(p: { row: number; page: number }): Element {
-    const page = this.pagesMap.get(p.page);
-    if (page) {
-      return page.elements.find(e => e.row === p.row);
-    }
-    return null;
+  private increaseRows(page: number) {
+    this.elements
+      .filter(elt => elt.page === page)
+      .map(elt => {
+        elt.row++;
+        return elt;
+      });
   }
 
-  private changeElementPosition(element: Element,
-                                p: { row: number; page: number }) {
-    // ??? {row: -1, page: -1}
-    if (element.page === p.page) {
-      this.pagesMap.get(element.page).elements.find(e => e.row === element.row).row = p.row;
-    } else {
-      this.pagesMap.get(element.page).elements = this.pagesMap.get(element.page).elements.filter(e => e.row !== element.row);
-      if (this.pagesMap.get(p.page)) {
-        element.row = p.row;
-        element.page = p.page;
-        this.pagesMap.get(p.page).elements.push(element);
-      }
-    }
-
-    // this.document.elements
-    //   .filter(elt => elt.row === element.row && elt.page === element.page)
-    //   .map(elt => {
-    //     elt.row = p.row;
-    //     elt.page = p.page;
-    //     return elt;
-    //   });
+  private decreaseRows(page) {
+    this.elements
+      .filter(elt => elt.page === page)
+      .map(elt => {
+        elt.row--;
+        return elt;
+      });
   }
 
   private moveToPosition(p?: { row: number; page: number }) {
@@ -168,31 +285,14 @@ export class DocumentWrapper {
     }
   }
 
-  private buildWrapper(document: Document) {
-    this.pagesMap = new Map();
-    if (document && document.elements && document.elements.length) {
-      document.elements.forEach(element => {
-        const page = this.pagesMap.get(element.page);
-        if (!page) {
-          this.pagesMap.set(element.page, new Page([element]));
-        } else {
-          page.elements.push(element);
-        }
+  private changeElementPosition(element: Element,
+                                p: { row: number; page: number }) {
+    this.elements
+      .filter(elt => elt.row === element.row && elt.page === element.page)
+      .map(elt => {
+        elt.row = p.row;
+        elt.page = p.page;
+        return elt;
       });
-    }
   }
-
-  private sortPagesElements() {
-    if (this.pagesMap) {
-      Array.from(this.pagesMap.values())
-        .forEach(page => {
-          page.elements.sort((e1, e2) => e1.row - e2.row);
-        });
-    }
-  }
-}
-
-
-export class Page {
-  constructor(public elements?: Element[]) {}
 }

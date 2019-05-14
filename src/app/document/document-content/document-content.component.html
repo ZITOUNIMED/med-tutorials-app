@@ -1,17 +1,17 @@
 <div class="card" *ngIf="documentWrapper?.biggerPageIndex>=0 || editMode; else empty">
   <div class="card-header">
-    <button mat-stroked-button [disabled]="!documentWrapper.canReturnToPreviousPage()" (click)="documentWrapper.returnToPreviousPage()">Before</button>
-    <label>Page: </label>{{ documentWrapper.currentPageIndex + 1 }}/{{documentWrapper.biggerPageIndex + 1}}
+    <button mat-stroked-button [disabled]="!documentWrapper.canReturnToPreviousPage()" (click)="documentWrapper.returnToPreviousPage(); editableElement = null;">Before</button>
+    <label>Page: </label>{{ documentWrapper.currentPage + 1 }}/{{documentWrapper.biggerPageIndex + 1}}
     <div class="pull-right">
       <button class="btn btn-xs btn-default" (click)="changeEditMode()">
         <i *ngIf="!editMode" class="fa fa-pencil"></i>
         <i *ngIf="editMode" class="fa fa-book" aria-hidden="true"></i>
       </button>
-      <button *ngIf="editMode" class="btn btn-sm btn-success" (click)="documentWrapper.insertPage()">
+      <button *ngIf="editMode" class="btn btn-sm btn-success" (click)="documentWrapper.insertPage(); editableElement = null;">
         Insert
       </button>
       <span>&nbsp;&nbsp;</span>
-      <button mat-stroked-button [disabled]="!documentWrapper.canGoToNextPage()" (click)="documentWrapper.goToNextPage()">Next</button>
+      <button mat-stroked-button [disabled]="!documentWrapper.canGoToNextPage()" (click)="documentWrapper.goToNextPage(); editableElement = null;">Next</button>
     </div>
   </div>
   <div class="card-body contentBady">
@@ -40,17 +40,17 @@
               <button class="btn btn-xs btn-info" [disabled]="documentWrapper?.cantMoveUp" (click)="documentWrapper.moveUp(element)">
                 <i class="fa fa-chevron-up" aria-hidden="true"></i>
               </button>
-              <button class="btn btn-xs btn-info" (click)="moveDown(element)" *ngIf="!documentWrapper.isLastElement(element)">
+              <button class="btn btn-xs btn-info" (click)="documentWrapper.moveDown(element)" *ngIf="!documentWrapper.isLastElement(element)">
                 <i class="fa fa-chevron-down" aria-hidden="true"></i>
               </button>
               <div class="btn-group" role="group" *ngIf="documentWrapper.isLastElement(element)">
                 <button id="btnGroupDrop1" type="button" class="btn btn-xs btn-info dropdown-toggle"
                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                  <a class="dropdown-item" href="" data-toggle="collapse" (click)="moveDown(element)"><i
+                  <a class="dropdown-item" href="" data-toggle="collapse" (click)="documentWrapper.moveDown(element)"><i
                       class="fa fa-chevron-right" aria-hidden="true"></i> Next
                     Page</a>
-                  <a class="dropdown-item" href="" data-toggle="collapse" (click)="moveToNewPage(element)"><i
+                  <a class="dropdown-item" href="" data-toggle="collapse" (click)="documentWrapper.moveToNewPage(element)"><i
                       class="fa fa-map-o" aria-hidden="true"></i> New page
                   </a>
                 </div>
@@ -63,19 +63,19 @@
         </div>
       </div>
       <div [hidden]="editableElement?.row !== element.row || editableElement?.page !== element.page || !editMode">
-        <app-document-palette [element]="editableElement" (onSubmitChange)="saveElementChange($event)"
+        <app-document-palette [element]="editableElement" (onSubmitChange)="applyElementChanges($event)"
           (cancelChange)="onCancelEditElement($event)">
         </app-document-palette>
       </div>
     </div>
     <div *ngIf="!editableElement && editMode">
-      <app-document-palette (onSubmitChange)="saveElementChange($event)" (cancelChange)="onCancelEditElement($event)">
+      <app-document-palette (onSubmitChange)="applyElementChanges($event)" (cancelChange)="onCancelEditElement($event)">
       </app-document-palette>
     </div>
   </div>
   <div class="card-footer" *ngIf="editMode">
     <div *ngIf="editMode" class="pull-right">
-      <!-- <button mat-stroked-button (click)="cancel()">Cancel</button> -->
+       <button mat-stroked-button (click)="cancelDocumentChanges()">Cancel</button>
       <button mat-flat-button color="primary" (click)="saveDocument()">
         Save
       </button>
