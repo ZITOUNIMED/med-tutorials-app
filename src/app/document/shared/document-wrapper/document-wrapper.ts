@@ -201,7 +201,7 @@ export class DocumentWrapper {
     this.applyCurrentPageElements();
   }
 
-  applyElementChanges(element: Element) {
+  saveElement(element: Element) {
     if (element.row === -1) {
       const row = this.getBiggestRow(this.currentPage) + 1;
       element.row = row;

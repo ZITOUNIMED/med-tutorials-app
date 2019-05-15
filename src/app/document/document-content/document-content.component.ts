@@ -17,7 +17,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   ElementType = ElementType;
   @Input() editMode = false;
   @Output() editModeChange = new EventEmitter<boolean>();
-  editableElement: Element;
+  selectedElement: Element;
   documentWrapper: DocumentWrapper;
 
   constructor(private documentService: DocumentService,
@@ -29,19 +29,15 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     this.documentWrapper = new DocumentWrapper(this.document);
   }
 
-  editElement(element: Element) {
-    this.editableElement = Object.assign({}, element);
-  }
-
   deleteElement(element: Element) {
     this.documentWrapper.deleteElement(element);
     this.documentWrapper.applyWrapperElements(this.document);
   }
 
-  applyElementChanges(element: Element) {
-    this.documentWrapper.applyElementChanges(element);
+  saveElement(element: Element) {
+    this.documentWrapper.saveElement(element);
     this.documentWrapper.applyWrapperElements(this.document);
-    this.editableElement = null;
+    this.selectedElement = null;
     this.cd.detectChanges();
   }
 
@@ -61,7 +57,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
 
   onCancelEditElement(cancel: boolean) {
     if (cancel) {
-      this.editableElement = null;
+      this.selectedElement = null;
     }
   }
 
