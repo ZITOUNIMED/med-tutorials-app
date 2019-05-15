@@ -102,10 +102,15 @@ export class ExportDocumentService {
   formatElementsTextForExcelExporting(elements: Element[]): Element[] {
     const excelData = [];
     elements.forEach(element => {
-      const text = element.text ? element.text.replace(/\n/g, excelReportConfig.sourceCodeNewLineSeparator) : '';
+      const text = element.text ? element.text.replace(/\n/g, this.separator) : '';
       element.text = text;
       excelData.push(element);
     });
     return excelData;
+  }
+
+  get separator(){
+    // console.log('2');
+    return excelReportConfig.newLineSeparator;
   }
 }

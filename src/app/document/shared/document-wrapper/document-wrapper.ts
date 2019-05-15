@@ -3,7 +3,6 @@ import {Document} from '../model/document.model';
 
 export class DocumentWrapper {
 
-
   movedItem = {
     page: -1,
     row: -1
@@ -14,8 +13,8 @@ export class DocumentWrapper {
   private _currentPage = 0;
   private _currentPageElements = [];
 
-  constructor(document: Document) {
-    this.buildWrapper(document ? document.elements : []);
+  constructor(doc: Document) {
+    this.buildWrapper(doc ? doc.elements : []);
   }
 
   buildWrapper(elements: Element[]) {
@@ -31,7 +30,7 @@ export class DocumentWrapper {
   }
 
   get biggerPageIndex() {
-    return this.elements.sort((e1, e2) => e2.page - e1.page)[0].page;
+    return this.elements && this.elements.length && this.elements.sort((e1, e2) => e2.page - e1.page)[0].page;
   }
 
   get currentPageElements() {
@@ -220,8 +219,8 @@ export class DocumentWrapper {
     this.applyCurrentPageElements();
   }
 
-  applyWrapperElements(document: Document) {
-    document.elements = this.elements;
+  applyWrapperElements(doc: Document) {
+    doc.elements = this.elements;
   }
 
   private shiftPagesRight(page) {

@@ -35,7 +35,7 @@ export class ImportDocumentFileComponent implements OnInit {
             const element = {
               id: null,
               type: dataCsv[0],
-              text: dataCsv[1] && dataCsv[1].replace(new RegExp(excelReportConfig.sourceCodeNewLineSeparator, 'g'), '\n'),
+              text: dataCsv[1] && dataCsv[1].replace(new RegExp(excelReportConfig.newLineSeparator, 'g'), '\n'),
               row: Number(dataCsv[2]),
               page: Number(dataCsv[3]),
             } as Element;

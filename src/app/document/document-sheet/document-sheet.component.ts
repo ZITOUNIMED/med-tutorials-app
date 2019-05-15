@@ -53,17 +53,4 @@ export class DocumentSheetComponent implements OnInit {
       }
     });
   }
-
-  formatElements() {
-    return this.exportDocumentService.formatElementsTextForExcelExporting(this.document.elements);
-  }
-
-  getOptions() {
-    const options = {
-      ...excelReportConfig.options,
-      title: this.document.name,
-      keys: ['type', 'text', 'row', 'page']
-    };
-    return options;
-  }
 }

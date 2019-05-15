@@ -1,15 +1,16 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {ElementType} from '../shared/element-type';
 import {DocumentService} from '../shared/service/document.service';
 import {AppSnackbarService} from '../../shared/app-snackbar.service';
 import {Document} from '../shared/model/document.model';
 import {Element} from '../shared/model/element.model';
-import {DocumentWrapper} from "../shared/document-wrapper/document-wrapper";
+import {DocumentWrapper} from '../shared/document-wrapper/document-wrapper';
 
 @Component({
   selector: 'app-document-content',
   templateUrl: './document-content.component.html',
-  styleUrls: ['./document-content.component.css']
+  styleUrls: ['./document-content.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DocumentContentComponent implements OnInit, OnChanges {
   @Input() document: Document;
@@ -20,7 +21,8 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   documentWrapper: DocumentWrapper;
 
   constructor(private documentService: DocumentService,
-              private appSnackbarService: AppSnackbarService) {
+              private appSnackbarService: AppSnackbarService,
+              private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -40,6 +42,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     this.documentWrapper.applyElementChanges(element);
     this.documentWrapper.applyWrapperElements(this.document);
     this.editableElement = null;
+    this.cd.detectChanges();
   }
 
   saveDocument() {
@@ -50,8 +53,8 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   }
 
   loadDocument() {
-    this.documentService.getDocument(this.document.id).subscribe(document => {
-      this.document = document;
+    this.documentService.getDocument(this.document.id).subscribe(doc => {
+      this.document = doc;
       this.documentWrapper.buildWrapper(this.document.elements);
     });
   }
