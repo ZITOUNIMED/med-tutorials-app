@@ -145,7 +145,7 @@ export class DocumentWrapper {
     this.applyCurrentPageElements();
   }
 
-  moveDown(element) {
+  moveDown(element) { // done
     const [row, page] = [element.row, element.page];
 
     const isTheLast = !this.elements.some(
@@ -173,7 +173,7 @@ export class DocumentWrapper {
     this.applyCurrentPageElements();
   }
 
-  getElementAtPosition(p: { row: number; page: number }): Element {
+  getElementAtPosition(p: { row: number; page: number }): Element { // done
     const elts = this.elements.filter(
       elt => elt.row === p.row && elt.page === p.page
     );
@@ -201,7 +201,7 @@ export class DocumentWrapper {
     this.applyCurrentPageElements();
   }
 
-  saveElement(element: Element) {
+  saveElement(element: Element) {// done
     if (element.row === -1) {
       const row = this.getBiggestRow(this.currentPage) + 1;
       element.row = row;
