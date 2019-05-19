@@ -11,7 +11,11 @@ import {Element} from '../../document/shared/model/element.model';
 import {
   DocumentWrapperGoToNextPageAction,
   DocumentWrapperInitAction, DocumentWrapperMoveDownAction, DocumentWrapperMoveElementAction,
-  DocumentWrapperReturnToPreviousPageAction, DocumentWrapperSaveElementAction
+  DocumentWrapperReturnToPreviousPageAction, DocumentWrapperSaveElementAction,
+  DocumentWrapperInserPagesAction, DocumentWrapperDeleteElementAction,
+  DocumentWrapperMoveUpAction, DocumentWrapperChangeEditModeAction,
+  DocumentWrapperCancelEditElementAction, DocumentWrapperMoveToPageAction,
+  DocumentWrapperSelectElementAction
 } from '../../document/document-content/shared/document-wrapper.actions';
 import {DocumentWrapperState, Point} from '../../document/document-content/shared/document-wrapper.state';
 
@@ -66,6 +70,10 @@ export class AppStoreService {
     this.store.dispatch(new DocumentWrapperMoveDownAction(point));
   }
 
+  moveUp(point: Point) {
+    this.store.dispatch(new DocumentWrapperMoveUpAction(point));
+  }
+
   moveElement(point: Point) {
     this.store.dispatch(new DocumentWrapperMoveElementAction(point));
   }
@@ -76,5 +84,29 @@ export class AppStoreService {
 
   saveElement(element: Element) {
     this.store.dispatch(new DocumentWrapperSaveElementAction(element));
+  }
+
+  insertPages(items: number){
+    this.store.dispatch(new DocumentWrapperInserPagesAction(items));
+  }
+
+  deleteElement(p: Point){
+    this.store.dispatch(new DocumentWrapperDeleteElementAction(p));
+  }
+
+  changeEditMode(accept?: boolean){
+    this.store.dispatch(new DocumentWrapperChangeEditModeAction(accept));
+  }
+
+  cancelEditElement(accept?: boolean){
+    this.store.dispatch(new DocumentWrapperCancelEditElementAction(accept));
+  }
+
+  moveToPage(p: Point, jump: number){
+    this.store.dispatch(new DocumentWrapperMoveToPageAction({p: p, jump: jump}));
+  }
+
+  selectElement(element: Element){
+    this.store.dispatch(new DocumentWrapperSelectElementAction(element));
   }
 }

@@ -2,10 +2,7 @@
   <h2>{{ document.name }}</h2>
 </div>
 <div>
-  <app-document-content
-    [document]="document"
-    [editMode]="editMode"
-    (editModeChange)="onEditModeChange($event)">
+  <app-document-content [document]="document">
   </app-document-content>
 </div>
 <div class="pull-right">

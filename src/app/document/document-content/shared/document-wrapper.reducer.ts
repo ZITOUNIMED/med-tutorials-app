@@ -2,7 +2,16 @@ import {
   DOCUMENT_WRAPPER_GO_TO_NEXT_PAGE,
   DOCUMENT_WRAPPER_INIT,
   DOCUMENT_WRAPPER_MOVE_DOWN,
-  DOCUMENT_WRAPPER_MOVE_ELEMENT, DOCUMENT_WRAPPER_RETURN_TO_PREVIOUS_PAGE, DOCUMENT_WRAPPER_SAVE_ELEMENT,
+  DOCUMENT_WRAPPER_MOVE_ELEMENT,
+  DOCUMENT_WRAPPER_RETURN_TO_PREVIOUS_PAGE,
+  DOCUMENT_WRAPPER_SAVE_ELEMENT,
+  DOCUMENT_WRAPPER_INSERT_PAGES,
+  DOCUMENT_WRAPPER_DELETE_ELEMENT,
+  DOCUMENT_WRAPPER_MOVE_UP,
+  DOCUMENT_WRAPPER_CHANGE_EDIT_MODE,
+  DOCUMENT_WRAPPER_CANCEL_EDIT_ELEMENT,
+  DOCUMENT_WRAPPER_MOVE_TO_PAGE,
+  DOCUMENT_WRAPPER_SELECT_ELEMENT,
   DocumentWrapperActions
 } from './document-wrapper.actions';
 import {DocumentWrapperState, Point} from './document-wrapper.state';
@@ -15,17 +24,23 @@ export function documentWrapperReducer(state: DocumentWrapperState, action: Docu
         elements: action.payload,
         currentPage: 0,
         movedItem: {row: -1, page: -1},
+        biggestRowOfCurrentPage: -1,
+        editMode: false,
+        selectedElement: null,
+        canMoveUp: true,
       } as DocumentWrapperState;
 
       return buildWrapper(initState);
     case DOCUMENT_WRAPPER_GO_TO_NEXT_PAGE:
       if (action.payload) {
         state.currentPage++;
+        cancelEditElement(state);
       }
       return buildWrapper(state);
     case DOCUMENT_WRAPPER_RETURN_TO_PREVIOUS_PAGE:
       if (action.payload) {
         state.currentPage--;
+        cancelEditElement(state);
       }
       return buildWrapper(state);
     case DOCUMENT_WRAPPER_MOVE_ELEMENT:
@@ -34,12 +49,110 @@ export function documentWrapperReducer(state: DocumentWrapperState, action: Docu
     case DOCUMENT_WRAPPER_MOVE_DOWN:
       moveDown(state, action.payload as Point);
       return buildWrapper(state);
+    case DOCUMENT_WRAPPER_MOVE_UP:
+      moveUp(state, action.payload as Point);
+      return buildWrapper(state);
     case DOCUMENT_WRAPPER_SAVE_ELEMENT:
       saveElement(state, action.payload as Element)
       return buildWrapper(state);
+    case DOCUMENT_WRAPPER_INSERT_PAGES:
+      insertPages(state, action.payload as number);
+      return buildWrapper(state);
+    case DOCUMENT_WRAPPER_MOVE_TO_PAGE:
+      moveToPage(state, action.payload.p, action.payload.jump);
+      return buildWrapper(state);
+    case DOCUMENT_WRAPPER_DELETE_ELEMENT:
+      deleteElement(state, action.payload as Point);
+      return buildWrapper(state);
+    case DOCUMENT_WRAPPER_CHANGE_EDIT_MODE:
+      if(action.payload){
+        state.editMode = !state.editMode;
+      }
+      return state;
+    case DOCUMENT_WRAPPER_SELECT_ELEMENT:
+      state.selectedElement = action.payload as Element;
+      return state;
+    case DOCUMENT_WRAPPER_CANCEL_EDIT_ELEMENT:
+      if(action.payload){
+        cancelEditElement(state);
+      }
+      return state;
     default:
       return state;
   }
+}
+
+function moveToPage(state: DocumentWrapperState, p: Point, jump: number){
+  shiftPagesRight(state, p.page, jump);
+  const toP = {
+    row: 0,
+    page: p.page + jump
+  };
+  changeElementPosition(state, p, toP);
+  state.currentPage = p.page + jump;
+}
+function cancelEditElement(state: DocumentWrapperState){
+  state.selectedElement = null;
+}
+
+function moveUp(state: DocumentWrapperState, p: Point) {
+  const isTheFirst = !state.elements.some(
+    elt => elt.page === p.page && elt.row < p.row
+  );
+
+  if (isTheFirst) {
+    if (p.page > 0) {
+      state.currentPage = p.page - 1;
+      const biggestRow = getBiggestRowInPage(state, p.page - 1);
+      let toP = null;
+      if (biggestRow >= 0) {
+        toP = {row: biggestRow + 1, page: p.page - 1};
+      } else {
+        toP = {row: 0, page: p.page - 1};
+      }
+      changeElementPosition(state, p, toP);
+      moveToPosition(state, toP);
+      decreaseRows(state, p.page);
+    } else {
+      // this.cantMoveUp = true;
+      state.currentPage = p.page;
+      const toP = {row: 0, page: p.page};
+      moveToPosition(state, toP);
+    }
+  } else {
+    const p1 = {row: p.row, page: p.page};
+    const p2 = {row: p.row - 1, page: p.page};
+    switchTowPositions(state, p1, p2);
+    moveToPosition(state, p2);
+    state.currentPage = p.page;
+  }
+}
+
+function decreaseRows(state: DocumentWrapperState, page) {
+  state.elements
+    .filter(elt => elt.page === page)
+    .map(elt => {
+      elt.row--;
+      return elt;
+    });
+}
+
+function deleteElement(state: DocumentWrapperState, p: Point) {
+  state.elements = state.elements
+    .filter(elt => elt.row !== p.row || elt.page !== p.page)
+    .map(elt => {
+      if (elt.row > p.row && elt.page === p.page) {
+        elt.row--;
+      }
+      return elt;
+    });
+  if (
+    state.movedItem.row === p.row &&
+    this.movedItem.page === p.page
+  ) {
+    moveToPosition(state);
+  }
+  state.currentPage = p.page;
 }
 
 function saveElement(state: DocumentWrapperState, element: Element) {
@@ -49,14 +162,25 @@ function saveElement(state: DocumentWrapperState, element: Element) {
     element.page = state.currentPage;
     state.elements.push(element);
   } else {
-    state.elements
-      .filter(elt => elt.row === element.row && elt.page === element.page)
-      .map(elt => {
-        elt.type = element.type;
-        elt.text = element.text;
-        return elt;
-      });
+    state.elements = state.elements.filter(elt => elt.row !== element.row || elt.page !== element.page);
+    state.elements.push({...element});
+    cancelEditElement(state);
   }
+}
+
+function insertPages(state: DocumentWrapperState, items: number){
+  state.currentPage+=items;
+  cancelEditElement(state);
+  shiftPagesRight(state, state.currentPage, items);
+}
+
+function shiftPagesRight(state: DocumentWrapperState, page: number, items: number) {
+  state.elements = state.elements.map(element => {
+    if (element.page >= page) {
+      element.page+=items;
+    }
+    return element;
+  });
 }
 
 function getBiggestRowInPage(state: DocumentWrapperState, page): number {
@@ -146,7 +270,13 @@ function buildWrapper(state: DocumentWrapperState) {
   state.biggerPage = getBiggerPage(state);
   state.canGoToNextPage = checkCanGoToNextPage(state);
   state.canReturnToPreviousPage = checkCanReturnToPreviousPage(state);
+  state.biggestRowOfCurrentPage = getBiggestRowInPage(state, state.currentPage);
+  state.canMoveUp = checkCanMoveUp(state);
   return {...state};
+}
+
+function checkCanMoveUp(state: DocumentWrapperState){
+  return !!(state.movedItem.row>0 || state.movedItem.row===0 && state.movedItem.page>0);
 }
 
 function getCurrentPageElements(state: DocumentWrapperState) {

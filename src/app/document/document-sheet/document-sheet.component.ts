@@ -16,7 +16,6 @@ import { DisplayPdfReportComponent } from '../shared/modal/display-pdf-report/di
 export class DocumentSheetComponent implements OnInit {
   document: Document;
   @Output() returnToSelectDocument = new EventEmitter<boolean>();
-  editMode = false;
 
   constructor(private route: ActivatedRoute,
               private exportDocumentService: ExportDocumentService,
@@ -32,10 +31,6 @@ export class DocumentSheetComponent implements OnInit {
       .subscribe(document => {
         this.document = document;
       });
-  }
-
-  onEditModeChange(editMode: boolean) {
-    this.editMode = editMode;
   }
 
   exportAsPdf() {

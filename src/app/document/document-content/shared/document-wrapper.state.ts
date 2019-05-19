@@ -8,6 +8,10 @@ export interface DocumentWrapperState {
   canGoToNextPage: boolean;
   biggerPage: number;
   movedItem: Point;
+  biggestRowOfCurrentPage: number;
+  editMode: boolean;
+  selectedElement: Element;
+  canMoveUp: boolean;
 }
 
 export interface Point {
