@@ -47,7 +47,7 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
     const type = this.elementForm.get('type').value;
     const text = this.elementForm.get('text').value;
     const element: Element = {
-      id: this.element.id,
+      id: this.element ? this.element.id : null,
       type: type,
       text: text,
       row: this.element ? this.element.row : -1,

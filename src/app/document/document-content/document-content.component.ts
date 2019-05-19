@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, Output, EventEmitter} from '@angular/core';
 import {ElementType} from '../shared/element-type';
 import {DocumentService} from '../shared/service/document.service';
 import {AppSnackbarService} from '../../shared/app-snackbar.service';
@@ -15,6 +15,7 @@ import {DocumentWrapperState} from './shared/document-wrapper.state';
 })
 export class DocumentContentComponent implements OnInit, OnChanges {
   @Input() document: Document;
+  @Output() documentChaned= new EventEmitter<Document>();
   documentWrapperState$: Observable<DocumentWrapperState>;
 
   constructor(private documentService: DocumentService,
@@ -37,6 +38,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   loadDocument() {
     this.documentService.getDocument(this.document.id).subscribe(doc => {
       this.document = doc;
+      this.documentChaned.emit(this.document);
       this.appStoreService.initDocumentWrapper(this.document.elements);
     });
   }

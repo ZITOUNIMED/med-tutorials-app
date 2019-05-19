@@ -15,16 +15,22 @@ export class AppExcelExportComponent extends Angular2CsvComponent {
   filename: string;
   options: Options;
 
-  constructor(private exportDocumentService: ExportDocumentService) {
+  constructor(private ExportDocumentService: ExportDocumentService) {
     super();
-    // options = {
-    //   ...excelReportConfig.options,
-    //   title: this.document.name,
-    //   keys: ['type', 'text', 'row', 'page']
-    // } as Options;
   }
 
   formatElements() {
-    return this.exportDocumentService.formatElementsTextForExcelExporting(this.document.elements);
+    return this.ExportDocumentService.formatElementsTextForExcelExporting(this.document.elements);
+  }
+
+  onDownload(){
+    this.options = {
+      ...excelReportConfig.options,
+      title: this.document.name,
+      keys: ['type', 'text', 'row', 'page']
+    } as Options;
+    this.filename = this.document.name + '- '+ new Date().toDateString();
+    this.data = this.formatElements();
+    super.onDownload();
   }
 }

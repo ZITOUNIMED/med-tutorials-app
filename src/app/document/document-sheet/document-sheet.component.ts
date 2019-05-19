@@ -18,7 +18,7 @@ export class DocumentSheetComponent implements OnInit {
   @Output() returnToSelectDocument = new EventEmitter<boolean>();
 
   constructor(private route: ActivatedRoute,
-              private exportDocumentService: ExportDocumentService,
+              private ExportDocumentService: ExportDocumentService,
               public dialog: MatDialog,) {
   }
 
@@ -34,7 +34,7 @@ export class DocumentSheetComponent implements OnInit {
   }
 
   exportAsPdf() {
-    const doc = this.exportDocumentService.exportAsPdf(this.document);
+    const doc = this.ExportDocumentService.exportAsPdf(this.document);
     const dialogRef = this.dialog.open(DisplayPdfReportComponent, {
       height: '700px',
       width: '900px',

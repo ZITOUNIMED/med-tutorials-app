@@ -32,10 +32,12 @@ export class ImportDocumentFileComponent implements OnInit {
           const elements = [];
           for (let i = 1; i < csvRecordsArray.length; i++) {
             const dataCsv = csvRecordsArray[i].split(excelReportConfig.options.fieldSeparator);
+            let text = dataCsv[1] && dataCsv[1].replace(new RegExp(excelReportConfig.newLineSeparator, 'g'), '\n');
+            text = text && text.replace(new RegExp(excelReportConfig.doubleQuoteString, 'g'), '"');
             const element = {
               id: null,
               type: dataCsv[0],
-              text: dataCsv[1] && dataCsv[1].replace(new RegExp(excelReportConfig.newLineSeparator, 'g'), '\n'),
+              text: text,
               row: Number(dataCsv[2]),
               page: Number(dataCsv[3]),
             } as Element;
