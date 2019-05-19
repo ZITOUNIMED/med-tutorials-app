@@ -47,12 +47,12 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
     const type = this.elementForm.get('type').value;
     const text = this.elementForm.get('text').value;
     const element: Element = {
-      id: null,
+      id: this.element.id,
       type: type,
       text: text,
       row: this.element ? this.element.row : -1,
       page: this.element ? this.element.page : -1,
-    }
+    };
     this.onSubmitChange.emit(element);
     this.clearForm();
   }
@@ -69,7 +69,7 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: any) {
-    if(changes.element &&changes.element.currentValue && this.elementForm){
+    if ( changes.element && changes.element.currentValue && this.elementForm ) {
       const element = changes.element.currentValue;
       this.isEditElement = true;
       this.elementForm.get('type').patchValue(element.type);

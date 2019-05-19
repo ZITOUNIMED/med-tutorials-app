@@ -17,7 +17,8 @@ import {AppDirectivesModule} from '../directive/app-directives.module';
 import { ElementTextSheetComponent } from './document-content/element-text-sheet/element-text-sheet.component';
 import {ExportDocumentService} from './shared/service/export-document.service';
 import { DisplayPdfReportComponent } from './shared/modal/display-pdf-report/display-pdf-report.document';
-
+import { ContentHeaderComponent } from './document-content/content-header/content-header.component';
+import { ContentMoveElementComponent } from './document-content/content-move-element/content-move-element.component';
 
 @NgModule({
   imports: [AppMaterialModule,
@@ -38,6 +39,8 @@ import { DisplayPdfReportComponent } from './shared/modal/display-pdf-report/dis
     ImportDocumentFileComponent,
     ElementTextSheetComponent,
     DisplayPdfReportComponent,
+    ContentHeaderComponent,
+    ContentMoveElementComponent,
   ],
   providers: [ExportDocumentService],
   entryComponents: [

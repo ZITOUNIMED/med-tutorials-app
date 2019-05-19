@@ -1,0 +1,23 @@
+<button mat-stroked-button
+  [disabled]="!(documentWrapperState$ | async).canReturnToPreviousPage"
+  (click)="appStoreService.returnToPreviousPage(true)">
+  Before
+</button>
+<label>Page: </label>
+{{ (documentWrapperState$ | async).currentPage + 1 }}/{{(documentWrapperState$ | async).biggerPage + 1}}
+<div class="pull-right">
+  <button class="btn btn-xs btn-default" (click)="appStoreService.changeEditMode(true)">
+    <i *ngIf="!(documentWrapperState$ | async).editMode" class="fa fa-pencil"></i>
+    <i *ngIf="(documentWrapperState$ | async).editMode" class="fa fa-book" aria-hidden="true"></i>
+  </button>
+  <button *ngIf="(documentWrapperState$ | async).editMode" class="btn btn-sm btn-success"
+    (click)="appStoreService.insertPages(1)">
+    Insert
+  </button>
+  <span>&nbsp;&nbsp;</span>
+  <button mat-stroked-button
+    [disabled]="!(documentWrapperState$ | async).canGoToNextPage"
+    (click)="appStoreService.goToNextPage(true)">
+    Next
+  </button>
+</div>
