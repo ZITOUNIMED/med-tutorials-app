@@ -6,6 +6,7 @@ import {Document} from '../shared/model/document.model';
 import {Element} from '../shared/model/element.model';
 import {AppStoreService} from '../../shared/service/app.store.service';
 import {Observable} from 'rxjs';
+import { first } from 'rxjs/operators';
 import {DocumentWrapperState} from './shared/document-wrapper.state';
 
 @Component({
@@ -29,10 +30,15 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   }
 
   saveDocument() {
-    this.documentService.saveDocument(this.document).subscribe(res => {
-      this.appSnackbarService.openSnackBar('Success!: Document Saved', 'save');
-      this.loadDocument();
-    });
+	this.documentWrapperState$
+	.pipe(first())
+	.subscribe( documentWrapperState =>{
+		const doc = {...this.document, elements: documentWrapperState.elements};
+		this.documentService.saveDocument(doc).subscribe(res => {
+		  this.appSnackbarService.openSnackBar('Success!: Document Saved', 'save');
+		  this.loadDocument();
+		});
+	});
   }
 
   loadDocument() {
