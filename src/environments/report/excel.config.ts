@@ -11,5 +11,5 @@ export const excelReportConfig = {
     removeNewLines: true,
     keys: []
   },
-  sourceCodeNewLineSeparator: '¤'
+  newLineSeparator: 'Â¤'
 };
