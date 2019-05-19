@@ -5,31 +5,59 @@ import * as jsPDF from 'jspdf';
 import {Injectable, ElementRef} from '@angular/core';
 import {excelReportConfig} from '../../../../environments/report/excel.config';
 
+const FIRST_LINE = 30;
+const LINES_MARGIN = 8;
+const LINES_LEFT_MARGIN = 20;
+const MAX_CONTENT_WITH = 250;
+const PAGE_CENTER = 100;
 @Injectable()
 export class ExportDocumentService {
 
-  exportAsPdf(document: Document): any {
-    const doc = new jsPDF();
-    const htmlStringNodes = this.convertDocumentElementstoHtmlNodes(document.elements);
-    let nextLine = 0;
+  exportAsPdf(doc: Document): any {
+    const pdf = new jsPDF();
+    pdf.page = 1;
+    const htmlStringNodes = this.convertdocumentElementstoHtmlNodes(doc.elements);
+    let nextLine = FIRST_LINE;
+    this.insertPageHeader(doc, pdf);
     for (let i = 0; i < htmlStringNodes.length; i++) {
       const htmlText = htmlStringNodes[i];
-      doc.fromHTML(htmlText, 20, nextLine);
+      pdf.fromHTML(htmlText, LINES_LEFT_MARGIN, nextLine);
 
-      if (nextLine === 25 * 10) {
-        doc.addPage();
-        nextLine = 0;
+      if (nextLine >= MAX_CONTENT_WITH) {
+        pdf.addPage();
+        this.insertPageHeader(doc, pdf);
+        nextLine = FIRST_LINE;
       } else {
-        nextLine += 10;
+        nextLine += LINES_MARGIN;
       }
     }
 
-    // iframe.nativeElement.src = doc.output('datauristring');
-    // doc.save(document.name + '.pdf');
-    return doc;
+    this.addFooters(pdf);
+    return pdf;
   }
 
-  private convertDocumentElementstoHtmlNodes(elements: Element[]): string[] {
+  // iframe.nativeElement.src = pdf.output('datauristring');
+  // pdf.save(document.name + '.pdf');
+
+  private insertPageHeader(doc: Document, pdf: any){
+    const page = pdf.internal.getCurrentPageInfo().pageNumber;
+    if(page === 1){ // first page
+      pdf.fromHTML(`<h3>${doc.name}<h3>`, PAGE_CENTER - 20, 10);
+    }
+  }
+
+  private addFooters(pdf: any){
+    const pageCount = pdf.internal.getNumberOfPages();
+    pdf.setFontSize(11);
+    for(let i = 0; i < pageCount; i++) {
+      pdf.setPage(i);
+      const page = pdf.internal.getCurrentPageInfo().pageNumber;
+      const text = `Page ${page}/${pageCount}`;
+      pdf.text(text, PAGE_CENTER, 280);
+    }
+  }
+
+  private convertdocumentElementstoHtmlNodes(elements: Element[]): string[] {
     const documentHtmlTextElements = [];
     const biggerPage = this.getElementsBiggerPage(elements);
     for (let page = 0; page <= biggerPage; page++) {
@@ -80,7 +108,7 @@ export class ExportDocumentService {
   }
 
   private convertTitleToHtmlNodes(titletag: string, text: string): string[] {
-    return [`<${titletag}>${text}</${titletag}>`];
+    return [`<${titletag}>${text}</${titletag}>`, ''];
   }
 
   private convertTextToHtmlNodes(text: string): string[] {
@@ -94,6 +122,7 @@ export class ExportDocumentService {
   private convertSourceCodeToHtmlNodes(text: string): string[] {
     const subTexts = text.split(/\r\n|\n/);
     if (subTexts && subTexts.length) {
+      subTexts.unshift('');
       return subTexts.map(txt => `<textarea>${txt}</textarea><br/>`);
     }
     return [];
@@ -102,15 +131,10 @@ export class ExportDocumentService {
   formatElementsTextForExcelExporting(elements: Element[]): Element[] {
     const excelData = [];
     elements.forEach(element => {
-      const text = element.text ? element.text.replace(/\n/g, this.separator) : '';
-      element.text = text;
-      excelData.push(element);
+      let text = element.text ? element.text.replace(/\n/g, excelReportConfig.newLineSeparator) : '';
+      text = text ? text.replace(/"/g, excelReportConfig.doubleQuoteString) : '';
+      excelData.push({...element, text: text});
     });
     return excelData;
-  }
-
-  get separator(){
-    // console.log('2');
-    return excelReportConfig.newLineSeparator;
   }
 }
