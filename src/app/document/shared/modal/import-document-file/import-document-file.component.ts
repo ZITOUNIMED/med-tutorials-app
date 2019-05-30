@@ -3,7 +3,6 @@ import {MAT_DIALOG_DATA} from '@angular/material';
 import {FormControl} from '@angular/forms';
 import {Document} from '../../model/document.model';
 import {Element} from '../../model/element.model';
-import {ElementType} from '../../element-type';
 import {excelReportConfig} from "../../../../../environments/report/excel.config";
 
 @Component({
@@ -63,7 +62,7 @@ export class ImportDocumentFileComponent implements OnInit {
       id: null,
       name: '',
       elements: [],
-      owner: null,
+      ownerUsername: null,
     };
   }
 }

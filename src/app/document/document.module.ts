@@ -19,6 +19,7 @@ import {ExportDocumentService} from './shared/service/export-document.service';
 import { DisplayPdfReportComponent } from './shared/modal/display-pdf-report/display-pdf-report.document';
 import { ContentHeaderComponent } from './document-content/content-header/content-header.component';
 import { ContentMoveElementComponent } from './document-content/content-move-element/content-move-element.component';
+import { DocumentPermissionsService } from './shared/service/document-permissions.service';
 
 @NgModule({
   imports: [AppMaterialModule,
@@ -42,7 +43,7 @@ import { ContentMoveElementComponent } from './document-content/content-move-ele
     ContentHeaderComponent,
     ContentMoveElementComponent,
   ],
-  providers: [ExportDocumentService],
+  providers: [ExportDocumentService, DocumentPermissionsService],
   entryComponents: [
     CreateUpdateDocumentComponent,
     ImportDocumentFileComponent,

@@ -10,6 +10,8 @@ import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import { CreateUpdateDocumentComponent } from '../shared/modal/create-update-document/create-update-document.component';
+import { AppPermissions } from 'src/app/permissions/model/app.permissions.model';
+import { AppTargetTypes } from 'src/app/permissions/model/app.target-types';
 
 @Component({
   selector: 'app-document-list',
@@ -96,6 +98,14 @@ export class DocumentListComponent implements OnInit {
 
   displayFn(document?: Document): string | undefined {
     return document ? document.name : undefined;
+  }
+
+  getDocumentPermissions(document: Document): AppPermissions{
+    return {
+      targetType: AppTargetTypes.DOCUMENT,
+      confidentialities: [],
+      targetObject: document,
+    };
   }
 
 }

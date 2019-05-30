@@ -1,23 +1,29 @@
 <button mat-stroked-button
   [disabled]="!(documentWrapperState$ | async).canReturnToPreviousPage"
-  (click)="appStoreService.returnToPreviousPage(true)">
+  (click)="appStoreService.returnToPreviousPage(true)"
+  title="Previous Page">
   Before
 </button>
 <label>Page: </label>
 {{ (documentWrapperState$ | async).currentPage + 1 }}/{{(documentWrapperState$ | async).biggerPage + 1}}
 <div class="pull-right">
-  <button class="btn btn-xs btn-default" (click)="appStoreService.changeEditMode(true)">
+  <button class="btn btn-xs btn-default" [appPermissions]="documentPermissions"
+   (click)="appStoreService.changeEditMode(true)"
+   title="Change Edit Mode">
     <i *ngIf="!(documentWrapperState$ | async).editMode" class="fa fa-pencil"></i>
     <i *ngIf="(documentWrapperState$ | async).editMode" class="fa fa-book" aria-hidden="true"></i>
   </button>
-  <button *ngIf="(documentWrapperState$ | async).editMode" class="btn btn-sm btn-success"
-    (click)="appStoreService.insertPages(1)">
-    Insert
+  <span>&nbsp;&nbsp;</span>
+  <button *ngIf="(documentWrapperState$ | async).editMode" class="btn btn-xs btn-outline-success"
+    (click)="appStoreService.insertPages(1)"
+    title="Insert New Page">
+    <i class="fa fa-plus-square"></i>
   </button>
   <span>&nbsp;&nbsp;</span>
   <button mat-stroked-button
     [disabled]="!(documentWrapperState$ | async).canGoToNextPage"
-    (click)="appStoreService.goToNextPage(true)">
+    (click)="appStoreService.goToNextPage(true)"
+    title="Next Page">
     Next
   </button>
 </div>

@@ -1,31 +1,55 @@
-import {Directive, ElementRef, Input, OnInit} from '@angular/core';
+import {Directive, ElementRef, Input, OnInit, OnChanges, SimpleChanges} from '@angular/core';
 import {AppStoreService} from '../shared/service/app.store.service';
+import { AppPermissions } from '../permissions/model/app.permissions.model';
+import { AppUtils, oc } from '../shared/app-utils';
+import { User } from '../user/shared/model/user.model';
+import { UserPermissionsService } from '../user/shared/service/user-permissions.service';
+import { AppTargetTypes } from '../permissions/model/app.target-types';
+import { DocumentPermissionsService } from '../document/shared/service/document-permissions.service';
+import { VisibilityStates } from '../permissions/model/visibility-states';
+import { Observable, of } from 'rxjs';
 
 @Directive({
   selector: '[appPermissions]'
 })
-export class AppPermissionsDirective implements OnInit {
+export class AppPermissionsDirective implements OnInit, OnChanges {
 
-  @Input() appPermissions: { roles: string[], permissions: string[] };
+  @Input() appPermissions: AppPermissions;
 
-  constructor(private el: ElementRef, private appStoreService: AppStoreService) {
+  constructor(private el: ElementRef,
+    private userPermissionsService: UserPermissionsService,
+    private documentPermissionsService: DocumentPermissionsService,
+  ) {
   }
 
-  ngOnInit() {
-    this.appStoreService.getUserPermissions()
-      .subscribe((userPermissions: { roles: string [], permissions: string[] }) => {
-        if (userPermissions &&
-          userPermissions.roles
-          && this.appPermissions
-          && this.appPermissions.roles
-          && this.appPermissions.roles.length) {
-          this.appPermissions.roles.forEach(role => {
-            if (userPermissions.roles.every(r => r !== role)) {
-              this.el.nativeElement.remove();
-              return;
-            }
-          });
-        }
-      });
+  ngOnInit(){}
+
+  private managePermissions(appPermissions: AppPermissions): Observable<VisibilityStates> {
+    switch (this.appPermissions.targetType) {
+      case AppTargetTypes.USER:
+        return this.userPermissionsService.managePermissions(appPermissions);
+      case AppTargetTypes.DOCUMENT:
+        return this.documentPermissionsService.managePermissions(appPermissions);
+      default: of(VisibilityStates.VISIBLE);
+    }
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(oc(changes).appPermissions){
+      const appPermissions = changes.appPermissions.currentValue;
+      if(appPermissions.targetType){
+        this.managePermissions(appPermissions)
+        .subscribe(visibility => {
+          if(visibility === VisibilityStates.REMOVED){
+            this.el.nativeElement.remove();
+          } else {
+            this.el.nativeElement.style.visibility = (visibility === VisibilityStates.HIDEN) ?
+            'hidden' : 'visible';
+          }
+        });
+
+      }
+    }
+  }
+
 }

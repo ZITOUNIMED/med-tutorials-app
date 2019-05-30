@@ -18,13 +18,20 @@
     <div class="row">
       <div class="col-md-6">{{document.name}}</div>
       <div class="col-md-6" >
-        <a mat-raised-button [routerLink]="['/home', {outlets: { homeOutlet: 'document/' + document.id}}]">
+        <a mat-raised-button
+          [routerLink]="['/home', {outlets: { homeOutlet: 'document/' + document.id}}]"
+          title="Open Document">
           <i class="fa fa-book" aria-hidden="true"></i>
         </a>
-        <button mat-stroked-button color="warn" (click)="openDialogDeleteDocument(document)">
+        <button mat-stroked-button color="warn"
+          (click)="openDialogDeleteDocument(document)"
+          [appPermissions]="getDocumentPermissions(document)"
+          title="Delete Document">
           <i class="fa fa-minus-circle"></i>
         </button>
-        <button mat-stroked-button color="info" (click)="openDialogCreateUpdateDocumentName(document)">
+        <button mat-stroked-button color="info" [appPermissions]="getDocumentPermissions(document)"
+          (click)="openDialogCreateUpdateDocumentName(document)"
+          title="Rename document">
           <i class="fa fa-pencil"></i>
         </button>
      </div>

@@ -1,7 +1,8 @@
 <div class="card"
   *ngIf="(documentWrapperState$ | async).biggerPage>=0 || (documentWrapperState$ | async).editMode">
   <div class="card-header">
-    <app-content-header [documentWrapperState$]="documentWrapperState$"></app-content-header>
+    <app-content-header [documentWrapperState$]="documentWrapperState$"
+    [doc]="doc"></app-content-header>
   </div>
   <div class="card-body contentBady">
     <div *ngFor="let element of (documentWrapperState$ | async).currentPageElements">
