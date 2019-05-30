@@ -1,8 +1,6 @@
 import {Directive, ElementRef, Input, OnInit, OnChanges, SimpleChanges} from '@angular/core';
-import {AppStoreService} from '../shared/service/app.store.service';
 import { AppPermissions } from '../permissions/model/app.permissions.model';
-import { AppUtils, oc } from '../shared/app-utils';
-import { User } from '../user/shared/model/user.model';
+import { oc } from '../shared/app-utils';
 import { UserPermissionsService } from '../user/shared/service/user-permissions.service';
 import { AppTargetTypes } from '../permissions/model/app.target-types';
 import { DocumentPermissionsService } from '../document/shared/service/document-permissions.service';
