@@ -6,6 +6,8 @@ import {AppSnackbarService} from '../shared/app-snackbar.service';
 import {CreateUpdateDocumentComponent} from './shared/modal/create-update-document/create-update-document.component';
 import {ImportDocumentFileComponent} from './shared/modal/import-document-file/import-document-file.component';
 import {AppStoreService} from '../shared/service/app.store.service';
+import { User } from '../user/shared/model/user.model';
+import { oc } from '../shared/app-utils';
 
 @Component({
   selector: 'app-document',
@@ -13,8 +15,8 @@ import {AppStoreService} from '../shared/service/app.store.service';
   styleUrls: ['./document.component.css']
 })
 export class DocumentComponent implements OnInit {
-
   documents: Document[] = [];
+  user: User;
 
   constructor(private documentService: DocumentService,
               public dialog: MatDialog,
@@ -24,6 +26,8 @@ export class DocumentComponent implements OnInit {
 
   ngOnInit() {
     this.loadDocuments();
+    this.appStoreService.getUser()
+    .subscribe(user => (this.user = user));
   }
 
   openCreateDocumentDialog() {
@@ -39,20 +43,29 @@ export class DocumentComponent implements OnInit {
     const dialogRef = this.dialog.open(ImportDocumentFileComponent);
     dialogRef.afterClosed().subscribe(document => {
       if (document) {
-        this.saveDocument(document);
+        if(oc(this.user).username){
+          document.ownerUsername= this.user.username;
+          this.saveDocument(document);
+        } else {
+          this.appSnackbarService.openSnackBar('INDEFINED!: Username is not defined', 'IMPORT');
+        }
       }
     });
   }
 
   private saveNewDocument(name: string) {
-    const document = {
-      id: null,
-      name: name,
-      elements: [],
-      ownerUsername: null,
-    } as Document;
+    if(oc(this.user).username){
+      const document = {
+        id: null,
+        name: name,
+        elements: [],
+        ownerUsername: this.user.username,
+      } as Document;
 
-    this.saveDocument(document);
+      this.saveDocument(document);
+    } else {
+      this.appSnackbarService.openSnackBar('INDEFINED!: Username is not defined', 'ADD');
+    }
   }
 
   saveDocument(document: Document) {
