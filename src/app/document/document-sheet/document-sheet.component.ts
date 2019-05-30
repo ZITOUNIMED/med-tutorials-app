@@ -4,7 +4,6 @@ import {MatDialog} from '@angular/material';
 import {Document} from '../shared/model/document.model';
 import {ActivatedRoute} from '@angular/router';
 import {filter, map} from 'rxjs/internal/operators';
-import {excelReportConfig} from '../../../environments/report/excel.config';
 import {ExportDocumentService} from '../shared/service/export-document.service';
 import { DisplayPdfReportComponent } from '../shared/modal/display-pdf-report/display-pdf-report.document';
 
@@ -28,8 +27,8 @@ export class DocumentSheetComponent implements OnInit {
         filter(data => data && !!data['document']),
         map(data => data['document']),
       )
-      .subscribe(document => {
-        this.document = document;
+      .subscribe(doc => {
+        this.document = doc;
       });
   }
 

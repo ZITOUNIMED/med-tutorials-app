@@ -3,13 +3,16 @@ import {DocumentSample} from '../../document/shared/model/document.model';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../shared/app.state';
 import {PrincipalCleanAction} from '../../authentication/shared/principal.actions';
-import { User } from '../../user/shared/model/user.model';
 import { DocumentService } from '../../document/shared/service/document.service';
-import { UserService } from '../../user/shared/service/user.service';
-import { AppStoreService } from '../../shared/service/app.store.service';
-import { UserSaveAction } from '../../user/shared/user.actions';
-import { combineLatest } from 'rxjs';
 import { StartLoadingAction, StopLoadingAction } from '../../shared/loading.actions';
+import { User } from '../../user/shared/model/user.model';
+import { AppStoreService } from '../../shared/service/app.store.service';
+import { combineLatest } from 'rxjs';
+import { UserSaveAction } from '../../user/shared/user.actions';
+import { UserService } from '../../user/shared/service/user.service';
+import { AppPermissions } from 'src/app/permissions/model/app.permissions.model';
+import { UserRoleTypes } from 'src/app/permissions/model/user-role-types';
+import { AppTargetTypes } from 'src/app/permissions/model/app.target-types';
 
 @Component({
   selector: 'app-nav-bar',
@@ -22,13 +25,15 @@ export class NavBarComponent implements OnInit, OnChanges {
   @Input() toolBarOpenClicked: boolean;
   @Input() drawer;
   user: User;
+  appUsersPermissions: AppPermissions;
 
   constructor(private documentService: DocumentService,
               private store: Store<AppState>,
-              private userService: UserService,
-              private appStoreService: AppStoreService) { }
+              private appStoreService: AppStoreService,
+              private userService: UserService,) { }
 
   ngOnInit() {
+    this.loadDocumentsSamples();
     combineLatest(
       this.store.select('userState'),
       this.store.select('principalState')).subscribe(([userState, principalState]) => {
@@ -46,21 +51,23 @@ export class NavBarComponent implements OnInit, OnChanges {
         } else {
           this.user = userState.user;
         }
-        this.loadDocumentsSamples();
     });
+    this.appUsersPermissions = {
+      targetType: AppTargetTypes.USER,
+      roles: [UserRoleTypes.ROLE_ADMIN],
+    }
   }
+
   signout() {
     this.store.dispatch(new PrincipalCleanAction(true));
   }
 
   loadDocumentsSamples() {
-    if (this.user && this.user.username) {
     this.store.dispatch(new StartLoadingAction());
-    this.documentService.getDocumentSamplesByOwnerUsername(this.user.username).subscribe(samples => {
+    this.documentService.getDocumentsSamples().subscribe(samples => {
       this.documentsSamples = samples;
       this.store.dispatch(new StopLoadingAction());
     });
-    }
   }
 
   ngOnChanges(changes: any) {

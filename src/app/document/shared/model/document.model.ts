@@ -1,15 +1,18 @@
 
 import { Element } from './element.model';
-import { User } from '../../../user/shared/model/user.model';
+import { ConfidentialityTypes } from 'src/app/permissions/model/confidentiality-types';
 
 export interface Document {
+  confidentiality: ConfidentialityTypes;
   id: number;
   name: string;
   elements: Element[];
-  owner: User
+  ownerUsername: string;
 }
 
 export interface DocumentSample {
   id: number;
   name: string;
+  ownerUsername: string;
+  confidentiality: ConfidentialityTypes;
 }

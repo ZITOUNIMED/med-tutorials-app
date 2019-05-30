@@ -8,6 +8,7 @@ import {map} from 'rxjs/internal/operators';
 import {UserState} from '../../user/shared/user.state';
 import {Observable} from 'rxjs';
 import {Element} from '../../document/shared/model/element.model';
+import {Document} from '../../document/shared/model/document.model';
 import {
   DocumentWrapperGoToNextPageAction,
   DocumentWrapperInitAction, DocumentWrapperMoveDownAction, DocumentWrapperMoveElementAction,
@@ -18,40 +19,39 @@ import {
   DocumentWrapperSelectElementAction
 } from '../../document/document-content/shared/document-wrapper.actions';
 import {DocumentWrapperState, Point} from '../../document/document-content/shared/document-wrapper.state';
+import { oc } from '../app-utils';
+import { DocumentSelectAction } from 'src/app/document/shared/document.actions';
+import { DocumentState } from 'src/app/document/shared/document.state';
+import { User } from 'src/app/user/shared/model/user.model';
 
 @Injectable()
 export class AppStoreService {
-    constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>) {}
 
-    addErrorNotif(code: string, message: string) {
-        const notif: Notification = {
-            code: code,
-            type: NotificationTypes.ERROR,
-            message: message
-        };
-        this.store.dispatch(new NotificationsAddAction(notif));
-    }
+  addErrorNotif(code: string, message: string) {
+      const notif: Notification = {
+          code: code,
+          type: NotificationTypes.ERROR,
+          message: message
+      };
+      this.store.dispatch(new NotificationsAddAction(notif));
+  }
 
-    startLoading() {
-      this.store.dispatch(new StartLoadingAction());
-    }
+  startLoading() {
+    this.store.dispatch(new StartLoadingAction());
+  }
 
-    stopLoading() {
-      this.store.dispatch(new StopLoadingAction());
-    }
+  stopLoading() {
+    this.store.dispatch(new StopLoadingAction());
+  }
 
-  getUserPermissions(): Observable<{roles: string[], permissions: string []}> {
-      return this.store.select('userState')
-        .pipe(map((userState: UserState) => {
-          if (userState && userState.user) {
-            const permissions = {
-              roles: userState.user.roles && userState.user.roles.map(role => role.name),
-              permissions: ['']
-            };
-            return permissions;
-          }
-          return null;
-        }));
+  getUser(): Observable<User>{
+    return this.store.select('userState')
+      .pipe(map((userState: UserState) => {
+        if (userState && userState.user) {
+        return oc(userState).user;
+      }
+    }));
   }
 
   getDocumentWrapper(): Observable<DocumentWrapperState> {
@@ -108,5 +108,18 @@ export class AppStoreService {
 
   selectElement(element: Element){
     this.store.dispatch(new DocumentWrapperSelectElementAction(element));
+  }
+
+  selectDocument(doc: Document){
+    this.store.dispatch(new DocumentSelectAction(doc));
+  }
+
+  getDocument(): Observable<Document> {
+      return this.store.select('documentState')
+      .pipe(map((documentState: DocumentState) => {
+        if (documentState && documentState.doc) {
+        return oc(documentState).doc;
+      }
+    }));
   }
 }

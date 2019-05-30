@@ -16,24 +16,16 @@ export class DocumentService {
     return this.http.get<Document[]>(this.url);
   }
 
-  findByOwnerUsername(username: string): Observable<Document[]> {
-    return this.http.get<Document[]>(this.url + `/by-username/${username}`);
+  getDocument(id: number|string): Observable<Document> {
+    return this.http.get<Document>(this.url + `/${id}`);
   }
 
   saveDocument(document: Document): Observable<any> {
     return this.http.post(this.url, document);
   }
 
-  getDocument(id: number|string): Observable<Document> {
-    return this.http.get<Document>(this.url + `/${id}`);
-  }
-
-  private getDocumentsSamples(): Observable<DocumentSample[]> {
+  getDocumentsSamples(): Observable<DocumentSample[]> {
     return this.http.get<DocumentSample[]>(this.url + '/samples');
-  }
-
-  getDocumentSamplesByOwnerUsername(username: string): Observable<DocumentSample[]> {
-    return this.http.get<DocumentSample[]>(this.url + `/samples/by-username/${username}`);
   }
 
   deleteDocument(id: number): Observable<any> {
