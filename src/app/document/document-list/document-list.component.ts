@@ -12,6 +12,8 @@ import {Router} from '@angular/router';
 import { CreateUpdateDocumentComponent } from '../shared/modal/create-update-document/create-update-document.component';
 import { AppPermissions } from 'src/app/permissions/model/app.permissions.model';
 import { AppTargetTypes } from 'src/app/permissions/model/app.target-types';
+import { ConfidentialityTypes } from 'src/app/permissions/model/confidentiality-types';
+import { oc } from 'src/app/shared/app-utils';
 
 @Component({
   selector: 'app-document-list',
@@ -25,6 +27,7 @@ export class DocumentListComponent implements OnInit {
   @Output() renameDocumentChange = new EventEmitter<boolean>();
   searchDocumentControl: FormControl;
   filteredDocuments: Observable<Document[]>;
+  ConfidentialityTypes = ConfidentialityTypes;
 
   constructor(private documentService: DocumentService,
               private appSnackbarService: AppSnackbarService,
@@ -68,13 +71,15 @@ export class DocumentListComponent implements OnInit {
   openDialogCreateUpdateDocumentName(document: Document) {
     const dialogRef = this.dialog.open(CreateUpdateDocumentComponent, {
       data: {
-        documentName: document.name
+        doc: document
       }
     });
-    dialogRef.afterClosed().subscribe(name => {
-      if (name) {
-        document.name = name;
-        this.saveDocument(document);
+    dialogRef.afterClosed().subscribe((doc: Document) => {
+      if (doc) {
+        doc.id = document.id;
+        doc.elements = document.elements;
+        doc.ownerUsername = document.ownerUsername;
+        this.saveDocument(doc);
       }
     });
   }
@@ -106,6 +111,18 @@ export class DocumentListComponent implements OnInit {
       confidentialities: [],
       targetObject: document,
     };
+  }
+
+  getDocPagesLab(doc){
+    const pages = this.totalPages(doc);
+    return !pages ? 'Empty' : pages === 1 ? 'One page' : pages + ' pages';
+  }
+
+  private totalPages(doc){
+    if(!oc(doc.elements).length){
+      return 0;
+    }
+    return doc.elements.sort((e1, e2) => e2.page - e1.page)[0].page + 1;
   }
 
 }

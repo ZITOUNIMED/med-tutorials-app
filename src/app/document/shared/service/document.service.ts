@@ -24,6 +24,10 @@ export class DocumentService {
     return this.http.post(this.url, document);
   }
 
+  saveAllDocuments(documents: Document[]): Observable<any> {
+    return this.http.post(this.url + '/all', documents);
+  }
+
   getDocumentsSamples(): Observable<DocumentSample[]> {
     return this.http.get<DocumentSample[]>(this.url + '/samples');
   }
