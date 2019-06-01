@@ -54,7 +54,7 @@ export class NavBarComponent implements OnInit, OnChanges {
     });
     this.appUsersPermissions = {
       targetType: AppTargetTypes.USER,
-      roles: [UserRoleTypes.ROLE_USER],
+      roles: [UserRoleTypes.ROLE_ADMIN],
     }
   }
 
