@@ -2,18 +2,19 @@
   Import external document
 </h2>
 <mat-dialog-content class="mat-typography">
-  <form>
+  <form [formGroup]="importForm">
     <div class="form-group">
-      <label for="documentName">Document Name</label>
-      <input class="form-control" matInput id="documentName" name="documentName" placeholder="Name ..." [formControl]="nameControl">
+      <label class="font-weight-bold">Join csv files</label>
+      <input type="file" [disabled]="_documents?.length" (change)="selectFiles($event)" accept=".csv" multiple>
     </div>
-    <div class="form-group">
-      <label for="documentName">Join a csv file</label>
-      <input type="file" (change)="selectFile($event)" accept=".csv">
+    <div formArrayName="names" *ngFor="let name of names.controls; let i = index;">
+      <div [formGroupName]="i" class="form-group">
+        <input type="text" formControlName="name" class="form-control" matInput />
+      </div>
     </div>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close cdkFocusInitial>Cancel</button>
-  <button mat-button [mat-dialog-close]="document" color="primary">Valid</button>
+  <button mat-button [mat-dialog-close]="documents" color="primary">Valid</button>
 </mat-dialog-actions>

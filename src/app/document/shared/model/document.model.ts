@@ -8,6 +8,8 @@ export interface Document {
   elements: Element[];
   ownerUsername: string;
   confidentiality?: ConfidentialityTypes;
+  author: string;
+  description: string;
 }
 
 export interface DocumentSample {

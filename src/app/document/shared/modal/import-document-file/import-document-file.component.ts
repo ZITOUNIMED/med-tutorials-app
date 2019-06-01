@@ -1,29 +1,35 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material';
-import {FormControl} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Document} from '../../model/document.model';
 import {Element} from '../../model/element.model';
 import {excelReportConfig} from "../../../../../environments/report/excel.config";
+import { oc, isNotEmptyArray } from 'src/app/shared/app-utils';
 
 @Component({
   templateUrl: './import-document-file.component.html'
 })
 export class ImportDocumentFileComponent implements OnInit {
+  _documents: Document[];
+  fb = new FormBuilder();
+  importForm: FormGroup;
 
-  nameControl: FormControl = new FormControl();
-  fileName = '';
-  private _document: Document;
+  constructor(@Inject(MAT_DIALOG_DATA) public data: {}) {}
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: {documentName: string}) {}
+  selectFiles($event) {
+    const files = $event.srcElement.files;
+    if(oc(files).length){
+      for(let i = 0; i<files.length; i++){
+        const file = files[i];
+        this.importFile(file);
+      }
+    }
+  }
 
-  selectFile($event) {
-    const fileList = $event.srcElement.files;
-    const file = fileList[0];
+  private importFile(file){
     if (file && file.name.endsWith('.csv')) {
-      this.fileName = file.name;
-      const input = $event.target;
       const reader = new FileReader();
-      reader.readAsText(input.files[0]);
+      reader.readAsText(file);
       reader.onload = (data) => {
         const csvData = reader.result;
         const csvRecordsArray = (csvData as string).split(/\r\n|\n/);
@@ -45,24 +51,41 @@ export class ImportDocumentFileComponent implements OnInit {
               elements.push(element);
             }
           }
-          this._document.elements = elements;
+          const doc: Document = {
+            id: null,
+            name: '',
+            description: '',
+            author: '',
+            elements: elements,
+            confidentiality: null,
+            ownerUsername: '',
+          }
+
+          this.names.push(this.fb.group({name: [file.name, Validators.required]}));
+          this._documents.push(doc);
         }
       };
     }
   }
 
-  get document(): Document {
-    this._document.name = this.nameControl.value || this.fileName;
-    return this._document;
+  get documents() {
+    if(isNotEmptyArray(oc(this.names).controls)){
+      for(let i = 0; i<this.names.controls.length; i++){
+        const name = this.names.controls[i].get('name').value;
+        this._documents[i].name = name;
+      }
+    }
+    return this._documents;
+  }
+
+  get names(): FormArray{
+    return oc(this.importForm).get('names') as FormArray;
   }
 
   ngOnInit() {
-    this.nameControl.setValue(this.data && this.data.documentName || '');
-    this._document = {
-      id: null,
-      name: '',
-      elements: [],
-      ownerUsername: null,
-    };
+    this._documents = [];
+    this.importForm = this.fb.group({
+      names: this.fb.array([])
+    });
   }
 }

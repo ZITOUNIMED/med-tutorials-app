@@ -8,6 +8,7 @@ import {ImportDocumentFileComponent} from './shared/modal/import-document-file/i
 import {AppStoreService} from '../shared/service/app.store.service';
 import { User } from '../user/shared/model/user.model';
 import { oc } from '../shared/app-utils';
+import { ConfidentialityTypes } from '../permissions/model/confidentiality-types';
 
 @Component({
   selector: 'app-document',
@@ -31,21 +32,40 @@ export class DocumentComponent implements OnInit {
   }
 
   openCreateDocumentDialog() {
-    const dialogRef = this.dialog.open(CreateUpdateDocumentComponent);
-    dialogRef.afterClosed().subscribe(name => {
-      if (name) {
-        this.saveNewDocument(name);
+    const dialogRef = this.dialog.open(CreateUpdateDocumentComponent, {
+      data: {
+        doc: {
+          author: this.getUserAuthor(),
+        } as Document,
+      }
+    });
+    dialogRef.afterClosed().subscribe((doc: Document) => {
+      if (doc) {
+        this.saveNewDocument(doc);
       }
     });
   }
 
+  private getUserAuthor(){
+    let author = '';
+    if(this.user){
+      author = this.user.firstname || '';
+      author += this.user.lastname? ' ' + this.user.lastname : '';
+    }
+
+    return author;
+  }
+
   openImportDocumentFileDialog() {
     const dialogRef = this.dialog.open(ImportDocumentFileComponent);
-    dialogRef.afterClosed().subscribe(document => {
-      if (document) {
+    dialogRef.afterClosed().subscribe(documents => {
+      if (documents) {
         if(oc(this.user).username){
-          document.ownerUsername= this.user.username;
-          this.saveDocument(document);
+          documents.forEach(doc => {
+            doc.ownerUsername= this.user.username;
+            doc.confidentiality = ConfidentialityTypes.PRIVATE;
+          });
+          this.saveAllDocuments(documents);
         } else {
           this.appSnackbarService.openSnackBar('INDEFINED!: Username is not defined', 'IMPORT');
         }
@@ -53,16 +73,10 @@ export class DocumentComponent implements OnInit {
     });
   }
 
-  private saveNewDocument(name: string) {
+  private saveNewDocument(doc: Document) {
     if(oc(this.user).username){
-      const document = {
-        id: null,
-        name: name,
-        elements: [],
-        ownerUsername: this.user.username,
-      } as Document;
-
-      this.saveDocument(document);
+      doc.ownerUsername= this.user.username;
+      this.saveDocument(doc);
     } else {
       this.appSnackbarService.openSnackBar('INDEFINED!: Username is not defined', 'ADD');
     }
@@ -79,6 +93,18 @@ export class DocumentComponent implements OnInit {
         this.appStoreService.addErrorNotif(error.status, error.message);
       }, () => {
         // this.appStoreService.stopLoading();
+      });
+  }
+
+  saveAllDocuments(documents: Document[]) {
+    this.appStoreService.startLoading();
+    this.documentService.saveAllDocuments(documents).subscribe(
+      () => {
+        this.appSnackbarService.openSnackBar('Success!: '+ documents.length +' new documents were added', 'ADD MUILTIPLE');
+        this.loadDocuments();
+      },
+      error => {
+        this.appStoreService.addErrorNotif(error.status, error.message);
       });
   }
 
