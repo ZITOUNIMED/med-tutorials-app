@@ -12,8 +12,12 @@ export class AuthService {
   private authUrl = environment.base + environment.auth;
   constructor(private http: HttpClient) {}
 
-  signIn(request: SignInRequest): Observable<Principal> {
-    return this.http.post<Principal>(this.authUrl + '/signin', request);
+  signIn(username: string, password: string): Observable<Principal> {
+    const signInRequest: SignInRequest = {
+      username: username,
+      password: password
+    };
+    return this.http.post<Principal>(this.authUrl + '/signin', signInRequest);
   }
 
   signUp(request: SignUpRequest): Observable<any> {
