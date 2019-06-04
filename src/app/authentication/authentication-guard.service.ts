@@ -3,17 +3,44 @@ import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '
 import {Observable} from 'rxjs';
 import {PrincipalState} from './shared/principal.state';
 import {Store} from '@ngrx/store';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
+import {CRIPTED_PASSWAORD_KEY, USERNAME_KEY} from './shared/model/principal.model';
+import {AuthService} from './shared/service/auth.service';
+import {first} from 'rxjs/internal/operators';
+import {PrincipalSaveAction} from "./shared/principal.actions";
 
 @Injectable()
 export class AuthenticationGuardService implements CanActivate {
-  constructor(private router: Router, private store: Store<PrincipalState>) {}
+  constructor(private router: Router,
+              private store: Store<PrincipalState>,
+              private cookieService: CookieService,
+              private authService: AuthService) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    this.store.select('principalState')
-      .subscribe(state => {
-        if(!state || !state.principal || !state.principal.token) {
+    return this.store.select('principalState')
+      .pipe(first())
+      .toPromise()
+      .then((state: PrincipalState) => this.checkAuthentication(state));
+  }
+
+  private checkAuthentication(state: PrincipalState): Promise<boolean> | boolean {
+    if (!state || !state.principal || !state.principal.token) {
+      const [usernameFromStore, passwordFromStore] = [this.cookieService.get(USERNAME_KEY), this.cookieService.get(CRIPTED_PASSWAORD_KEY)];
+      if (usernameFromStore && passwordFromStore) {
+        return this.authService.signIn(usernameFromStore, passwordFromStore)
+          .toPromise()
+          .then(res => {
+            this.store.dispatch(new PrincipalSaveAction(res));
+            return true;
+          })
+          .catch(() => {
           this.router.navigate(['/auth/login']);
-        }
-      });
+          return false;
+        });
+      } else {
+        this.router.navigate(['/auth/login']);
+        return false;
+      }
+    }
     return true;
   }
 }

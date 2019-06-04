@@ -4,10 +4,11 @@ import {SignInRequest} from '../shared/model/signin.request.model';
 import {AuthService} from '../shared/service/auth.service';
 import {Store} from '@ngrx/store';
 import {PrincipalSaveAction} from '../shared/principal.actions';
-import {Principal} from '../shared/model/principal.model';
+import {CRIPTED_PASSWAORD_KEY, Principal, USERNAME_KEY} from '../shared/model/principal.model';
 import {Router} from '@angular/router';
 import {AppState} from '../../shared/app.state';
 import {AppStoreService} from '../../shared/service/app.store.service';
+import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,8 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthService,
               private store: Store<AppState>,
               private router: Router,
-              private appStoreService: AppStoreService) { }
+              private appStoreService: AppStoreService,
+              private cookieService: CookieService) { }
 
   ngOnInit() {
     this.loginForm = new FormGroup({
@@ -39,22 +41,19 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    const username = this.loginForm.get('username').value;
-    const password = this.loginForm.get('password').value;
+      const username = this.loginForm.get('username').value;
+      const password = this.loginForm.get('password').value;
 
-    const signInRequest: SignInRequest = {
-      username: username,
-      password: password
-    };
-
-    this.appStoreService.startLoading();
-    this.authService.signIn(signInRequest).subscribe(res => {
-      this.appStoreService.stopLoading();
-      this.store.dispatch(new PrincipalSaveAction(res));
-    }, error => {
-      this.appStoreService.addErrorNotif(error.status, error.message);
-      this.appStoreService.stopLoading();
-    });
+      this.appStoreService.startLoading();
+      this.authService.signIn(username, password).subscribe(res => {
+        this.cookieService.put(USERNAME_KEY, username);
+        this.cookieService.put(CRIPTED_PASSWAORD_KEY, password);
+        this.appStoreService.stopLoading();
+        this.store.dispatch(new PrincipalSaveAction(res));
+      }, error => {
+        this.appStoreService.addErrorNotif(error.status, error.message);
+        this.appStoreService.stopLoading();
+      });
   }
 
 }
