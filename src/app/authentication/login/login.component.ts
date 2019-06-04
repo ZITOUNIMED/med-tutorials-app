@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {SignInRequest} from '../shared/model/signin.request.model';
 import {AuthService} from '../shared/service/auth.service';
 import {Store} from '@ngrx/store';
@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   principal: Principal;
 
   loginForm: FormGroup;
+  fb = new FormBuilder();
 
   constructor(private authService: AuthService,
               private store: Store<AppState>,
@@ -28,9 +29,10 @@ export class LoginComponent implements OnInit {
               private cookieService: CookieService) { }
 
   ngOnInit() {
-    this.loginForm = new FormGroup({
-      username: new FormControl(''),
-      password: new FormControl('')
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+      rememberMe: [],
     });
 
     this.store.select('principalState').subscribe(state => {
@@ -43,11 +45,14 @@ export class LoginComponent implements OnInit {
   login() {
       const username = this.loginForm.get('username').value;
       const password = this.loginForm.get('password').value;
+      const rememberMe = this.loginForm.get('rememberMe').value;
 
       this.appStoreService.startLoading();
       this.authService.signIn(username, password).subscribe(res => {
-        this.cookieService.put(USERNAME_KEY, username);
-        this.cookieService.put(CRIPTED_PASSWAORD_KEY, password);
+        if (rememberMe) {
+          this.cookieService.put(USERNAME_KEY, username);
+          this.cookieService.put(CRIPTED_PASSWAORD_KEY, password);
+        }
         this.appStoreService.stopLoading();
         this.store.dispatch(new PrincipalSaveAction(res));
       }, error => {
