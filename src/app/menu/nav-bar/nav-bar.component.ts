@@ -13,8 +13,8 @@ import { UserService } from '../../user/shared/service/user.service';
 import { AppPermissions } from 'src/app/permissions/model/app.permissions.model';
 import { UserRoleTypes } from 'src/app/permissions/model/user-role-types';
 import { AppTargetTypes } from 'src/app/permissions/model/app.target-types';
-import {CookieService} from "angular2-cookie/services/cookies.service";
 import {CRIPTED_PASSWAORD_KEY, USERNAME_KEY} from "../../authentication/shared/model/principal.model";
+import {AppLocalStorageService} from "../../shared/service/app-local-storage.service";
 
 @Component({
   selector: 'app-nav-bar',
@@ -33,7 +33,7 @@ export class NavBarComponent implements OnInit, OnChanges {
               private store: Store<AppState>,
               private appStoreService: AppStoreService,
               private userService: UserService,
-              private cookieService: CookieService) { }
+              private appLocalStorageService: AppLocalStorageService) { }
 
   ngOnInit() {
     this.loadDocumentsSamples();
@@ -62,8 +62,8 @@ export class NavBarComponent implements OnInit, OnChanges {
   }
 
   signout() {
-    this.cookieService.remove(USERNAME_KEY);
-    this.cookieService.remove(CRIPTED_PASSWAORD_KEY);
+    this.appLocalStorageService.remove(USERNAME_KEY);
+    this.appLocalStorageService.remove(CRIPTED_PASSWAORD_KEY);
     this.store.dispatch(new PrincipalCleanAction(true));
   }
 

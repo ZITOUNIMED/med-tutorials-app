@@ -9,7 +9,6 @@ import {RouterModule} from '@angular/router';
 import {SharedModule} from '../shared/shared.module';
 import {CommonModule} from '@angular/common';
 import {AppDirectivesModule} from '../directive/app-directives.module';
-import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 @NgModule({
   imports: [ReactiveFormsModule,
@@ -23,7 +22,6 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
   providers: [
     AuthenticationGuardService,
     AuthService,
-    CookieService,
   ]
 })
 export class AuthenticationModule {}

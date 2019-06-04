@@ -8,7 +8,7 @@ import {CRIPTED_PASSWAORD_KEY, Principal, USERNAME_KEY} from '../shared/model/pr
 import {Router} from '@angular/router';
 import {AppState} from '../../shared/app.state';
 import {AppStoreService} from '../../shared/service/app.store.service';
-import { CookieService } from 'angular2-cookie/services/cookies.service';
+import {AppLocalStorageService} from "../../shared/service/app-local-storage.service";
 
 @Component({
   selector: 'app-login',
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
               private store: Store<AppState>,
               private router: Router,
               private appStoreService: AppStoreService,
-              private cookieService: CookieService) { }
+              private appLocalStorageService: AppLocalStorageService) { }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
@@ -50,8 +50,8 @@ export class LoginComponent implements OnInit {
       this.appStoreService.startLoading();
       this.authService.signIn(username, password).subscribe(res => {
         if (rememberMe) {
-          this.cookieService.put(USERNAME_KEY, username);
-          this.cookieService.put(CRIPTED_PASSWAORD_KEY, password);
+          this.appLocalStorageService.put(USERNAME_KEY, username);
+          this.appLocalStorageService.put(CRIPTED_PASSWAORD_KEY, password);
         }
         this.appStoreService.stopLoading();
         this.store.dispatch(new PrincipalSaveAction(res));
