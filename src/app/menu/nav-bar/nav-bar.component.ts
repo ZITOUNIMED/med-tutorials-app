@@ -13,6 +13,8 @@ import { UserService } from '../../user/shared/service/user.service';
 import { AppPermissions } from 'src/app/permissions/model/app.permissions.model';
 import { UserRoleTypes } from 'src/app/permissions/model/user-role-types';
 import { AppTargetTypes } from 'src/app/permissions/model/app.target-types';
+import {CookieService} from "angular2-cookie/services/cookies.service";
+import {CRIPTED_PASSWAORD_KEY, USERNAME_KEY} from "../../authentication/shared/model/principal.model";
 
 @Component({
   selector: 'app-nav-bar',
@@ -30,7 +32,8 @@ export class NavBarComponent implements OnInit, OnChanges {
   constructor(private documentService: DocumentService,
               private store: Store<AppState>,
               private appStoreService: AppStoreService,
-              private userService: UserService,) { }
+              private userService: UserService,
+              private cookieService: CookieService) { }
 
   ngOnInit() {
     this.loadDocumentsSamples();
@@ -59,6 +62,8 @@ export class NavBarComponent implements OnInit, OnChanges {
   }
 
   signout() {
+    this.cookieService.remove(USERNAME_KEY);
+    this.cookieService.remove(CRIPTED_PASSWAORD_KEY);
     this.store.dispatch(new PrincipalCleanAction(true));
   }
 
