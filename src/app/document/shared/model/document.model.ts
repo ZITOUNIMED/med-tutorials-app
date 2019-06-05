@@ -10,6 +10,8 @@ export interface Document {
   confidentiality?: ConfidentialityTypes;
   author: string;
   description: string;
+  readonly lastUpdateDate?: string;
+  readonly creationDate?: string;
 }
 
 export interface DocumentSample {
