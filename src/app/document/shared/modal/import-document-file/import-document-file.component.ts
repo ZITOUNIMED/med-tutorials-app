@@ -1,9 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Document} from '../../model/document.model';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Document, INPUT_TEXT_LONG} from '../../model/document.model';
 import {Element} from '../../model/element.model';
-import {excelReportConfig} from "../../../../../environments/report/excel.config";
+import {excelReportConfig} from '../../../../../environments/report/excel.config';
 import { oc, isNotEmptyArray } from 'src/app/shared/app-utils';
 
 @Component({
@@ -13,20 +13,21 @@ export class ImportDocumentFileComponent implements OnInit {
   _documents: Document[];
   fb = new FormBuilder();
   importForm: FormGroup;
+  INPUT_TEXT_LONG = INPUT_TEXT_LONG;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: {}) {}
 
   selectFiles($event) {
     const files = $event.srcElement.files;
-    if(oc(files).length){
-      for(let i = 0; i<files.length; i++){
+    if (oc(files).length) {
+      for (let i = 0; i < files.length; i++) {
         const file = files[i];
         this.importFile(file);
       }
     }
   }
 
-  private importFile(file){
+  private importFile(file) {
     if (file && file.name.endsWith('.csv')) {
       const reader = new FileReader();
       reader.readAsText(file);
@@ -59,9 +60,12 @@ export class ImportDocumentFileComponent implements OnInit {
             elements: elements,
             confidentiality: null,
             ownerUsername: '',
-          }
+          };
 
-          this.names.push(this.fb.group({name: [file.name, Validators.required]}));
+          const control = new FormControl(file.name, [Validators.required, Validators.minLength(4),
+            Validators.maxLength(INPUT_TEXT_LONG)]);
+
+          this.names.push(control);
           this._documents.push(doc);
         }
       };
@@ -69,17 +73,17 @@ export class ImportDocumentFileComponent implements OnInit {
   }
 
   get documents() {
-    if(isNotEmptyArray(oc(this.names).controls)){
-      for(let i = 0; i<this.names.controls.length; i++){
-        const name = this.names.controls[i].get('name').value;
+    if (isNotEmptyArray(this._documents)) {
+      for (let i = 0; i < this.names.controls.length; i++) {
+        const name = this.names.controls[i].value;
         this._documents[i].name = name;
       }
     }
     return this._documents;
   }
 
-  get names(): FormArray{
-    return oc(this.importForm).get('names') as FormArray;
+  get names(): FormArray {
+    return this.importForm.get('names') as FormArray;
   }
 
   ngOnInit() {
