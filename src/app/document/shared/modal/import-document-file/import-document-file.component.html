@@ -7,14 +7,21 @@
       <label class="font-weight-bold">Join csv files</label>
       <input type="file" [disabled]="_documents?.length" (change)="selectFiles($event)" accept=".csv" multiple>
     </div>
-    <div formArrayName="names" *ngFor="let name of names.controls; let i = index;">
-      <div [formGroupName]="i" class="form-group">
-        <input type="text" formControlName="name" class="form-control" matInput />
+    <!--<div *ngIf="_documents?.length">-->
+      <div>
+      <div formArrayName="names" *ngFor="let name of names.controls; index as i">
+        <input type="text" formControlName="{{i}}" class="form-control" matInput />
+          <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="alert alert-danger">
+          <span *ngIf="name.errors.required">Name is required.</span>
+          <span *ngIf="name.errors.minlength">Name must be at least 4 characters long.</span>
+          <span *ngIf="name.errors.maxlength">Name's long must be less thant {{INPUT_TEXT_LONG}}.</span>
+          </div>
+          <div class="pull-right">{{name?.value?.length}} / {{INPUT_TEXT_LONG}}</div>
       </div>
     </div>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close cdkFocusInitial>Cancel</button>
-  <button mat-button [mat-dialog-close]="documents" color="primary">Valid</button>
+  <button mat-button [mat-dialog-close]="documents" color="primary" [disabled]="importForm?.invalid || !documents.length">Valid</button>
 </mat-dialog-actions>

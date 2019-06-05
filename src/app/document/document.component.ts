@@ -7,7 +7,7 @@ import {CreateUpdateDocumentComponent} from './shared/modal/create-update-docume
 import {ImportDocumentFileComponent} from './shared/modal/import-document-file/import-document-file.component';
 import {AppStoreService} from '../shared/service/app.store.service';
 import { User } from '../user/shared/model/user.model';
-import { oc } from '../shared/app-utils';
+import {isNotEmptyArray, oc} from '../shared/app-utils';
 import { ConfidentialityTypes } from '../permissions/model/confidentiality-types';
 
 @Component({
@@ -46,11 +46,11 @@ export class DocumentComponent implements OnInit {
     });
   }
 
-  private getUserAuthor(){
+  private getUserAuthor() {
     let author = '';
-    if(this.user){
+    if (this.user) {
       author = this.user.firstname || '';
-      author += this.user.lastname? ' ' + this.user.lastname : '';
+      author += this.user.lastname ? ' ' + this.user.lastname : '';
     }
 
     return author;
@@ -59,10 +59,10 @@ export class DocumentComponent implements OnInit {
   openImportDocumentFileDialog() {
     const dialogRef = this.dialog.open(ImportDocumentFileComponent);
     dialogRef.afterClosed().subscribe(documents => {
-      if (documents) {
-        if(oc(this.user).username){
+      if (isNotEmptyArray(documents)) {
+        if (oc(this.user).username) {
           documents.forEach(doc => {
-            doc.ownerUsername= this.user.username;
+            doc.ownerUsername = this.user.username;
             doc.confidentiality = ConfidentialityTypes.PRIVATE;
           });
           this.saveAllDocuments(documents);
@@ -74,8 +74,8 @@ export class DocumentComponent implements OnInit {
   }
 
   private saveNewDocument(doc: Document) {
-    if(oc(this.user).username){
-      doc.ownerUsername= this.user.username;
+    if (oc(this.user).username) {
+      doc.ownerUsername = this.user.username;
       this.saveDocument(doc);
     } else {
       this.appSnackbarService.openSnackBar('INDEFINED!: Username is not defined', 'ADD');
@@ -100,7 +100,7 @@ export class DocumentComponent implements OnInit {
     this.appStoreService.startLoading();
     this.documentService.saveAllDocuments(documents).subscribe(
       () => {
-        this.appSnackbarService.openSnackBar('Success!: '+ documents.length +' new documents were added', 'ADD MUILTIPLE');
+        this.appSnackbarService.openSnackBar('Success!: ' + documents.length + ' new documents were added', 'ADD MUILTIPLE');
         this.loadDocuments();
       },
       error => {
