@@ -13,8 +13,8 @@ import { UserService } from '../../user/shared/service/user.service';
 import { AppPermissions } from 'src/app/permissions/model/app.permissions.model';
 import { UserRoleTypes } from 'src/app/permissions/model/user-role-types';
 import { AppTargetTypes } from 'src/app/permissions/model/app.target-types';
-import {CRIPTED_PASSWAORD_KEY, USERNAME_KEY} from "../../authentication/shared/model/principal.model";
-import {AppLocalStorageService} from "../../shared/service/app-local-storage.service";
+import {CRIPTED_PASSWAORD_KEY, USERNAME_KEY} from '../../authentication/shared/model/principal.model';
+import {AppLocalStorageService} from '../../shared/service/app-local-storage.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -58,7 +58,7 @@ export class NavBarComponent implements OnInit, OnChanges {
     this.appUsersPermissions = {
       targetType: AppTargetTypes.USER,
       roles: [UserRoleTypes.ROLE_ADMIN],
-    }
+    };
   }
 
   signout() {
