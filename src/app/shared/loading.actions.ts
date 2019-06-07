@@ -7,10 +7,10 @@ export type LoadingActions = StartLoadingAction | StopLoadingAction;
 
 export class StartLoadingAction implements Action {
   readonly type = START_LOADING_ACTION_TYPE;
-  constructor() {}
+  constructor(public payload?: string) {}
 }
 
 export class StopLoadingAction implements Action {
   readonly type = STOP_LOADING_ACTION_TYPE;
-  constructor() {}
+  constructor(public payload?: string) {}
 }

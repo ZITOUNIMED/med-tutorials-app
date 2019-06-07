@@ -8,7 +8,7 @@ import {CRIPTED_PASSWAORD_KEY, Principal, USERNAME_KEY} from '../shared/model/pr
 import {Router} from '@angular/router';
 import {AppState} from '../../shared/app.state';
 import {AppStoreService} from '../../shared/service/app.store.service';
-import {AppLocalStorageService} from "../../shared/service/app-local-storage.service";
+import {AppLocalStorageService} from '../../shared/service/app-local-storage.service';
 
 @Component({
   selector: 'app-login',

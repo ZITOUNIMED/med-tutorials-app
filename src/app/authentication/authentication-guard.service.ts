@@ -8,13 +8,15 @@ import {AuthService} from './shared/service/auth.service';
 import {first} from 'rxjs/internal/operators';
 import {PrincipalSaveAction} from "./shared/principal.actions";
 import {AppLocalStorageService} from "../shared/service/app-local-storage.service";
+import {AppStoreService} from "../shared/service/app.store.service";
 
 @Injectable()
 export class AuthenticationGuardService implements CanActivate {
   constructor(private router: Router,
               private store: Store<PrincipalState>,
               private appLocalStorageService: AppLocalStorageService,
-              private authService: AuthService) {}
+              private authService: AuthService,
+              private appStoreService: AppStoreService) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     return this.store.select('principalState')
       .pipe(first())
@@ -27,13 +29,16 @@ export class AuthenticationGuardService implements CanActivate {
       const [usernameFromStore, passwordFromStore] = [this.appLocalStorageService.get(USERNAME_KEY),
         this.appLocalStorageService.get(CRIPTED_PASSWAORD_KEY)];
       if (usernameFromStore && passwordFromStore) {
+        this.appStoreService.startLoading('resolver signin');
         return this.authService.signIn(usernameFromStore, passwordFromStore)
           .toPromise()
           .then(res => {
+            this.appStoreService.stopLoading('resolver signin');
             this.store.dispatch(new PrincipalSaveAction(res));
             return true;
           })
           .catch(() => {
+            this.appStoreService.stopLoading('resolver signin');
           this.router.navigate(['/auth/login']);
           return false;
         });

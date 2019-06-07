@@ -92,7 +92,7 @@ export class DocumentComponent implements OnInit {
       error => {
         this.appStoreService.addErrorNotif(error.status, error.message);
       }, () => {
-        // this.appStoreService.stopLoading();
+        this.appStoreService.stopLoading();
       });
   }
 
@@ -117,14 +117,14 @@ export class DocumentComponent implements OnInit {
   }
 
   loadDocuments() {
-    this.appStoreService.startLoading();
+    this.appStoreService.startLoading('load documents');
     this.documentService.getDocuments().subscribe(documents => {
       this.documents = documents;
       this.appSnackbarService.openSnackBar('SUCCESS!: Loading documents', 'LOAD');
     }, () => {
       this.appSnackbarService.openSnackBar('ERROR!: An error was occured on loading documents', 'LOAD');
     }, () => {
-      // this.appStoreService.stopLoading();
+      this.appStoreService.stopLoading('load documents');
     });
   }
 

@@ -1,10 +1,7 @@
 import {Component, Input, OnInit, OnChanges } from '@angular/core';
 import {DocumentSample} from '../../document/shared/model/document.model';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../shared/app.state';
 import {PrincipalCleanAction} from '../../authentication/shared/principal.actions';
 import { DocumentService } from '../../document/shared/service/document.service';
-import { StartLoadingAction, StopLoadingAction } from '../../shared/loading.actions';
 import { User } from '../../user/shared/model/user.model';
 import { AppStoreService } from '../../shared/service/app.store.service';
 import { combineLatest } from 'rxjs';
@@ -15,6 +12,8 @@ import { UserRoleTypes } from 'src/app/permissions/model/user-role-types';
 import { AppTargetTypes } from 'src/app/permissions/model/app.target-types';
 import {CRIPTED_PASSWAORD_KEY, USERNAME_KEY} from '../../authentication/shared/model/principal.model';
 import {AppLocalStorageService} from '../../shared/service/app-local-storage.service';
+import {Store} from "@ngrx/store";
+import {AppState} from "../../shared/app.state";
 
 @Component({
   selector: 'app-nav-bar',
@@ -38,11 +37,11 @@ export class NavBarComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.loadDocumentsSamples();
     combineLatest(
-      this.store.select('userState'),
-      this.store.select('principalState')).subscribe(([userState, principalState]) => {
-        if (!userState || !userState.user) {
-          if (principalState && principalState.principal) {
-            this.userService.findByUsername(principalState.principal.username).subscribe(
+      this.appStoreService.getUser(),
+      this.appStoreService.getPrincipal()).subscribe(([userInStore, principal]) => {
+        if (!userInStore) {
+          if (principal) {
+            this.userService.findByUsername(principal.username).subscribe(
               user => {
                 this.user = user;
                 this.store.dispatch(new UserSaveAction(user));
@@ -52,7 +51,7 @@ export class NavBarComponent implements OnInit, OnChanges {
             );
           }
         } else {
-          this.user = userState.user;
+          this.user = userInStore;
         }
     });
     this.appUsersPermissions = {
@@ -68,11 +67,13 @@ export class NavBarComponent implements OnInit, OnChanges {
   }
 
   loadDocumentsSamples() {
-    this.store.dispatch(new StartLoadingAction());
+    this.appStoreService.startLoading('load samples');
     this.documentService.getDocumentsSamples().subscribe(samples => {
       this.documentsSamples = samples;
-      this.store.dispatch(new StopLoadingAction());
-    });
+    }, () => {},
+      () => {
+        this.appStoreService.stopLoading('load samples');
+      });
   }
 
   ngOnChanges(changes: any) {

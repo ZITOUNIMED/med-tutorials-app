@@ -23,6 +23,9 @@ import { oc } from '../app-utils';
 import { DocumentSelectAction } from 'src/app/document/shared/document.actions';
 import { DocumentState } from 'src/app/document/shared/document.state';
 import { User } from 'src/app/user/shared/model/user.model';
+import {Principal} from '../../authentication/shared/model/principal.model';
+import {PrincipalState} from '../../authentication/shared/principal.state';
+import {LoadingState} from "../loading.state";
 
 @Injectable()
 export class AppStoreService {
@@ -37,15 +40,15 @@ export class AppStoreService {
       this.store.dispatch(new NotificationsAddAction(notif));
   }
 
-  startLoading() {
-    this.store.dispatch(new StartLoadingAction());
+  startLoading(from?: string) {
+    this.store.dispatch(new StartLoadingAction(from));
   }
 
-  stopLoading() {
-    this.store.dispatch(new StopLoadingAction());
+  stopLoading(by?: string) {
+    this.store.dispatch(new StopLoadingAction(by));
   }
 
-  getUser(): Observable<User>{
+  getUser(): Observable<User> {
     return this.store.select('userState')
       .pipe(map((userState: UserState) => {
         if (userState && userState.user) {
@@ -86,31 +89,31 @@ export class AppStoreService {
     this.store.dispatch(new DocumentWrapperSaveElementAction(element));
   }
 
-  insertPages(items: number){
+  insertPages(items: number) {
     this.store.dispatch(new DocumentWrapperInserPagesAction(items));
   }
 
-  deleteElement(p: Point){
+  deleteElement(p: Point) {
     this.store.dispatch(new DocumentWrapperDeleteElementAction(p));
   }
 
-  changeEditMode(accept?: boolean){
+  changeEditMode(accept?: boolean) {
     this.store.dispatch(new DocumentWrapperChangeEditModeAction(accept));
   }
 
-  cancelEditElement(accept?: boolean){
+  cancelEditElement(accept?: boolean) {
     this.store.dispatch(new DocumentWrapperCancelEditElementAction(accept));
   }
 
-  moveToPage(p: Point, jump: number){
+  moveToPage(p: Point, jump: number) {
     this.store.dispatch(new DocumentWrapperMoveToPageAction({p: p, jump: jump}));
   }
 
-  selectElement(element: Element){
+  selectElement(element: Element) {
     this.store.dispatch(new DocumentWrapperSelectElementAction(element));
   }
 
-  selectDocument(doc: Document){
+  selectDocument(doc: Document) {
     this.store.dispatch(new DocumentSelectAction(doc));
   }
 
@@ -121,5 +124,17 @@ export class AppStoreService {
         return oc(documentState).doc;
       }
     }));
+  }
+
+  getPrincipal(): Observable<Principal> {
+    return this.store.select('principalState')
+      .pipe(map((principalState: PrincipalState) => {
+       return oc(principalState).principal;
+      }));
+  }
+
+  checkLoading(): Observable<boolean> {
+    return this.store.select('loadingState')
+      .pipe(map((loadingState: LoadingState) => loadingState && loadingState.loading));
   }
 }

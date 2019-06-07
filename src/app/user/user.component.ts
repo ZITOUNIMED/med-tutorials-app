@@ -4,10 +4,8 @@ import { User } from './shared/model/user.model';
 import { CreateUpdateUserComponent } from './shared/modal/create-update-user/create-update-user.component';
 import { MatDialog } from '@angular/material';
 import { RoleNameTypes } from './shared/model/role-name-types.enum';
-import { Store } from '@ngrx/store';
-import { LoadingState } from '../shared/loading.state';
-import { StartLoadingAction, StopLoadingAction } from '../shared/loading.actions';
 import { GenerecDialogComponent } from '../generec-dialog/generec-dialog.component';
+import {AppStoreService} from '../shared/service/app.store.service';
 
 @Component({
   selector: 'app-user',
@@ -19,22 +17,22 @@ export class UserComponent implements OnInit {
   RoleNameTypes = RoleNameTypes;
 
   constructor(private userService: UserService,
-    public dialog: MatDialog,
-    private store: Store<LoadingState>) { }
+              public dialog: MatDialog,
+              private appStoreService: AppStoreService) { }
 
   ngOnInit() {
     this.loadUsers();
   }
 
   loadUsers() {
-    this.store.dispatch(new StartLoadingAction());
+    this.appStoreService.startLoading();
     this.userService.getAllUsers()
       .subscribe(users => {
         this.users = users;
       },
         () => { },
         () => {
-          this.store.dispatch(new StopLoadingAction());
+          this.appStoreService.stopLoading();
         });
   }
 
@@ -65,26 +63,26 @@ export class UserComponent implements OnInit {
   }
 
   saveUser(user: User) {
-    this.store.dispatch(new StartLoadingAction());
+    this.appStoreService.startLoading();
     this.userService.saveUser(user)
       .subscribe((res: any) => {
-        this.store.dispatch(new StopLoadingAction());
+        this.appStoreService.stopLoading();
         this.loadUsers();
       },
         () => {
-          this.store.dispatch(new StopLoadingAction());
+          this.appStoreService.stopLoading();
         });
   }
 
   deleteUser(id: number) {
-    this.store.dispatch(new StartLoadingAction());
+    this.appStoreService.startLoading();
     this.userService.deleteUser(id)
       .subscribe((res: any) => {
-        this.store.dispatch(new StopLoadingAction());
+          this.appStoreService.stopLoading();
         this.loadUsers();
       },
         () => {
-          this.store.dispatch(new StopLoadingAction());
+          this.appStoreService.stopLoading();
         });
   }
 }
