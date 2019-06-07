@@ -1,6 +1,6 @@
 <mat-drawer-container class="crm-navigation-bar" [hasBackdrop]="true">
   <mat-drawer #drawer [mode]="'over'">
-    <app-nav-bar [drawer]="drawer" 
+    <app-nav-bar [drawer]="drawer"
     [toolBarOpenClicked]="toolBarOpenClicked"></app-nav-bar>
   </mat-drawer>
   <mat-drawer-content>
@@ -8,6 +8,7 @@
     <div class="container">
       <app-notifications></app-notifications>
       <div>
+        <app-loading></app-loading>
         <router-outlet name="homeOutlet"></router-outlet>
       </div>
     </div>
