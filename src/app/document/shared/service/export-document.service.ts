@@ -39,17 +39,17 @@ export class ExportDocumentService {
   // iframe.nativeElement.src = pdf.output('datauristring');
   // pdf.save(document.name + '.pdf');
 
-  private insertPageHeader(doc: Document, pdf: any){
+  private insertPageHeader(doc: Document, pdf: any) {
     const page = pdf.internal.getCurrentPageInfo().pageNumber;
-    if(page === 1){ // first page
+    if (page === 1) { // first page
       pdf.fromHTML(`<h3>${doc.name}<h3>`, PAGE_CENTER - 20, 10);
     }
   }
 
-  private addFooters(pdf: any){
+  private addFooters(pdf: any) {
     const pageCount = pdf.internal.getNumberOfPages();
     pdf.setFontSize(11);
-    for(let i = 0; i < pageCount; i++) {
+    for (let i = 0; i < pageCount; i++) {
       pdf.setPage(i);
       const page = pdf.internal.getCurrentPageInfo().pageNumber;
       const text = `Page ${page}/${pageCount}`;
