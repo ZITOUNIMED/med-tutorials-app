@@ -16,7 +16,7 @@ import {
   DocumentWrapperInserPagesAction, DocumentWrapperDeleteElementAction,
   DocumentWrapperMoveUpAction, DocumentWrapperChangeEditModeAction,
   DocumentWrapperCancelEditElementAction, DocumentWrapperMoveToPageAction,
-  DocumentWrapperSelectElementAction
+  DocumentWrapperSelectElementAction, DocumentWrapperDeletePagesAction
 } from '../../document/document-content/shared/document-wrapper.actions';
 import {DocumentWrapperState, Point} from '../../document/document-content/shared/document-wrapper.state';
 import { oc } from '../app-utils';
@@ -89,8 +89,12 @@ export class AppStoreService {
     this.store.dispatch(new DocumentWrapperSaveElementAction(element));
   }
 
-  insertPages(items: number) {
-    this.store.dispatch(new DocumentWrapperInserPagesAction(items));
+  insertPages(pages: number) {
+    this.store.dispatch(new DocumentWrapperInserPagesAction(pages));
+  }
+
+  deletePages(pages: number){
+    this.store.dispatch(new DocumentWrapperDeletePagesAction(pages));
   }
 
   deleteElement(p: Point) {

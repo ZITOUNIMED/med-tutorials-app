@@ -20,6 +20,13 @@
     <i class="fa fa-plus-square"></i>
   </button>
   <span>&nbsp;&nbsp;</span>
+  <button *ngIf="(documentWrapperState$ | async).editMode &&
+  (documentWrapperState$ | async).canDeletePage" class="btn btn-xs btn-outline-danger"
+    (click)="appStoreService.deletePages(1)"
+    title="delete Page">
+    <i class="fa fa-minus-circle"></i>
+  </button>
+  <span>&nbsp;&nbsp;</span>
   <button mat-stroked-button
     [disabled]="!(documentWrapperState$ | async).canGoToNextPage"
     (click)="appStoreService.goToNextPage(true)"
