@@ -1,0 +1,9 @@
+<ul class="nav flex-column">
+  <li class="nav-item" *ngFor="let elt of elements">
+    <a href="" class="nav-link" data-toggle="collapse" (click)="appStoreService.goToPage(elt.page)">
+      <span *ngIf="elt.type===ElementType.MEDIUM_TITLE">&nbsp;</span>
+      <span *ngIf="elt.type===ElementType.SMALL_TITLE">&nbsp;&nbsp;&nbsp;</span>
+      {{elt.text}}
+    </a>
+  </li>
+</ul>

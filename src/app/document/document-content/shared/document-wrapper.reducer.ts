@@ -13,6 +13,7 @@ import {
   DOCUMENT_WRAPPER_MOVE_TO_PAGE,
   DOCUMENT_WRAPPER_SELECT_ELEMENT,
   DOCUMENT_WRAPPER_DELETE_PAGES,
+  DOCUMENT_WRAPPER_GO_TO_PAGE,
   DocumentWrapperActions
 } from './document-wrapper.actions';
 import {DocumentWrapperState, Point} from './document-wrapper.state';
@@ -38,6 +39,9 @@ export function documentWrapperReducer(state: DocumentWrapperState, action: Docu
         state.currentPage++;
         cancelEditElement(state);
       }
+      return buildWrapper(state);
+    case DOCUMENT_WRAPPER_GO_TO_PAGE:
+      state.currentPage = action.payload;
       return buildWrapper(state);
     case DOCUMENT_WRAPPER_RETURN_TO_PREVIOUS_PAGE:
       if (action.payload) {
@@ -175,28 +179,17 @@ function saveElement(state: DocumentWrapperState, element: Element) {
 
 function insertPages(state: DocumentWrapperState, pages: number){
   state.currentPage+=pages;
-  state.canDeletePage = true;
   cancelEditElement(state);
   shiftPagesRight(state, state.currentPage, pages);
 }
 
 function deletePages(state: DocumentWrapperState, pages: number){
-  if(chackCanDeletePage(state, state.currentPage)){
-    for(let page = state.currentPage; page<state.currentPage + pages; page++){
-      state.elements = state.elements.filter(elt => elt.page !== page);
-    }
-    shiftPagesLeft(state, state.currentPage + pages, pages);
-    cancelEditElement(state);
-    state.currentPage--;
-  } else if(state.currentPage>0){
-    state.currentPage--;
-  } else {
-    state.canDeletePage = false;
+  for(let page = state.currentPage; page<state.currentPage + pages; page++){
+    state.elements = state.elements.filter(elt => elt.page !== page);
   }
-}
-
-function chackCanDeletePage(state: DocumentWrapperState, page: number){
-  return state.elements.filter(elt =>elt.page == page).length>0;
+  shiftPagesLeft(state, state.currentPage + pages, pages);
+  cancelEditElement(state);
+  state.currentPage--;
 }
 
 function shiftPagesRight(state: DocumentWrapperState, page: number, pages: number) {
@@ -306,7 +299,12 @@ function buildWrapper(state: DocumentWrapperState) {
   state.canReturnToPreviousPage = checkCanReturnToPreviousPage(state);
   state.biggestRowOfCurrentPage = getBiggestRowInPage(state, state.currentPage);
   state.canMoveUp = checkCanMoveUp(state);
+  state.canDeletePage = checkCanDeletePage(state);
   return {...state};
+}
+
+function checkCanDeletePage(state: DocumentWrapperState){
+  return !!state.elements.length || state.currentPage>0;
 }
 
 function checkCanMoveUp(state: DocumentWrapperState){
