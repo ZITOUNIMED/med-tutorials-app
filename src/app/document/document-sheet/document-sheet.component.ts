@@ -21,7 +21,6 @@ export class DocumentSheetComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private exportDocumentService: ExportDocumentService,
               public dialog: MatDialog,
-              // private platform: Platform,
               private breakpointObserver: BreakpointObserver
   ) {}
 

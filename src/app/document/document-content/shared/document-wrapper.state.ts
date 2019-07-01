@@ -12,6 +12,7 @@ export interface DocumentWrapperState {
   editMode: boolean;
   selectedElement: Element;
   canMoveUp: boolean;
+  canDeletePage: boolean;
 }
 
 export interface Point {

@@ -12,6 +12,7 @@ import {
   DOCUMENT_WRAPPER_CANCEL_EDIT_ELEMENT,
   DOCUMENT_WRAPPER_MOVE_TO_PAGE,
   DOCUMENT_WRAPPER_SELECT_ELEMENT,
+  DOCUMENT_WRAPPER_DELETE_PAGES,
   DocumentWrapperActions
 } from './document-wrapper.actions';
 import {DocumentWrapperState, Point} from './document-wrapper.state';
@@ -28,6 +29,7 @@ export function documentWrapperReducer(state: DocumentWrapperState, action: Docu
         editMode: false,
         selectedElement: null,
         canMoveUp: true,
+        canDeletePage: false,
       } as DocumentWrapperState;
 
       return buildWrapper(initState);
@@ -58,6 +60,9 @@ export function documentWrapperReducer(state: DocumentWrapperState, action: Docu
     case DOCUMENT_WRAPPER_INSERT_PAGES:
       insertPages(state, action.payload as number);
       return buildWrapper(state);
+    case DOCUMENT_WRAPPER_DELETE_PAGES:
+      deletePages(state, action.payload as number);
+    return buildWrapper(state);
     case DOCUMENT_WRAPPER_MOVE_TO_PAGE:
       moveToPage(state, action.payload.p, action.payload.jump);
       return buildWrapper(state);
@@ -168,16 +173,45 @@ function saveElement(state: DocumentWrapperState, element: Element) {
   }
 }
 
-function insertPages(state: DocumentWrapperState, items: number){
-  state.currentPage+=items;
+function insertPages(state: DocumentWrapperState, pages: number){
+  state.currentPage+=pages;
+  state.canDeletePage = true;
   cancelEditElement(state);
-  shiftPagesRight(state, state.currentPage, items);
+  shiftPagesRight(state, state.currentPage, pages);
 }
 
-function shiftPagesRight(state: DocumentWrapperState, page: number, items: number) {
+function deletePages(state: DocumentWrapperState, pages: number){
+  if(chackCanDeletePage(state, state.currentPage)){
+    for(let page = state.currentPage; page<state.currentPage + pages; page++){
+      state.elements = state.elements.filter(elt => elt.page !== page);
+    }
+    shiftPagesLeft(state, state.currentPage + pages, pages);
+    cancelEditElement(state);
+    state.currentPage--;
+  } else if(state.currentPage>0){
+    state.currentPage--;
+  } else {
+    state.canDeletePage = false;
+  }
+}
+
+function chackCanDeletePage(state: DocumentWrapperState, page: number){
+  return state.elements.filter(elt =>elt.page == page).length>0;
+}
+
+function shiftPagesRight(state: DocumentWrapperState, page: number, pages: number) {
   state.elements = state.elements.map(element => {
     if (element.page >= page) {
-      element.page+=items;
+      element.page+=pages;
+    }
+    return element;
+  });
+}
+
+function shiftPagesLeft(state: DocumentWrapperState, page: number, pages: number) {
+  state.elements = state.elements.map(element => {
+    if (element.page >= page) {
+      element.page-=pages;
     }
     return element;
   });

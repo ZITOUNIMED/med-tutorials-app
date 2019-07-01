@@ -53,7 +53,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
 
 
   ngOnChanges(changes) {
-    if (changes.document) {
+    if (changes.doc) {
       this.appStoreService.initDocumentWrapper(this.doc.elements);
     }
   }
