@@ -1,10 +1,15 @@
 <div>
   <h2>{{ document.name }}</h2>
 </div>
-<div>
-  <app-document-content [doc]="document"
-    (documentChaned)="document=$event">
-  </app-document-content>
+<div class="row">
+  <div class="col-md-2">
+    <app-index [doc]="document"></app-index>
+  </div>
+  <div class="col-md-10">
+    <app-document-content [doc]="document"
+      (documentChaned)="document=$event">
+    </app-document-content>
+  </div>
 </div>
 <div class="pull-right">
   <button id="btnGroupDrop2" type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown"

@@ -16,6 +16,7 @@ export const DOCUMENT_WRAPPER_CHANGE_EDIT_MODE = 'DOCUMENT_WRAPPER_CHANGE_EDIT_M
 export const DOCUMENT_WRAPPER_CANCEL_EDIT_ELEMENT = 'DOCUMENT_WRAPPER_CANCEL_EDIT_ELEMENT';
 export const DOCUMENT_WRAPPER_MOVE_TO_PAGE = 'DOCUMENT_WRAPPER_MOVE_TO_PAGE';
 export const DOCUMENT_WRAPPER_DELETE_PAGES = 'DOCUMENT_WRAPPER_DELETE_PAGES';
+export const DOCUMENT_WRAPPER_GO_TO_PAGE = 'DOCUMENT_WRAPPER_GO_TO_PAGE';
 
 export type DocumentWrapperActions = DocumentWrapperInitAction |
   DocumentWrapperGoToNextPageAction |
@@ -30,7 +31,8 @@ export type DocumentWrapperActions = DocumentWrapperInitAction |
   DocumentWrapperChangeEditModeAction |
   DocumentWrapperCancelEditElementAction |
   DocumentWrapperMoveToPageAction |
-  DocumentWrapperSelectElementAction
+  DocumentWrapperSelectElementAction |
+  DocumentWrapperGoToPageAction
   ;
 
 export class DocumentWrapperInitAction implements Action {
@@ -91,6 +93,13 @@ export class DocumentWrapperSelectElementAction implements Action {
 
 export class DocumentWrapperInserPagesAction implements Action {
   readonly type = DOCUMENT_WRAPPER_INSERT_PAGES;
+
+  constructor(public payload: number) {
+  }
+}
+
+export class DocumentWrapperGoToPageAction implements Action {
+  readonly type = DOCUMENT_WRAPPER_GO_TO_PAGE;
 
   constructor(public payload: number) {
   }

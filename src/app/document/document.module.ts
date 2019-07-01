@@ -20,6 +20,7 @@ import { DisplayPdfReportComponent } from './shared/modal/display-pdf-report/dis
 import { ContentHeaderComponent } from './document-content/content-header/content-header.component';
 import { ContentMoveElementComponent } from './document-content/content-move-element/content-move-element.component';
 import { DocumentPermissionsService } from './shared/service/document-permissions.service';
+import { IndexComponent } from './index/index.component';
 
 @NgModule({
   imports: [AppMaterialModule,
@@ -42,6 +43,7 @@ import { DocumentPermissionsService } from './shared/service/document-permission
     DisplayPdfReportComponent,
     ContentHeaderComponent,
     ContentMoveElementComponent,
+    IndexComponent,
   ],
   providers: [ExportDocumentService, DocumentPermissionsService],
   entryComponents: [

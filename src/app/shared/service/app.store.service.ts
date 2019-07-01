@@ -16,7 +16,8 @@ import {
   DocumentWrapperInserPagesAction, DocumentWrapperDeleteElementAction,
   DocumentWrapperMoveUpAction, DocumentWrapperChangeEditModeAction,
   DocumentWrapperCancelEditElementAction, DocumentWrapperMoveToPageAction,
-  DocumentWrapperSelectElementAction, DocumentWrapperDeletePagesAction
+  DocumentWrapperSelectElementAction, DocumentWrapperDeletePagesAction,
+  DocumentWrapperGoToPageAction
 } from '../../document/document-content/shared/document-wrapper.actions';
 import {DocumentWrapperState, Point} from '../../document/document-content/shared/document-wrapper.state';
 import { oc } from '../app-utils';
@@ -67,6 +68,10 @@ export class AppStoreService {
 
   goToNextPage(accept?: boolean) {
       this.store.dispatch(new DocumentWrapperGoToNextPageAction(accept));
+  }
+
+  goToPage(page: number){
+    this.store.dispatch(new DocumentWrapperGoToPageAction(page));
   }
 
   moveDown(point: Point) {
