@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import {Element} from '../../shared/model/element.model';
 import {ElementType} from '../../shared/element-type';
 
@@ -7,13 +7,17 @@ import {ElementType} from '../../shared/element-type';
   templateUrl: './element-text-sheet.component.html',
   styleUrls: ['./element-text-sheet.component.css']
 })
-export class ElementTextSheetComponent implements OnInit {
+export class ElementTextSheetComponent implements OnChanges {
   ElementType = ElementType;
   @Input() element: Element;
-  textLines = [];
+  lineTotalCount = 1;
 
-  ngOnInit() {
-    this.textLines = this.element && this.element.text && this.element.text.split('\n') || [];
-    this.textLines = this.textLines.map(line => line.replace(/ /g, '&nbsp;'));
+  ngOnChanges(changes){
+    if(changes && changes.element && changes.element.currentValue && changes.element.currentValue.text){
+      const text = changes.element.currentValue.text;
+      this.lineTotalCount = (text.split('\n') || []).length;
+    } else {
+      this.lineTotalCount = 1;
+    }
   }
 }
