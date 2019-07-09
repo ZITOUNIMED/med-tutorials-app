@@ -21,6 +21,7 @@ import { ContentHeaderComponent } from './document-content/content-header/conten
 import { ContentMoveElementComponent } from './document-content/content-move-element/content-move-element.component';
 import { DocumentPermissionsService } from './shared/service/document-permissions.service';
 import { IndexComponent } from './index/index.component';
+import { DisplayTextComponent } from './document-content/element-text-sheet/display-text/display-text.component';
 
 @NgModule({
   imports: [AppMaterialModule,
@@ -44,6 +45,7 @@ import { IndexComponent } from './index/index.component';
     ContentHeaderComponent,
     ContentMoveElementComponent,
     IndexComponent,
+    DisplayTextComponent,
   ],
   providers: [ExportDocumentService, DocumentPermissionsService],
   entryComponents: [
