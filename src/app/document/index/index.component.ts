@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { ElementType } from "../shared/element-type";
 import { isNotEmptyArray } from "src/app/shared/app-utils";
 import { Element } from '../shared/model/element.model';

@@ -36,7 +36,7 @@ export class AccountComponent implements OnInit {
       }, error => {
         this.appStoreService.addErrorNotif(error.status, error.message);
       }, () => {
-        this.appStoreService.startLoading();
+        this.appStoreService.stopLoading();
       });
   }
 
