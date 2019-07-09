@@ -21,11 +21,16 @@ export const ELEMENTS_CHOICES = [{
 {
   key: ElementType.MEDIUM_TITLE,
   value: 'Titre moyen'
-}, {
+},
+{
   key: ElementType.SMALL_TITLE,
   value: 'Titre petit'
 },
 {
   key: ElementType.VERY_SMALL_TITLE,
   value: 'Très petit titre'
+},
+{
+  key: ElementType.LIST,
+  value: 'Liste'
 }];

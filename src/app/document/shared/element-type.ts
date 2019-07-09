@@ -8,4 +8,5 @@ export enum ElementType {
   SMALL_TITLE = 'SMALL_TITLE',
   VERY_SMALL_TITLE = 'VERY_SMALL_TITLE',
   CONTENT = 'CONTENT',
+  LIST = 'LIST',
 }
