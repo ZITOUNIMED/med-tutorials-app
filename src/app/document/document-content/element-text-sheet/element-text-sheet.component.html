@@ -1,17 +1,13 @@
 <div [ngSwitch]="element.type">
   <div *ngSwitchCase="ElementType.SOURCE_CODE">
       <textarea class="sourceCodeArea"
-        rows="{{textLines.length}}"
+        rows="{{lineTotalCount}}"
         disabled="disabled"
         [value]="element.text"
       ></textarea>
   </div>
   <div *ngSwitchCase="ElementType.TEXT">
-    <div>
-      <span *ngFor="let line of textLines">
-        <i [innerHTML]="line"></i><br/>
-      </span>
-    </div>
+    <div [innerHTML]="element.text"></div>
   </div>
   <div *ngSwitchCase="ElementType.BIG_TITLE">
     <h1>{{ element.text }}</h1>
