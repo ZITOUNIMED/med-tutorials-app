@@ -15,21 +15,11 @@
     </mat-form-field>
   </div>
   <div [ngSwitch]="true" *ngIf="elementChoiceKey">
-    <div
-      *ngSwitchCase="
-        elementChoiceKey === ElementType.SOURCE_CODE ||
-        elementChoiceKey === ElementType.TEXT
-      "
-      class="form-group"
-    >
-      <mat-form-field class="example-full-width">
-        <textarea
-          matInput
-          placeholder="Text Content here!"
-          rows="7"
-          formControlName="text"
-        ></textarea>
-      </mat-form-field>
+    <div *ngSwitchCase="elementChoiceKey === ElementType.TEXT" class="form-group">
+      <app-text-palette formControlName="text"></app-text-palette>
+    </div>
+    <div  *ngSwitchCase="elementChoiceKey === ElementType.SOURCE_CODE" class="form-group">
+      <app-textarea-palette formControlName="text"></app-textarea-palette>
     </div>
     <div
       *ngSwitchCase="
@@ -40,14 +30,10 @@
       "
       class="form-group"
     >
-      <mat-form-field class="example-full-width">
-        <input
-          type="text"
-          placeholder="Title Here!"
-          matInput
-          formControlName="text"
-        />
-      </mat-form-field>
+      <app-title-palette formControlName="text"></app-title-palette>
+    </div>
+    <div *ngSwitchCase="elementChoiceKey === ElementType.LIST" class="form-group">
+      <app-list-palette formControlName="text"></app-list-palette>
     </div>
   </div>
   <div class="form-group">

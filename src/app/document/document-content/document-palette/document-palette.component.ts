@@ -83,3 +83,71 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
       : 0;
   }
 }
+// import {
+//   Component,
+//   Input,
+//   Output,
+//   EventEmitter,
+//   OnChanges
+// } from '@angular/core';
+// import {ELEMENTS_CHOICES} from '../../shared/element-choice';
+// import {ElementType} from '../../shared/element-type';
+// import {Element} from '../../shared/model/element.model';
+//
+// @Component({
+//   selector: 'app-document-palette',
+//   templateUrl: './document-palette.component.html',
+//   styleUrls: ['./document-palette.component.css']
+// })
+// export class DocumentPaletteComponent implements OnChanges {
+//   ELEMENTS_CHOICES = ELEMENTS_CHOICES;
+//   ElementType = ElementType;
+//
+//   @Output() onSubmitChange = new EventEmitter<Element>();
+//   @Output() cancelChange = new EventEmitter<boolean>();
+//   @Input() element: Element;
+//
+//   maxTextLength = 1200;
+//   isEditElement = false;
+//
+//   elementType: ElementType;
+//   text: string;
+//
+//   onSubmit() {
+//     const element: Element = {
+//       id: this.element ? this.element.id : null,
+//       type: this.elementType,
+//       text: this.text,
+//       row: this.element ? this.element.row : -1,
+//       page: this.element ? this.element.page : -1,
+//     };
+//     this.onSubmitChange.emit(element);
+//     this.clearForm();
+//   }
+//
+//   onCancel() {
+//     this.clearForm();
+//     this.cancelChange.emit(true);
+//   }
+//
+//   clearForm() {
+//     this.isEditElement = false;
+//     this.element = null;
+//     this.text = '';
+//     this.elementType = null;
+//   }
+//
+//   ngOnChanges(changes: any) {
+//     if ( changes.element && changes.element.currentValue){
+//       this.text = this.element.text;
+//       this.elementType = this.element.type;
+//       this.isEditElement = true;
+//     } else {
+//       this.text = '';
+//     }
+//   }
+//
+//   get textSize() {
+//     return this.text && this.text.length || 0;
+//   }
+// }
