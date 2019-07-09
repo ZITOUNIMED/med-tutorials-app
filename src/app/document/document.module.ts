@@ -26,6 +26,7 @@ import { ListPaletteComponent } from './document-content/document-palette/list-p
 import { TextPaletteComponent } from './document-content/document-palette/text-palette/text-palette.component';
 import { TextareaPaletteComponent } from './document-content/document-palette/textarea-palette/textarea-palette.component';
 import { TitlePaletteComponent } from './document-content/document-palette/title-palette/title-palette.component';
+import { DisplayListComponent } from './document-content/element-text-sheet/display-list/display-list.component';
 
 @NgModule({
   imports: [AppMaterialModule,
@@ -54,6 +55,7 @@ import { TitlePaletteComponent } from './document-content/document-palette/title
     TextPaletteComponent,
     TextareaPaletteComponent,
     TitlePaletteComponent,
+    DisplayListComponent,
   ],
   providers: [ExportDocumentService, DocumentPermissionsService],
   entryComponents: [
