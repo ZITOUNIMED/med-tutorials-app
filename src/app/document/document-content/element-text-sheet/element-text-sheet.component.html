@@ -7,7 +7,7 @@
       ></textarea>
   </div>
   <div *ngSwitchCase="ElementType.TEXT">
-    <div [innerHTML]="element.text"></div>
+    <app-display-text [text]="element.text"></app-display-text>
   </div>
   <div *ngSwitchCase="ElementType.BIG_TITLE">
     <h1>{{ element.text }}</h1>
