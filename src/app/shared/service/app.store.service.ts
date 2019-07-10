@@ -41,12 +41,12 @@ export class AppStoreService {
       this.store.dispatch(new NotificationsAddAction(notif));
   }
 
-  startLoading(from?: string) {
-    this.store.dispatch(new StartLoadingAction(from));
+  startLoading() {
+    this.store.dispatch(new StartLoadingAction());
   }
 
-  stopLoading(by?: string) {
-    this.store.dispatch(new StopLoadingAction(by));
+  stopLoading() {
+    this.store.dispatch(new StopLoadingAction());
   }
 
   getUser(): Observable<User> {

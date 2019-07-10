@@ -29,16 +29,16 @@ export class AuthenticationGuardService implements CanActivate {
       const [usernameFromStore, passwordFromStore] = [this.appLocalStorageService.get(USERNAME_KEY),
         this.appLocalStorageService.get(CRIPTED_PASSWAORD_KEY)];
       if (usernameFromStore && passwordFromStore) {
-        this.appStoreService.startLoading('resolver signin');
+        this.appStoreService.startLoading();
         return this.authService.signIn(usernameFromStore, passwordFromStore)
           .toPromise()
           .then(res => {
-            this.appStoreService.stopLoading('resolver signin');
+            this.appStoreService.stopLoading();
             this.store.dispatch(new PrincipalSaveAction(res));
             return true;
           })
           .catch(() => {
-            this.appStoreService.stopLoading('resolver signin');
+            this.appStoreService.stopLoading();
           this.router.navigate(['/auth/login']);
           return false;
         });

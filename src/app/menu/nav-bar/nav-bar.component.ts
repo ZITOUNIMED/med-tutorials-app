@@ -67,7 +67,7 @@ export class NavBarComponent implements OnInit, OnChanges {
   }
 
   loadDocumentsSamples() {
-    this.appStoreService.startLoading('load samples');
+    this.appStoreService.startLoading();
     this.documentService.getDocumentsSamples().subscribe(samples => {
       this.documentsSamples = samples;
     }, () => {},
