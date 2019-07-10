@@ -35,6 +35,7 @@ export class AttachmentPaletteComponent extends AbstractPaletteComponent {
     const imageSize = sizeValues(this.attachmentSizeType);
     this.element.attachment.width = imageSize.width;
     this.element.attachment.height = imageSize.height;
+    this.onChange(this.element);
   }
 
   get selectedFileUrl() {
@@ -49,14 +50,30 @@ export class AttachmentPaletteComponent extends AbstractPaletteComponent {
     }
   }
 
+  onWidthChange(width){
+    this.element.attachment.width = width;
+    this.onChange(this.element);
+  }
+
+  onHeightChange(height){
+    this.element.attachment.height = height;
+    this.onChange(this.element);
+  }
+
   uploadImage(){
     this.appStoreService.startLoading();
     this.uploadService.uploadFile(this.selectedFile, this.element.attachment.width, this.element.attachment.height)
     .subscribe(savedAttachment => {
-      this.element.attachment = savedAttachment.body;
+      this.element.attachment = savedAttachment;
+      this.onChange(this.element);
     }, error =>{},
     () => {
       this.appStoreService.stopLoading();
     });
+  }
+
+  removeImage(){
+    // TODO: remove image from db
+    this.selectedFile = null;
   }
 }

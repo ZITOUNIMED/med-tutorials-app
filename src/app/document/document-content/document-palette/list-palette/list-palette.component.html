@@ -1,5 +1,5 @@
 <div>
-  <ul [innerHtml]="data" #items></ul>
+  <ul [innerHtml]="element.text" #items></ul>
 </div>
 <div>
   <mat-form-field class="example-full-width">
@@ -10,6 +10,6 @@
    </textarea>
   </mat-form-field>
  <button mat-stroked-button color="primary" (click)="addItem()">
-   ADD
+   ADD ITEM
  </button>
 </div>
