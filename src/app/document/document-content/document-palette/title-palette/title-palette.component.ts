@@ -13,4 +13,9 @@ import { AbstractPaletteComponent } from '../abstract-palette.component';
                }
         ]
 })
-export class TitlePaletteComponent extends AbstractPaletteComponent {}
+export class TitlePaletteComponent extends AbstractPaletteComponent {
+  onTextChange($event){
+    this.element.text = $event;
+    this.onChange(this.element);
+  }
+}

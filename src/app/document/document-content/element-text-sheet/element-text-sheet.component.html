@@ -9,6 +9,9 @@
   <div *ngSwitchCase="ElementType.TEXT">
     <app-display-text [text]="element.text"></app-display-text>
   </div>
+  <div *ngSwitchCase="ElementType.ATTACHMENT">
+    <app-display-attachment [element]="element"></app-display-attachment>
+  </div>
   <div *ngSwitchCase="ElementType.LIST">
     <app-display-list [text]="element.text"></app-display-list>
   </div>

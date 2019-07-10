@@ -1,0 +1,33 @@
+<div>
+  <input type="file" (change)="onFileChange($event)">
+  <div *ngIf="selectedFileUrl">
+    <div>
+      Widht: <input type="number" name="width" [(ngModel)]="element.attachment.width"/>&nbsp;&nbsp;
+      height: <input type="number" name="height" [(ngModel)]="element.attachment.height" />&nbsp;&nbsp;
+      Image size:
+      <mat-form-field>
+        <mat-select
+          placeholder="Select Attachment Type!"
+          name="attachmentSizeType"
+          [(ngModel)]="attachmentSizeType"
+          (ngModelChange)="selectAttachmentSizeType()"
+        >
+          <mat-option
+            *ngFor="let choice of ATTACHMENT_SIZE_CHOICES"
+            [value]="choice.key"
+            >{{ choice.value }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+      <img [src]="selectedFileUrl" width="{{element.attachment.width}}" height="{{element.attachment.height}}" />
+    </div>
+    <div>
+      <br/>
+      <button mat-stroked-button color="primary" (click)="uploadImage()">
+        ADD
+      </button>
+    </div>
+  </div>
+</div>

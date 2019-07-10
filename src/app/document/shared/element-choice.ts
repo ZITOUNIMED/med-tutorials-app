@@ -33,4 +33,8 @@ export const ELEMENTS_CHOICES = [{
 {
   key: ElementType.LIST,
   value: 'Liste'
+},
+{
+  key: ElementType.ATTACHMENT,
+  value: 'Attachment'
 }];

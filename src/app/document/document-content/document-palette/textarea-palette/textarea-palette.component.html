@@ -3,7 +3,8 @@
     matInput
     placeholder="Text Content here!"
     rows="7"
-    (ngModelChange)="onChange($event)"
-    [ngModel]="data"
+    (ngModelChange)="onTextChange($event)"
+    [ngModel]="element.text"
   ></textarea>
 </mat-form-field>
+<div>Size: {{ element.text.length }}/{{ MAX_TEXT_LENGTH }}</div>

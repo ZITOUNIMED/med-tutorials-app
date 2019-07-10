@@ -1,5 +1,7 @@
 import { ControlValueAccessor } from "@angular/forms";
 
+import {Element, emptyElement} from '../../shared/model/element.model';
+
 export abstract class AbstractPaletteComponent implements ControlValueAccessor {
   /** OnChange */
   private fnChange = (_: any) => {};
@@ -7,10 +9,14 @@ export abstract class AbstractPaletteComponent implements ControlValueAccessor {
   /** OnTouched */
   private fnTouched = () => {};
 
-  data: any;
+  element: Element;
 
   writeValue(obj: any): void {
-    this.data = obj;
+    if(obj){
+      this.element = obj;
+    } else {
+        this.element = emptyElement();
+    }
   }
 
   registerOnChange(fn: any): void {
@@ -26,7 +32,7 @@ export abstract class AbstractPaletteComponent implements ControlValueAccessor {
   }
 
   protected onChange($event) {
-    this.data = $event;
+    this.element = $event;
     this.fnChange($event);
   }
 
