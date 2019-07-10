@@ -3,7 +3,7 @@ import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/rou
 import {Observable} from 'rxjs';
 import {DocumentService} from './document.service';
 import {Document} from '../model/document.model';
-import {tap} from 'rxjs/internal/operators';
+import {tap, catchError, map} from 'rxjs/internal/operators';
 import {AppStoreService} from '../../../shared/service/app.store.service';
 
 @Injectable({
@@ -19,8 +19,13 @@ export class DocumentResolverService implements Resolve<Document> {
     this.appStoreService.startLoading();
     return this.documentService.getDocument(id)
       .pipe(
-        tap( () => {
+        map(doc => {
           this.appStoreService.stopLoading();
+          return doc;
+        }),
+        catchError( (err, caught) => {
+          this.appStoreService.stopLoading();
+          return caught;
         })
       );
   }

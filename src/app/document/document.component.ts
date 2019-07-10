@@ -117,14 +117,14 @@ export class DocumentComponent implements OnInit {
   }
 
   loadDocuments() {
-    this.appStoreService.startLoading('load documents');
+    this.appStoreService.startLoading();
     this.documentService.getDocuments().subscribe(documents => {
       this.documents = documents;
       this.appSnackbarService.openSnackBar('SUCCESS!: Loading documents', 'LOAD');
     }, () => {
       this.appSnackbarService.openSnackBar('ERROR!: An error was occured on loading documents', 'LOAD');
     }, () => {
-      this.appStoreService.stopLoading('load documents');
+      this.appStoreService.stopLoading();
     });
   }
 
