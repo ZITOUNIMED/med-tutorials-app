@@ -22,6 +22,13 @@ import { ContentMoveElementComponent } from './document-content/content-move-ele
 import { DocumentPermissionsService } from './shared/service/document-permissions.service';
 import { IndexComponent } from './index/index.component';
 import { DisplayTextComponent } from './document-content/element-text-sheet/display-text/display-text.component';
+import { ListPaletteComponent } from './document-content/document-palette/list-palette/list-palette.component';
+import { TextPaletteComponent } from './document-content/document-palette/text-palette/text-palette.component';
+import { TextareaPaletteComponent } from './document-content/document-palette/textarea-palette/textarea-palette.component';
+import { TitlePaletteComponent } from './document-content/document-palette/title-palette/title-palette.component';
+import { DisplayListComponent } from './document-content/element-text-sheet/display-list/display-list.component';
+import { DisplayAttachmentComponent } from './document-content/element-text-sheet/display-attachment/display-attachment.component';
+import { AttachmentPaletteComponent } from './document-content/document-palette/attachment-palette/attachment-palette.component';
 
 @NgModule({
   imports: [AppMaterialModule,
@@ -46,6 +53,13 @@ import { DisplayTextComponent } from './document-content/element-text-sheet/disp
     ContentMoveElementComponent,
     IndexComponent,
     DisplayTextComponent,
+    ListPaletteComponent,
+    TextPaletteComponent,
+    TextareaPaletteComponent,
+    TitlePaletteComponent,
+    DisplayListComponent,
+    DisplayAttachmentComponent,
+    AttachmentPaletteComponent,
   ],
   providers: [ExportDocumentService, DocumentPermissionsService],
   entryComponents: [

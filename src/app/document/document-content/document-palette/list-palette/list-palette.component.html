@@ -1,0 +1,15 @@
+<div>
+  <ul [innerHtml]="element.text" #items></ul>
+</div>
+<div>
+  <mat-form-field class="example-full-width">
+   <textarea
+     matInput
+     placeholder="New Text item"
+     rows="4" [formControl]="newItemControl">
+   </textarea>
+  </mat-form-field>
+ <button mat-stroked-button color="primary" (click)="addItem()">
+   ADD ITEM
+ </button>
+</div>

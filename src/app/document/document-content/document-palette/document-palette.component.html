@@ -1,10 +1,10 @@
-<form [formGroup]="elementForm">
+<div>
   <div class="form-group">
     <mat-form-field class="example-full-width">
       <mat-select
-        placeholder="Select an element!"
-        formControlName="type"
-        (ngModelChange)="selectElement()"
+        placeholder="Select Element Type!"
+        name="elementType"
+        [(ngModel)]="element.type"
       >
         <mat-option
           *ngFor="let elementChoice of ELEMENTS_CHOICES"
@@ -14,54 +14,39 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <div [ngSwitch]="true" *ngIf="elementChoiceKey">
-    <div
-      *ngSwitchCase="
-        elementChoiceKey === ElementType.SOURCE_CODE ||
-        elementChoiceKey === ElementType.TEXT
-      "
-      class="form-group"
-    >
-      <mat-form-field class="example-full-width">
-        <textarea
-          matInput
-          placeholder="Text Content here!"
-          rows="7"
-          formControlName="text"
-        ></textarea>
-      </mat-form-field>
+  <div [ngSwitch]="true" *ngIf="element.type">
+    <div *ngSwitchCase="element.type === ElementType.TEXT" class="form-group">
+      <app-text-palette [(ngModel)]="element"></app-text-palette>
+    </div>
+    <div *ngSwitchCase="element.type === ElementType.ATTACHMENT" class="form-group">
+      <app-attachment-palette [(ngModel)]="element"></app-attachment-palette>
+    </div>
+    <div *ngSwitchCase="element.type === ElementType.SOURCE_CODE" class="form-group">
+      <app-textarea-palette [(ngModel)]="element"></app-textarea-palette>
     </div>
     <div
-      *ngSwitchCase="
-        elementChoiceKey === ElementType.BIG_TITLE ||
-        elementChoiceKey === ElementType.MEDIUM_TITLE ||
-        elementChoiceKey === ElementType.SMALL_TITLE ||
-        elementChoiceKey === ElementType.VERY_SMALL_TITLE
-      "
-      class="form-group"
-    >
-      <mat-form-field class="example-full-width">
-        <input
-          type="text"
-          placeholder="Title Here!"
-          matInput
-          formControlName="text"
-        />
-      </mat-form-field>
+      *ngSwitchCase="element.type === ElementType.BIG_TITLE ||
+        element.type === ElementType.MEDIUM_TITLE ||
+        element.type === ElementType.SMALL_TITLE ||
+        element.type === ElementType.VERY_SMALL_TITLE"
+      class="form-group">
+      <app-title-palette [(ngModel)]="element"></app-title-palette>
+    </div>
+    <div *ngSwitchCase="element.type === ElementType.LIST" class="form-group">
+      <app-list-palette [(ngModel)]="element"></app-list-palette>
     </div>
   </div>
   <div class="form-group">
     <button
       mat-stroked-button
-      [disabled]="!element"
+      [disabled]="!element.type"
       (click)="onCancel()"
-      color="primary"
+      color="warn"
     >
       Cancel
     </button>
-    Size: {{ textSize }}/{{ maxTextLength }}
     <button
-      [disabled]="elementForm.pristine || elementForm.invalid"
+      [disabled]="!element?.id && !element?.text && !element?.attachment?.id"
       mat-flat-button
       (click)="onSubmit()"
       color="primary"
@@ -70,4 +55,4 @@
       {{ isEditElement ? "SAVE" : "ADD" }}
     </button>
   </div>
-</form>
+</div>

@@ -1,4 +1,31 @@
 <p></p>
+<div>
+  <input type="file" (change)="onFileChange($event)">
+  <div *ngIf="selectedFileUrl">
+    <div>
+      Widht: <input type="number" name="width" [(ngModel)]="width" />&nbsp;&nbsp;
+      height: <input type="number" name="height" [(ngModel)]="height" />&nbsp;&nbsp;
+      Image size:
+      <select name="imageSize" [(ngModel)]="imageSize" (ngModelChange)="selectImageSize()">
+        <option value="small">Small</option>
+        <option value="meduim">Meduim</option>
+        <option value="big">Big</option>
+      </select>
+    </div>
+    <div>
+      <img [src]="selectedFileUrl" width="{{width}}" height="{{height}}" />
+    </div>
+    <div>
+      <button (click)="saveImage()">Save</button>
+    </div>
+  </div>
+</div>
+<h2>Attachments</h2>
+<div *ngIf="attachments.length>0">
+  <div *ngFor="let attachment of attachments">
+    <img [src]="'data:image/jpeg;base64,'+attachment.data" width="{{attachment.width}}" height="{{attachment.height}}"/>
+  </div>
+</div>
 <div class="card">
   <div class="card-body">
     <div>

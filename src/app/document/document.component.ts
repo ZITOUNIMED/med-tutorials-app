@@ -9,6 +9,8 @@ import {AppStoreService} from '../shared/service/app.store.service';
 import { User } from '../user/shared/model/user.model';
 import {isNotEmptyArray, oc} from '../shared/app-utils';
 import { ConfidentialityTypes } from '../permissions/model/confidentiality-types';
+import { UploadService } from '../shared/service/upload.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-document',
@@ -18,15 +20,71 @@ import { ConfidentialityTypes } from '../permissions/model/confidentiality-types
 export class DocumentComponent implements OnInit {
   documents: Document[] = [];
   user: User;
+  width = 500;
+  height= 500;
+  imageSize= 'meduim';
+
+  selectImageSize(){
+    switch(this.imageSize){
+      case 'small':
+        this.width = 150;
+        this.height = 150;
+        break;
+      case 'meduim':
+        this.width = 500;
+        this.height= 500;
+        break;
+      case 'big':
+        this.width = 900;
+        this.height= 900;
+        break;
+      default:
+        this.width = 500;
+        this.height= 500;
+    }
+  }
+
+  attachments = [];
+  selectedFile = null;
 
   constructor(private documentService: DocumentService,
               public dialog: MatDialog,
               private appSnackbarService: AppSnackbarService,
-              private appStoreService: AppStoreService) {
+              private appStoreService: AppStoreService,
+              private uploadService: UploadService,
+              private sanitizer: DomSanitizer) {
   }
+
+  saveImage(){
+    this.uploadService.uploadFile(this.selectedFile, this.width, this.height)
+    .subscribe(res => {
+      this.loadAttachments();
+    })
+  }
+
+  get selectedFileUrl() {
+    return this.selectedFile && this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.selectedFile)) || '';
+  }
+
+  onFileChange($event){
+    const files = $event.srcElement.files;
+    if (oc(files).length) {
+      const file = files[0];
+      this.selectedFile = file;
+    }
+  }
+
+  private loadAttachments(){
+    this.uploadService.findAll().subscribe(list => {
+      this.attachments = list;
+    });
+  }
+
+
 
   ngOnInit() {
     this.loadDocuments();
+    this.loadAttachments();
     this.appStoreService.getUser()
     .subscribe(user => (this.user = user));
   }
