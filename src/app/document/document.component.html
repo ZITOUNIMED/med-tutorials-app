@@ -1,13 +1,20 @@
 <p></p>
 <div class="card">
+  <div class="card-header">
+    <h2>{{documentCollectionType === DocumentCollectionTypes.MY_FAVORITE_TUTOS ? 'Mes tutos favoris' :
+      documentCollectionType === DocumentCollectionTypes.MY_TUTOS ? 'Mes tutos' :
+      documentCollectionType === DocumentCollectionTypes.ALL_TUTOS ? 'Tous les tutos': 'Tutos publiques' }}
+    </h2>
+  </div>
   <div class="card-body">
     <div>
-      <button mat-stroked-button color="primary" (click)="openCreateDocumentDialog()">
+      <button mat-stroked-button color="primary" (click)="openImportDocumentFileDialog()" class="pull-right">
+        Import
+      </button>
+      <button mat-stroked-button color="primary" (click)="openCreateDocumentDialog()" class="pull-right">
         New
       </button>
-      <button mat-stroked-button color="primary" (click)="openImportDocumentFileDialog()">
-        Import document
-      </button>
+      <span>&nbsp;</span>
     </div>
     <div style="margin-top: 20px;">
       <app-document-list
