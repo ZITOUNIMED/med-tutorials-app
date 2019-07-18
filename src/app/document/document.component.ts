@@ -9,6 +9,8 @@ import {AppStoreService} from '../shared/service/app.store.service';
 import { User } from '../user/shared/model/user.model';
 import {isNotEmptyArray, oc} from '../shared/app-utils';
 import { ConfidentialityTypes } from '../permissions/model/confidentiality-types';
+import { ActivatedRoute } from '@angular/router';
+import { DocumentCollectionTypes } from './shared/document-collection-types';
 
 @Component({
   selector: 'app-document',
@@ -18,15 +20,22 @@ import { ConfidentialityTypes } from '../permissions/model/confidentiality-types
 export class DocumentComponent implements OnInit {
   documents: Document[] = [];
   user: User;
+  DocumentCollectionTypes = DocumentCollectionTypes;
+  documentCollectionType= DocumentCollectionTypes.PUBLIC_TUTOS;
 
   constructor(private documentService: DocumentService,
               public dialog: MatDialog,
               private appSnackbarService: AppSnackbarService,
-              private appStoreService: AppStoreService,) {
+              private appStoreService: AppStoreService,
+              private activatedRoute: ActivatedRoute ) {
   }
 
   ngOnInit() {
-    this.loadDocuments();
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.documentCollectionType = oc(params).documentCollectionType || DocumentCollectionTypes.PUBLIC_TUTOS;
+      this.loadDocuments();
+    });
+
     this.appStoreService.getUser()
     .subscribe(user => (this.user = user));
   }
@@ -112,13 +121,13 @@ export class DocumentComponent implements OnInit {
     this.loadDocuments();
   }
 
-  onDeleteDocument(deleted) {
+  onDeleteDocument(_deleted) {
     this.loadDocuments();
   }
 
   loadDocuments() {
     this.appStoreService.startLoading();
-    this.documentService.getDocuments().subscribe(documents => {
+    this.documentService.getDocuments(this.documentCollectionType).subscribe(documents => {
       this.documents = documents;
       this.appSnackbarService.openSnackBar('SUCCESS!: Loading documents', 'LOAD');
     }, () => {

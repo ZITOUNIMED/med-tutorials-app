@@ -14,6 +14,7 @@ import {CRIPTED_PASSWAORD_KEY, USERNAME_KEY} from '../../authentication/shared/m
 import {AppLocalStorageService} from '../../shared/service/app-local-storage.service';
 import {Store} from "@ngrx/store";
 import {AppState} from "../../shared/app.state";
+import { DocumentCollectionTypes } from '../../document/shared/document-collection-types';
 
 @Component({
   selector: 'app-nav-bar',
@@ -21,12 +22,12 @@ import {AppState} from "../../shared/app.state";
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent implements OnInit, OnChanges {
-
+  DocumentCollectionTypes = DocumentCollectionTypes;
   documentsSamples: DocumentSample[] = [];
   @Input() toolBarOpenClicked: boolean;
   @Input() drawer;
   user: User;
-  appUsersPermissions: AppPermissions;
+  adminPermissions: AppPermissions;
 
   constructor(private documentService: DocumentService,
               private store: Store<AppState>,
@@ -54,7 +55,7 @@ export class NavBarComponent implements OnInit, OnChanges {
           this.user = userInStore;
         }
     });
-    this.appUsersPermissions = {
+    this.adminPermissions = {
       targetType: AppTargetTypes.USER,
       roles: [UserRoleTypes.ROLE_ADMIN],
     };
