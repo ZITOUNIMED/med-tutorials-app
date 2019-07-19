@@ -12,7 +12,7 @@ import {AppState} from '../shared/app.state';
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
-
+  editMode=false;
   user: User;
 
   constructor(private userService: UserService,

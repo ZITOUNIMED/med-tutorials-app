@@ -105,11 +105,11 @@ export class DocumentListComponent implements OnInit {
     return this.documents.filter(document => document.name.toLocaleUpperCase().indexOf(filterValue) === 0);
   }
 
-  onOpenDocument(document: Document) {
+  onOpenDocument(document: AppDocument) {
     this.router.navigate(['/home', {outlets: { homeOutlet: `document/${document.id}`}}]);
   }
 
-  openDialogDeleteDocument(document: Document) {
+  openDialogDeleteDocument(document: AppDocument) {
     const dialogRef = this.dialog.open(GenerecDialogComponent, {
       width: '350px',
       data: {title: 'Delete Document', message: 'Do you want to delete the document: ' + document.name + ' ?'}
@@ -122,13 +122,13 @@ export class DocumentListComponent implements OnInit {
     });
   }
 
-  openDialogCreateUpdateDocument(document: Document) {
+  openDialogCreateUpdateDocument(document: AppDocument) {
     const dialogRef = this.dialog.open(CreateUpdateDocumentComponent, {
       data: {
         doc: document
       }
     });
-    dialogRef.afterClosed().subscribe((doc: Document) => {
+    dialogRef.afterClosed().subscribe((doc: AppDocument) => {
       if (doc) {
         doc.id = document.id;
         doc.elements = document.elements;
@@ -138,7 +138,7 @@ export class DocumentListComponent implements OnInit {
     });
   }
 
-  private saveDocument(document: Document) {
+  private saveDocument(document: AppDocument) {
     this.documentService.saveDocument(document).subscribe(
       res => {
         this.appSnackbarService.openSnackBar('Success!: Document is saved', 'SAVE');
@@ -155,11 +155,11 @@ export class DocumentListComponent implements OnInit {
       });
   }
 
-  displayFn(document?: Document): string | undefined {
+  displayFn(document?: AppDocument): string | undefined {
     return document ? document.name : undefined;
   }
 
-  getDocumentPermissions(document: Document): AppPermissions{
+  getDocumentPermissions(document: AppDocument): AppPermissions{
     return {
       targetType: AppTargetTypes.DOCUMENT,
       confidentialities: [],
