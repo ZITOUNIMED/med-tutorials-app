@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {Document} from './model/document.model';
+import {AppDocument} from './model/document.model';
 
 export const DOCUMENT_SELECT = 'DOCUMENT_SELECT';
 
@@ -8,6 +8,6 @@ export type DocumentActions = DocumentSelectAction;
 export class DocumentSelectAction implements Action {
   readonly type = DOCUMENT_SELECT;
 
-  constructor(public payload: Document) {
+  constructor(public payload: AppDocument) {
   }
 }

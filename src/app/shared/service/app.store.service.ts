@@ -8,7 +8,7 @@ import {map} from 'rxjs/internal/operators';
 import {UserState} from '../../user/shared/user.state';
 import {Observable} from 'rxjs';
 import {Element} from '../../document/shared/model/element.model';
-import {Document} from '../../document/shared/model/document.model';
+import {AppDocument} from '../../document/shared/model/document.model';
 import {
   DocumentWrapperGoToNextPageAction,
   DocumentWrapperInitAction, DocumentWrapperMoveDownAction, DocumentWrapperMoveElementAction,
@@ -122,7 +122,7 @@ export class AppStoreService {
     this.store.dispatch(new DocumentWrapperSelectElementAction(element));
   }
 
-  selectDocument(doc: Document) {
+  selectDocument(doc: AppDocument) {
     this.store.dispatch(new DocumentSelectAction(doc));
   }
 

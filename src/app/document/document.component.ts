@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Document} from './shared/model/document.model';
+import {AppDocument} from './shared/model/document.model';
 import {DocumentService} from './shared/service/document.service';
 import {MatDialog} from '@angular/material';
 import {AppSnackbarService} from '../shared/app-snackbar.service';
@@ -18,7 +18,7 @@ import { DocumentCollectionTypes } from './shared/document-collection-types';
   styleUrls: ['./document.component.css']
 })
 export class DocumentComponent implements OnInit {
-  documents: Document[] = [];
+  documents: AppDocument[] = [];
   user: User;
   DocumentCollectionTypes = DocumentCollectionTypes;
   queryParams: any;
@@ -46,10 +46,10 @@ export class DocumentComponent implements OnInit {
       data: {
         doc: {
           author: this.getUserAuthor(),
-        } as Document,
+        } as AppDocument,
       }
     });
-    dialogRef.afterClosed().subscribe((doc: Document) => {
+    dialogRef.afterClosed().subscribe((doc: AppDocument) => {
       if (doc) {
         this.saveNewDocument(doc);
       }
@@ -83,7 +83,7 @@ export class DocumentComponent implements OnInit {
     });
   }
 
-  private saveNewDocument(doc: Document) {
+  private saveNewDocument(doc: AppDocument) {
     if (oc(this.user).username) {
       doc.ownerUsername = this.user.username;
       this.saveDocument(doc);
@@ -92,7 +92,7 @@ export class DocumentComponent implements OnInit {
     }
   }
 
-  saveDocument(document: Document) {
+  saveDocument(document: AppDocument) {
     this.appStoreService.startLoading();
     this.documentService.saveDocument(document).subscribe(
       () => {
@@ -106,7 +106,7 @@ export class DocumentComponent implements OnInit {
       });
   }
 
-  saveAllDocuments(documents: Document[]) {
+  saveAllDocuments(documents: AppDocument[]) {
     this.appStoreService.startLoading();
     this.documentService.saveAllDocuments(documents).subscribe(
       () => {

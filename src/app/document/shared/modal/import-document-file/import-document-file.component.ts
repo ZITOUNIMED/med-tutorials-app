@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Document} from '../../model/document.model';
+import {AppDocument} from '../../model/document.model';
 import {Element} from '../../model/element.model';
 import {excelReportConfig} from '../../../../../environments/report/excel.config';
 import { oc, isNotEmptyArray } from 'src/app/shared/app-utils';
@@ -11,7 +11,7 @@ import { INPUT_TEXT_LONG } from '../../../../shared/constants-utils';
   templateUrl: './import-document-file.component.html'
 })
 export class ImportDocumentFileComponent implements OnInit {
-  _documents: Document[];
+  _documents: AppDocument[];
   fb = new FormBuilder();
   importForm: FormGroup;
   INPUT_TEXT_LONG = INPUT_TEXT_LONG;
@@ -53,7 +53,7 @@ export class ImportDocumentFileComponent implements OnInit {
               elements.push(element);
             }
           }
-          const doc: Document = {
+          const doc: AppDocument = {
             id: null,
             name: '',
             description: '',

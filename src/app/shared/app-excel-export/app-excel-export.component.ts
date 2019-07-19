@@ -2,7 +2,7 @@ import {Angular2CsvComponent, Options} from 'angular2-csv';
 import {Component, Input} from '@angular/core';
 import {excelReportConfig} from '../../../environments/report/excel.config';
 import {ExportDocumentService} from '../../document/shared/service/export-document.service';
-import {Document} from '../../document/shared/model/document.model';
+import {AppDocument} from '../../document/shared/model/document.model';
 
 @Component({
   selector: 'app-excel-export',
@@ -10,7 +10,7 @@ import {Document} from '../../document/shared/model/document.model';
   styleUrls: ['./app-excel-export.component.css']
 })
 export class AppExcelExportComponent extends Angular2CsvComponent {
-  @Input() document: Document;
+  @Input() document: AppDocument;
   data: any[];
   filename: string;
   options: Options;

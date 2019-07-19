@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA} from '@angular/material';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { ConfidentialityTypes } from 'src/app/permissions/model/confidentiality-types';
 import { oc } from 'src/app/shared/app-utils';
-import {Document} from '../../model/document.model';
+import {AppDocument} from '../../model/document.model';
 import { DESCRITION_MAX_LENGTH, INPUT_TEXT_LONG } from '../../../../shared/constants-utils';
 
 @Component({
@@ -19,7 +19,7 @@ export class CreateUpdateDocumentComponent implements OnInit {
 
   ConfidentialityTypes = ConfidentialityTypes;
   constructor(@Inject(MAT_DIALOG_DATA) public data: {
-    doc: Document
+    doc: AppDocument
   }) {}
 
   ngOnInit() {
@@ -44,7 +44,7 @@ export class CreateUpdateDocumentComponent implements OnInit {
     return oc(this.createUpdateDocForm.get('author'));
   }
 
-  get doc(): Document {
+  get doc(): AppDocument {
     let doc = null;
     if (this.createUpdateDocForm) {
       doc = {

@@ -6,7 +6,7 @@ import { map } from "rxjs/operators";
 import { isNotEmptyArray, oc } from "src/app/shared/app-utils";
 import { ConfidentialityTypes } from "src/app/permissions/model/confidentiality-types";
 import { VisibilityStates } from "src/app/permissions/model/visibility-states";
-import { Document } from '../model/document.model';
+import { AppDocument } from '../model/document.model';
 
 @Injectable()
 export class DocumentPermissionsService {
@@ -18,7 +18,7 @@ export class DocumentPermissionsService {
     .pipe(map(user => {
       let visibility = VisibilityStates.VISIBLE;
       if(oc(appPermissions).targetObject && user){
-        const doc = appPermissions.targetObject as Document;
+        const doc = appPermissions.targetObject as AppDocument;
         if(isNotEmptyArray(oc(appPermissions).confidentialities) &&
           appPermissions.confidentialities.some(c => c === ConfidentialityTypes.PRIVATE)){
           visibility = VisibilityStates.HIDEN;

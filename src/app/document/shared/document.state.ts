@@ -1,5 +1,5 @@
-import { Document } from './model/document.model';
+import { AppDocument } from './model/document.model';
 
 export interface DocumentState {
-  doc: Document;
+  doc: AppDocument;
 }
