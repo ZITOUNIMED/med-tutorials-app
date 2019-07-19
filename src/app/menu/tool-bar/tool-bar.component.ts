@@ -17,4 +17,6 @@ export class ToolBarComponent {
     this.toolBarOpenClicked.emit(this.value);
     this.value = !this.value;
   }
+
+
 }

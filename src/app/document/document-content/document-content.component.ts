@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnInit, Output, EventEmitter} from '@angular/core';
 import {DocumentService} from '../shared/service/document.service';
 import {AppSnackbarService} from '../../shared/app-snackbar.service';
-import {Document} from '../shared/model/document.model';
+import {AppDocument} from '../shared/model/document.model';
 import {AppStoreService} from '../../shared/service/app.store.service';
 import {Observable} from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -13,8 +13,8 @@ import {DocumentWrapperState} from './shared/document-wrapper.state';
   styleUrls: ['./document-content.component.css'],
 })
 export class DocumentContentComponent implements OnInit, OnChanges {
-  @Input() doc: Document;
-  @Output() documentChaned= new EventEmitter<Document>();
+  @Input() doc: AppDocument;
+  @Output() documentChaned= new EventEmitter<AppDocument>();
   documentWrapperState$: Observable<DocumentWrapperState>;
 
   constructor(private documentService: DocumentService,

@@ -45,7 +45,7 @@
       <div *ngIf="description.invalid && (description.dirty || description.touched)" class="alert alert-danger">
         <span *ngIf="description.errors.maxlength">Description's long must be less thant {{DOCUMENT_DESCRITION_MAX_LENGTH}}.</span>
       </div>
-      <div class="pull-right">{{description?.value?.length}} / {{DOCUMENT_DESCRITION_MAX_LENGTH}}</div>
+      <div class="pull-right">{{description?.value?.length}} / {{DESCRITION_MAX_LENGTH}}</div>
     </div>
   </form>
 </mat-dialog-content>

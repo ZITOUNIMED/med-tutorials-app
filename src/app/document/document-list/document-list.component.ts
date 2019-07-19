@@ -4,7 +4,7 @@ import {MatDialog} from '@angular/material';
 import {DocumentService} from '../shared/service/document.service';
 import {AppSnackbarService} from '../../shared/app-snackbar.service';
 import {GenerecDialogComponent} from '../../generec-dialog/generec-dialog.component';
-import {Document} from '../shared/model/document.model';
+import {AppDocument} from '../shared/model/document.model';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
@@ -14,6 +14,11 @@ import { AppPermissions } from 'src/app/permissions/model/app.permissions.model'
 import { AppTargetTypes } from 'src/app/permissions/model/app.target-types';
 import { ConfidentialityTypes } from 'src/app/permissions/model/confidentiality-types';
 import { oc } from 'src/app/shared/app-utils';
+import { AddDocumentToCollectionComponent } from '../shared/modal/add-document-to-collection/add-document-to-collection.component';
+import { AppCollection } from 'src/app/app-collection/shared/model/app-collection.model';
+import { AppCollectionService } from 'src/app/app-collection/shared/service/app-collection.service';
+import { AppStoreService } from 'src/app/shared/service/app.store.service';
+import { UserRoleTypes } from 'src/app/permissions/model/user-role-types';
 
 @Component({
   selector: 'app-document-list',
@@ -22,17 +27,19 @@ import { oc } from 'src/app/shared/app-utils';
 })
 export class DocumentListComponent implements OnInit {
 
-  @Input() documents: Document[] = [];
-  @Output() documentDeleted = new EventEmitter<boolean>();
-  @Output() renameDocumentChange = new EventEmitter<boolean>();
+  @Input() documents: AppDocument[] = [];
+  @Output() reloadChanged = new EventEmitter<boolean>();
   searchDocumentControl: FormControl;
-  filteredDocuments: Observable<Document[]>;
+  filteredDocuments: Observable<AppDocument[]>;
   ConfidentialityTypes = ConfidentialityTypes;
-
+  collections: AppCollection[];
+  adminPermissions: AppPermissions;
   constructor(private documentService: DocumentService,
               private appSnackbarService: AppSnackbarService,
               private dialog: MatDialog,
-              private router: Router, ) {
+              private router: Router,
+              private appCollectionService: AppCollectionService,
+              private appStoreService: AppStoreService,) {
   }
 
   ngOnInit() {
@@ -40,10 +47,57 @@ export class DocumentListComponent implements OnInit {
 
     this.filteredDocuments = this.searchDocumentControl.valueChanges
       .pipe(
-        startWith<string | Document>(''),
+        startWith<string | AppDocument>(''),
         map(value => typeof value === 'string' ? value : value.name),
         map(name => name ? this._filter(name) : this.documents.slice())
       );
+
+      this.loadCollections();
+
+      this.adminPermissions = {
+        targetType: AppTargetTypes.USER,
+        roles: [UserRoleTypes.ROLE_ADMIN],
+      };
+  }
+
+  private loadCollections(){
+    this.appStoreService.startLoading();
+    this.appCollectionService.findAll()
+    .subscribe(
+      collections => {
+        this.collections = collections;
+        this.appStoreService.stopLoading();
+      }, _error => {
+        this.appStoreService.stopLoading();
+      }
+    );
+  }
+
+  addDocumentToCollection(appDocument){
+    const dialogRef = this.dialog.open(AddDocumentToCollectionComponent, {
+      data: {
+        appDocument: appDocument,
+        collections: this.collections
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((collection: AppCollection) => {
+      if (collection) {
+        this.appStoreService.startLoading();
+        if(!collection.documents){
+          collection.documents = [];
+        }
+        collection.documents.push(appDocument);
+        this.appCollectionService.save(collection)
+        .subscribe(_res => {
+          this.appStoreService.stopLoading();
+          this.appSnackbarService.openSnackBar('SUCCESS: Document was added to collection', 'ADD');
+        }, error => {
+          this.appStoreService.stopLoading();
+          this.appStoreService.addErrorNotif(error.status, error.message);
+        })
+      }
+    });
   }
 
   private _filter(name: string) {
@@ -68,7 +122,7 @@ export class DocumentListComponent implements OnInit {
     });
   }
 
-  openDialogCreateUpdateDocumentName(document: Document) {
+  openDialogCreateUpdateDocument(document: Document) {
     const dialogRef = this.dialog.open(CreateUpdateDocumentComponent, {
       data: {
         doc: document
@@ -88,7 +142,7 @@ export class DocumentListComponent implements OnInit {
     this.documentService.saveDocument(document).subscribe(
       res => {
         this.appSnackbarService.openSnackBar('Success!: Document is saved', 'SAVE');
-        this.renameDocumentChange.emit(true);
+        this.reloadChanged.emit(true);
       }
     );
   }
@@ -97,7 +151,7 @@ export class DocumentListComponent implements OnInit {
     this.documentService.deleteDocument(id)
       .subscribe(res => {
         this.appSnackbarService.openSnackBar('Success!: Document Deleted', 'delete');
-        this.documentDeleted.emit(true);
+        this.reloadChanged.emit(true);
       });
   }
 

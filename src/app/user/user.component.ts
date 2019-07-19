@@ -6,6 +6,10 @@ import { MatDialog } from '@angular/material';
 import { RoleNameTypes } from './shared/model/role-name-types.enum';
 import { GenerecDialogComponent } from '../generec-dialog/generec-dialog.component';
 import {AppStoreService} from '../shared/service/app.store.service';
+import { AppCollectionService } from '../app-collection/shared/service/app-collection.service';
+import { AppCollection } from '../app-collection/shared/model/app-collection.model';
+import { AddMemberToCollectionComponent } from './shared/modal/add-member-to-collection/add-member-to-collection.component';
+import { AppSnackbarService } from '../shared/app-snackbar.service';
 
 @Component({
   selector: 'app-user',
@@ -15,13 +19,56 @@ import {AppStoreService} from '../shared/service/app.store.service';
 export class UserComponent implements OnInit {
   users: User[];
   RoleNameTypes = RoleNameTypes;
-
+  collections: AppCollection[];
   constructor(private userService: UserService,
               public dialog: MatDialog,
-              private appStoreService: AppStoreService) { }
+              private appStoreService: AppStoreService,
+              private appSnackbarService: AppSnackbarService,
+              private appCollectionService: AppCollectionService,) { }
 
   ngOnInit() {
     this.loadUsers();
+    this.loadCollections();
+  }
+
+  private loadCollections(){
+    this.appStoreService.startLoading();
+    this.appCollectionService.findAll()
+    .subscribe(
+      collections => {
+        this.collections = collections;
+        this.appStoreService.stopLoading();
+      }, _error => {
+        this.appStoreService.stopLoading();
+      }
+    );
+  }
+
+  addMemberToCollection(user){
+    const dialogRef = this.dialog.open(AddMemberToCollectionComponent, {
+      data: {
+        member: user,
+        collections: this.collections
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((collection: AppCollection) => {
+      if (collection) {
+        this.appStoreService.startLoading();
+        if(!collection.members){
+          collection.members = [];
+        }
+        collection.members.push(user);
+        this.appCollectionService.save(collection)
+        .subscribe(_res => {
+          this.appStoreService.stopLoading();
+          this.appSnackbarService.openSnackBar('SUCCESS: member was added to collection', 'ADD');
+        }, error => {
+          this.appStoreService.stopLoading();
+          this.appStoreService.addErrorNotif(error.status, error.message);
+        })
+      }
+    });
   }
 
   loadUsers() {

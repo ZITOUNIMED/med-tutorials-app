@@ -1,9 +1,13 @@
 <p></p>
 <div class="card">
   <div class="card-header">
-    <h2>{{documentCollectionType === DocumentCollectionTypes.MY_FAVORITE_TUTOS ? 'Mes tutos favoris' :
-      documentCollectionType === DocumentCollectionTypes.MY_TUTOS ? 'Mes tutos' :
-      documentCollectionType === DocumentCollectionTypes.ALL_TUTOS ? 'Tous les tutos': 'Tutos publiques' }}
+    <h2 *ngIf="queryParams">{{
+      queryParams.collectionType === DocumentCollectionTypes.MY_FAVORITE_TUTOS ? 'Mes tutos favoris' :
+      queryParams.collectionType === DocumentCollectionTypes.MY_TUTOS ? 'Mes tutos' :
+      queryParams.collectionType === DocumentCollectionTypes.ALL_TUTOS ? 'Tous les tutos':
+      queryParams.collectionType === DocumentCollectionTypes.PUBLIC_TUTOS ? 'Tutos publiques':
+      !!queryParams.collectionId ? queryParams.collectionName : 'Unknown!'
+    }}
     </h2>
   </div>
   <div class="card-body">
@@ -19,8 +23,7 @@
     <div style="margin-top: 20px;">
       <app-document-list
         [documents]="documents"
-        (documentDeleted)="onDeleteDocument($event)"
-        (renameDocumentChange)="onRenameDocumentChange($event)"
+        (reloadChanged)="onReloadDocument($event)"
       ></app-document-list>
     </div>
   </div>

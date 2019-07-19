@@ -1,4 +1,4 @@
-import {Document} from '../model/document.model';
+import {AppDocument} from '../model/document.model';
 import {Element} from '../model/element.model';
 import {ElementType} from '../element-type';
 import * as jsPDF from 'jspdf';
@@ -13,7 +13,7 @@ const PAGE_CENTER = 100;
 @Injectable()
 export class ExportDocumentService {
 
-  exportAsPdf(doc: Document): any {
+  exportAsPdf(doc: AppDocument): any {
     const pdf = new jsPDF();
     pdf.page = 1;
     const htmlStringNodes = this.convertdocumentElementstoHtmlNodes(doc.elements);
@@ -39,7 +39,7 @@ export class ExportDocumentService {
   // iframe.nativeElement.src = pdf.output('datauristring');
   // pdf.save(document.name + '.pdf');
 
-  private insertPageHeader(doc: Document, pdf: any) {
+  private insertPageHeader(doc: AppDocument, pdf: any) {
     const page = pdf.internal.getCurrentPageInfo().pageNumber;
     if (page === 1) { // first page
       pdf.fromHTML(`<h3>${doc.name}<h3>`, PAGE_CENTER - 20, 10);

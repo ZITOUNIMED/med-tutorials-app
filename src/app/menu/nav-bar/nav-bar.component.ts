@@ -10,11 +10,11 @@ import { UserService } from '../../user/shared/service/user.service';
 import { AppPermissions } from 'src/app/permissions/model/app.permissions.model';
 import { UserRoleTypes } from 'src/app/permissions/model/user-role-types';
 import { AppTargetTypes } from 'src/app/permissions/model/app.target-types';
-import {CRIPTED_PASSWAORD_KEY, USERNAME_KEY} from '../../authentication/shared/model/principal.model';
-import {AppLocalStorageService} from '../../shared/service/app-local-storage.service';
 import {Store} from "@ngrx/store";
 import {AppState} from "../../shared/app.state";
 import { DocumentCollectionTypes } from '../../document/shared/document-collection-types';
+import { AppCollection } from 'src/app/app-collection/shared/model/app-collection.model';
+import { AppCollectionService } from 'src/app/app-collection/shared/service/app-collection.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -28,12 +28,14 @@ export class NavBarComponent implements OnInit, OnChanges {
   @Input() drawer;
   user: User;
   adminPermissions: AppPermissions;
+  collections: AppCollection[];
 
   constructor(private documentService: DocumentService,
               private store: Store<AppState>,
               private appStoreService: AppStoreService,
               private userService: UserService,
-              private appLocalStorageService: AppLocalStorageService) { }
+              private appCollectionService: AppCollectionService,
+              ) { }
 
   ngOnInit() {
     this.loadDocumentsSamples();
@@ -59,12 +61,20 @@ export class NavBarComponent implements OnInit, OnChanges {
       targetType: AppTargetTypes.USER,
       roles: [UserRoleTypes.ROLE_ADMIN],
     };
+    this.loadCollections();
   }
 
-  signout() {
-    this.appLocalStorageService.remove(USERNAME_KEY);
-    this.appLocalStorageService.remove(CRIPTED_PASSWAORD_KEY);
-    this.store.dispatch(new PrincipalCleanAction(true));
+  private loadCollections(){
+    this.appStoreService.startLoading();
+    this.appCollectionService.findAll()
+    .subscribe(
+      collections => {
+        this.collections = collections;
+        this.appStoreService.stopLoading();
+      }, _error => {
+        this.appStoreService.stopLoading();
+      }
+    );
   }
 
   loadDocumentsSamples() {

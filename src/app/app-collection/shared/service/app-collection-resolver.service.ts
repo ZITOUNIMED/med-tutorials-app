@@ -1,23 +1,23 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {Observable, throwError} from 'rxjs';
-import {DocumentService} from './document.service';
-import {AppDocument} from '../model/document.model';
 import {finalize, catchError} from 'rxjs/internal/operators';
-import {AppStoreService} from '../../../shared/service/app.store.service';
+import { AppStoreService } from '../../../shared/service/app.store.service';
+import { AppCollection } from '../model/app-collection.model';
+import { AppCollectionService } from './app-collection.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DocumentResolverService implements Resolve<AppDocument> {
-  constructor(private documentService: DocumentService,
+export class AppCollectionResolverService implements Resolve<AppCollection> {
+  constructor(private appCollectionService: AppCollectionService,
               private appStoreService: AppStoreService) {
   }
 
-  resolve(route: ActivatedRouteSnapshot, unused: RouterStateSnapshot): Observable<AppDocument> {
+  resolve(route: ActivatedRouteSnapshot, unused: RouterStateSnapshot): Observable<AppCollection> {
     const id = route.paramMap.get('id');
     this.appStoreService.startLoading();
-    return this.documentService.getDocument(id)
+    return this.appCollectionService.getCollection(id)
       .pipe(
         catchError(error => {
           this.appStoreService.addErrorNotif(error.status, error.message);

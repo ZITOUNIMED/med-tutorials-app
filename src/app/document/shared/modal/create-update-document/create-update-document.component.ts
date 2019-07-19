@@ -3,7 +3,8 @@ import {MAT_DIALOG_DATA} from '@angular/material';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { ConfidentialityTypes } from 'src/app/permissions/model/confidentiality-types';
 import { oc } from 'src/app/shared/app-utils';
-import {Document, DOCUMENT_DESCRITION_MAX_LENGTH, INPUT_TEXT_LONG} from '../../model/document.model';
+import {Document} from '../../model/document.model';
+import { DESCRITION_MAX_LENGTH, INPUT_TEXT_LONG } from '../../../../shared/constants-utils';
 
 @Component({
   selector: 'app-create-update-document',
@@ -13,7 +14,7 @@ import {Document, DOCUMENT_DESCRITION_MAX_LENGTH, INPUT_TEXT_LONG} from '../../m
 export class CreateUpdateDocumentComponent implements OnInit {
   createUpdateDocForm: FormGroup;
   fb = new FormBuilder();
-  DOCUMENT_DESCRITION_MAX_LENGTH = DOCUMENT_DESCRITION_MAX_LENGTH;
+  DESCRITION_MAX_LENGTH = DESCRITION_MAX_LENGTH;
   INPUT_TEXT_LONG = INPUT_TEXT_LONG;
 
   ConfidentialityTypes = ConfidentialityTypes;
@@ -27,7 +28,7 @@ export class CreateUpdateDocumentComponent implements OnInit {
       confidentiality: [oc(oc(this.data).doc).confidentiality ||
         ConfidentialityTypes.PRIVATE, Validators.required],
       author: [oc(oc(this.data).doc).author || '', [Validators.required, Validators.minLength(4), Validators.maxLength(INPUT_TEXT_LONG)]],
-      description: [oc(oc(this.data).doc).description || '', Validators.maxLength(DOCUMENT_DESCRITION_MAX_LENGTH)],
+      description: [oc(oc(this.data).doc).description || '', Validators.maxLength(DESCRITION_MAX_LENGTH)],
     });
   }
 

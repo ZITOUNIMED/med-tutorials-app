@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {environment} from '../../../../environments/environment';
-import { Document, DocumentSample } from '../model/document.model';
+import { AppDocument, DocumentSample } from '../model/document.model';
 import { DocumentCollectionTypes } from '../document-collection-types';
 
 @Injectable({
@@ -13,35 +13,44 @@ export class DocumentService {
 
   constructor(private http: HttpClient) {}
 
-  getDocuments(documentCollectionType?: DocumentCollectionTypes): Observable<Document[]> {
+  getDocuments(collectionType?: DocumentCollectionTypes, collectionId?: String): Observable<AppDocument[]> {
     let subUrl = '';
-    switch(documentCollectionType){
-      case DocumentCollectionTypes.PUBLIC_TUTOS:
-        subUrl = 'publicDocuments';
-        break;
-      case DocumentCollectionTypes.MY_FAVORITE_TUTOS:
-        subUrl = 'myFavoriteDocuments';
-        break;
-      case DocumentCollectionTypes.MY_TUTOS:
-        subUrl = 'myDocuments';
-        break;
-      case DocumentCollectionTypes.ALL_TUTOS:
-        subUrl = 'all';
-        break;
-      default: subUrl = '';
+    if(collectionId){
+      subUrl = this.getUrlByCollectionId(collectionId);
+    } else {
+      subUrl = this.getUrlByCollectionType(collectionType);
     }
-    return this.http.get<Document[]>(this.url + '/' + subUrl);
+
+    return this.http.get<AppDocument[]>(this.url + '/' + subUrl);
   }
 
-  getDocument(id: number|string): Observable<Document> {
-    return this.http.get<Document>(this.url + `/${id}`);
+  getUrlByCollectionId(collectionId: String): string {
+    return `byCollectionId/${collectionId}`;
   }
 
-  saveDocument(document: Document): Observable<any> {
+  getUrlByCollectionType(collectionType: DocumentCollectionTypes): string {
+    switch(collectionType){
+      case DocumentCollectionTypes.PUBLIC_TUTOS:
+        return 'publicDocuments';
+      case DocumentCollectionTypes.MY_FAVORITE_TUTOS:
+        return 'myFavoriteDocuments';
+      case DocumentCollectionTypes.MY_TUTOS:
+        return 'myDocuments';
+      case DocumentCollectionTypes.ALL_TUTOS:
+        return 'all';
+      default: return 'publicDocuments';
+    }
+  }
+
+  getDocument(id: number|string): Observable<AppDocument> {
+    return this.http.get<AppDocument>(this.url + `/${id}`);
+  }
+
+  saveDocument(document: AppDocument): Observable<any> {
     return this.http.post(this.url, document);
   }
 
-  saveAllDocuments(documents: Document[]): Observable<any> {
+  saveAllDocuments(documents: AppDocument[]): Observable<any> {
     return this.http.post(this.url + '/all', documents);
   }
 
