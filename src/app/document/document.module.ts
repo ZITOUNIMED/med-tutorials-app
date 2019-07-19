@@ -29,6 +29,7 @@ import { TitlePaletteComponent } from './document-content/document-palette/title
 import { DisplayListComponent } from './document-content/element-text-sheet/display-list/display-list.component';
 import { DisplayAttachmentComponent } from './document-content/element-text-sheet/display-attachment/display-attachment.component';
 import { AttachmentPaletteComponent } from './document-content/document-palette/attachment-palette/attachment-palette.component';
+import { AddDocumentToCollectionComponent } from './shared/modal/add-document-to-collection/add-document-to-collection.component';
 
 @NgModule({
   imports: [AppMaterialModule,
@@ -60,11 +61,13 @@ import { AttachmentPaletteComponent } from './document-content/document-palette/
     DisplayListComponent,
     DisplayAttachmentComponent,
     AttachmentPaletteComponent,
+    AddDocumentToCollectionComponent,
   ],
   providers: [ExportDocumentService, DocumentPermissionsService],
   entryComponents: [
     CreateUpdateDocumentComponent,
     ImportDocumentFileComponent,
-    DisplayPdfReportComponent]
+    DisplayPdfReportComponent,
+    AddDocumentToCollectionComponent]
 })
 export class DocumentModule {}

@@ -3,7 +3,7 @@ import {Observable} from 'rxjs';
 
 import {DocumentWrapperState} from '../shared/document-wrapper.state';
 import {AppStoreService} from '../../../shared/service/app.store.service';
-import { Document } from '../../shared/model/document.model';
+import { AppDocument } from '../../shared/model/document.model';
 import { AppPermissions } from 'src/app/permissions/model/app.permissions.model';
 import { AppTargetTypes } from 'src/app/permissions/model/app.target-types';
 import { oc } from 'src/app/shared/app-utils';
@@ -14,7 +14,7 @@ import { oc } from 'src/app/shared/app-utils';
 })
 export class ContentHeaderComponent implements OnInit, OnChanges{
   @Input() documentWrapperState$: Observable<DocumentWrapperState>;
-  @Input() doc: Document;
+  @Input() doc: AppDocument;
   documentPermissions: AppPermissions;
   constructor(public appStoreService: AppStoreService){}
 

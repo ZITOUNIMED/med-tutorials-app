@@ -7,6 +7,9 @@ import {DocumentResolverService} from './document/shared/service/document-resolv
 import {DocumentSheetComponent} from './document/document-sheet/document-sheet.component';
 import {AuthenticationGuardService} from './authentication/authentication-guard.service';
 import { UserComponent } from './user/user.component';
+import { AppCollectionComponent } from './app-collection/app-collection.component';
+import { AppCollectionSheetComponent } from './app-collection/app-collection-sheet/app-collection-sheet.component';
+import { AppCollectionResolverService } from './app-collection/shared/service/app-collection-resolver.service';
 
 const appRoutes: Routes = [
   { path: 'auth', loadChildren: './authentication/authentication.routed.module#AuthenticationRoutedModule'},
@@ -25,6 +28,15 @@ const appRoutes: Routes = [
         component: DocumentSheetComponent,
         resolve: {
           document: DocumentResolverService
+        }
+      },
+      { path: 'collection', component: AppCollectionComponent, outlet: 'homeOutlet'},
+      {
+        path: 'collection/:id',
+        outlet: 'homeOutlet',
+        component: AppCollectionSheetComponent,
+        resolve: {
+          collection: AppCollectionResolverService
         }
       },
     ]

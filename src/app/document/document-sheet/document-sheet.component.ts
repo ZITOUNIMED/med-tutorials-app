@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MatDialog} from '@angular/material';
 
-import {Document} from '../shared/model/document.model';
+import {AppDocument} from '../shared/model/document.model';
 import {ActivatedRoute} from '@angular/router';
 import {filter, map} from 'rxjs/internal/operators';
 import {ExportDocumentService} from '../shared/service/export-document.service';
@@ -14,7 +14,7 @@ import {BreakpointObserver} from '@angular/cdk/layout';
   styleUrls: ['./document-sheet.component.css']
 })
 export class DocumentSheetComponent implements OnInit {
-  document: Document;
+  document: AppDocument;
   @Output() returnToSelectDocument = new EventEmitter<boolean>();
   canDisplayModalPdf = false;
 

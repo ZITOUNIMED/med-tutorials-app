@@ -17,6 +17,7 @@
             <th>Enable</th>
             <th></th>
             <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -37,6 +38,11 @@
             <td>
               <button mat-stroked-button color="info" (click)="openCreateUpdateUser(user)">
                 <i class="fa fa-pencil"></i>
+              </button>
+            </td>
+            <td>
+              <button mat-stroked-button color="info" (click)="addMemberToCollection(user)">
+                <i class="fa fa-list" aria-hidden="true"></i>
               </button>
             </td>
           </tr>

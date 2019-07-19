@@ -5,6 +5,7 @@ import {AppMaterialModule} from '../app.material.module';
 import {RouterModule} from '@angular/router';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppDirectivesModule} from '../directive/app-directives.module';
+import { AccountMenuComponent } from './account-menu/account-menu.component';
 
 @NgModule({
   imports: [
@@ -12,7 +13,7 @@ import {AppDirectivesModule} from '../directive/app-directives.module';
     RouterModule,
     BrowserModule,
     AppDirectivesModule],
-  declarations: [NavBarComponent, ToolBarComponent],
+  declarations: [NavBarComponent, ToolBarComponent, AccountMenuComponent],
   exports: [NavBarComponent, ToolBarComponent]
 })
 export class AppMenuModule {}

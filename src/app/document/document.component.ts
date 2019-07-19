@@ -21,7 +21,7 @@ export class DocumentComponent implements OnInit {
   documents: Document[] = [];
   user: User;
   DocumentCollectionTypes = DocumentCollectionTypes;
-  documentCollectionType= DocumentCollectionTypes.PUBLIC_TUTOS;
+  queryParams: any;
 
   constructor(private documentService: DocumentService,
               public dialog: MatDialog,
@@ -32,7 +32,8 @@ export class DocumentComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
-      this.documentCollectionType = oc(params).documentCollectionType || DocumentCollectionTypes.PUBLIC_TUTOS;
+      this.queryParams = params;
+      // this.documentCollectionType = oc(params).documentCollectionType || DocumentCollectionTypes.PUBLIC_TUTOS;
       this.loadDocuments();
     });
 
@@ -96,11 +97,11 @@ export class DocumentComponent implements OnInit {
     this.documentService.saveDocument(document).subscribe(
       () => {
         this.appSnackbarService.openSnackBar('Success!: New Document is added', 'ADD');
+        this.appStoreService.stopLoading();
         this.loadDocuments();
       },
       error => {
         this.appStoreService.addErrorNotif(error.status, error.message);
-      }, () => {
         this.appStoreService.stopLoading();
       });
   }
@@ -110,36 +111,31 @@ export class DocumentComponent implements OnInit {
     this.documentService.saveAllDocuments(documents).subscribe(
       () => {
         this.appSnackbarService.openSnackBar('Success!: ' + documents.length + ' new documents were added', 'ADD MUILTIPLE');
+        this.appStoreService.stopLoading();
         this.loadDocuments();
       },
       error => {
         this.appStoreService.addErrorNotif(error.status, error.message);
+        this.appStoreService.stopLoading();
       });
   }
 
-  onDocumentAdded() {
-    this.loadDocuments();
-  }
-
-  onDeleteDocument(_deleted) {
-    this.loadDocuments();
+  onReloadDocument(reload) {
+    if(reload){
+      this.loadDocuments();
+    }
   }
 
   loadDocuments() {
     this.appStoreService.startLoading();
-    this.documentService.getDocuments(this.documentCollectionType).subscribe(documents => {
+    const {collectionType, collectionId} = this.queryParams;
+    this.documentService.getDocuments(collectionType, collectionId).subscribe(documents => {
       this.documents = documents;
       this.appSnackbarService.openSnackBar('SUCCESS!: Loading documents', 'LOAD');
-    }, () => {
-      this.appSnackbarService.openSnackBar('ERROR!: An error was occured on loading documents', 'LOAD');
-    }, () => {
+      this.appStoreService.stopLoading();
+    }, error => {
+      this.appStoreService.addErrorNotif(error.status, error.message);
       this.appStoreService.stopLoading();
     });
-  }
-
-  onRenameDocumentChange(isChanged: boolean) {
-    if (isChanged) {
-      this.loadDocuments();
-    }
   }
 }

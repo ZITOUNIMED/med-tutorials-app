@@ -1,10 +1,11 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Document, INPUT_TEXT_LONG} from '../../model/document.model';
+import {Document} from '../../model/document.model';
 import {Element} from '../../model/element.model';
 import {excelReportConfig} from '../../../../../environments/report/excel.config';
 import { oc, isNotEmptyArray } from 'src/app/shared/app-utils';
+import { INPUT_TEXT_LONG } from '../../../../shared/constants-utils';
 
 @Component({
   templateUrl: './import-document-file.component.html'

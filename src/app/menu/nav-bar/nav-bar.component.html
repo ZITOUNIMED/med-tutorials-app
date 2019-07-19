@@ -5,12 +5,9 @@
       <i class="fa fa-times"></i>
     </mat-icon>
   </mat-toolbar>
-  <a href="" mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'account'}}]">Account</a>
-  <a href="" mat-list-item [appPermissions]="adminPermissions"  (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'user'}}]">G&eacute;rer les
-    utilisateurs</a>
-  <a href="" mat-list-item (click)="signout()">Sign Out</a>
-  <a href="" mat-list-item (click)="drawer.close()" routerLink="/auth/login">Sign In</a>
-  <a href="" mat-list-item (click)="drawer.close()" [routerLink]="['/auth/signup']">Sign Up</a>
+  <a href="" mat-list-item [appPermissions]="adminPermissions"  (click)="drawer.close()"
+  [routerLink]="[{outlets: { homeOutlet: 'user'}}]">G&eacute;rer les utilisateurs</a>
+  <!-- Tutos -->
   <h2 matSubheader>
     <mat-icon matListIcon>
       <i class="fa fa-book"></i>
@@ -18,19 +15,35 @@
     Tutos
   </h2>
   <a mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'document'}}]"
-    [queryParams]="{documentCollectionType: DocumentCollectionTypes.ALL_TUTOS}" [appPermissions]="adminPermissions">Tous les tutos</a>
+    [queryParams]="{collectionType: DocumentCollectionTypes.ALL_TUTOS}"
+    [appPermissions]="adminPermissions">Tous les tutos</a>
   <a mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'document'}}]"
-    [queryParams]="{documentCollectionType: DocumentCollectionTypes.MY_TUTOS}">Mes tutos</a>
+    [queryParams]="{collectionType: DocumentCollectionTypes.MY_TUTOS}">Mes tutos</a>
   <a mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'document'}}]"
-    [queryParams]="{documentCollectionType: DocumentCollectionTypes.PUBLIC_TUTOS}">Tutos publiques</a>
+    [queryParams]="{collectionType: DocumentCollectionTypes.PUBLIC_TUTOS}">Tutos publiques</a>
   <a mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'document'}}]"
-    [queryParams]="{documentCollectionType: DocumentCollectionTypes.MY_FAVORITE_TUTOS}">Mes Tutos Favoris</a>
+    [queryParams]="{collectionType: DocumentCollectionTypes.MY_FAVORITE_TUTOS}">
+    Mes Tutos Favoris</a>
+<!-- <h2 matSubheader>
+  <mat-icon matListIcon color="warn">
+    <i class="fa fa-star-o" aria-hidden="true"></i>
+  </mat-icon>
+  Favoris
+</h2> -->
+<!-- <a *ngFor="let sample of documentsSamples" mat-list-item (click)="drawer.close()"
+   [routerLink]="['/home', {outlets: { homeOutlet: 'document/' + sample.id}}]">{{sample.name}}</a> -->
+  <!-- Collections -->
   <h2 matSubheader>
-    <mat-icon matListIcon color="warn">
-      <i class="fa fa-star-o" aria-hidden="true"></i>
+    <mat-icon matListIcon>
+      <i class="fa fa-list" aria-hidden="true"></i>
     </mat-icon>
-    Favoris
+    Collections
   </h2>
-  <a *ngFor="let sample of documentsSamples" mat-list-item (click)="drawer.close()"
-     [routerLink]="['/home', {outlets: { homeOutlet: 'document/' + sample.id}}]">{{sample.name}}</a>
+  <a mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'collection'}}]"
+    [appPermissions]="adminPermissions">Gérer les collections</a>
+  <a mat-list-item (click)="drawer.close()"
+    *ngFor="let collection of collections"
+    [routerLink]="[{outlets: { homeOutlet: 'document'}}]"
+    [queryParams]="{collectionId: collection.id, collectionName: collection.name}">
+    {{collection.name}}</a>
 </mat-nav-list>

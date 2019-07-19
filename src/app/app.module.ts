@@ -20,6 +20,7 @@ import { UserComponent } from './user/user.component';
 import { CreateUpdateUserComponent } from './user/shared/modal/create-update-user/create-update-user.component';
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from './user/user.module';
+import { AppCollectionModule } from './app-collection/app-collection.module';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { UserModule } from './user/user.module';
     DocumentModule,
     SharedModule,
     UserModule,
+    AppCollectionModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true},
