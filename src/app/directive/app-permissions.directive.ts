@@ -6,6 +6,7 @@ import { AppTargetTypes } from '../permissions/model/app.target-types';
 import { DocumentPermissionsService } from '../document/shared/service/document-permissions.service';
 import { VisibilityStates } from '../permissions/model/visibility-states';
 import { Observable, of } from 'rxjs';
+import { ConfidentialityTypes } from '../permissions/model/confidentiality-types';
 
 @Directive({
   selector: '[appPermissions]'
@@ -28,8 +29,17 @@ export class AppPermissionsDirective implements OnInit, OnChanges {
         return this.userPermissionsService.managePermissions(appPermissions);
       case AppTargetTypes.DOCUMENT:
         return this.documentPermissionsService.managePermissions(appPermissions);
+      case AppTargetTypes.FEATURE:
+        return this.manageFeaturePermissions(appPermissions);
       default: of(VisibilityStates.VISIBLE);
     }
+  }
+
+  private manageFeaturePermissions(appPermissions: AppPermissions): Observable<VisibilityStates> {
+    if(appPermissions.confidentialities && appPermissions.confidentialities.some(confidentiality => confidentiality === ConfidentialityTypes.CLOSED_FEATURE)){
+      return of(VisibilityStates.REMOVED);
+    }
+    return of(VisibilityStates.VISIBLE);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

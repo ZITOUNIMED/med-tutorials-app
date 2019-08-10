@@ -1,20 +1,20 @@
 import {Component, Input, OnInit, OnChanges } from '@angular/core';
 import {DocumentSample} from '../../document/shared/model/document.model';
-import {PrincipalCleanAction} from '../../authentication/shared/principal.actions';
 import { DocumentService } from '../../document/shared/service/document.service';
 import { User } from '../../user/shared/model/user.model';
 import { AppStoreService } from '../../shared/service/app.store.service';
 import { combineLatest } from 'rxjs';
 import { UserSaveAction } from '../../user/shared/user.actions';
 import { UserService } from '../../user/shared/service/user.service';
-import { AppPermissions } from 'src/app/permissions/model/app.permissions.model';
-import { UserRoleTypes } from 'src/app/permissions/model/user-role-types';
+import { ADMIN_PERMISSIONS, CLOSED_FEATURE_PERMISSIONS, ADMIN_AND_SOURCER_PERMISSIONS } from 'src/app/permissions/model/app.permissions.model';
 import { AppTargetTypes } from 'src/app/permissions/model/app.target-types';
 import {Store} from "@ngrx/store";
 import {AppState} from "../../shared/app.state";
 import { DocumentCollectionTypes } from '../../document/shared/document-collection-types';
 import { AppCollection } from 'src/app/app-collection/shared/model/app-collection.model';
 import { AppCollectionService } from 'src/app/app-collection/shared/service/app-collection.service';
+import { RoleNameTypes } from 'src/app/user/shared/model/role-name-types.enum';
+import { ConfidentialityTypes } from 'src/app/permissions/model/confidentiality-types';
 
 @Component({
   selector: 'app-nav-bar',
@@ -24,10 +24,13 @@ import { AppCollectionService } from 'src/app/app-collection/shared/service/app-
 export class NavBarComponent implements OnInit, OnChanges {
   DocumentCollectionTypes = DocumentCollectionTypes;
   documentsSamples: DocumentSample[] = [];
+  CLOSED_FEATURE_PERMISSIONS = CLOSED_FEATURE_PERMISSIONS;
+  ConfidentialityTypes = ConfidentialityTypes;
   @Input() toolBarOpenClicked: boolean;
   @Input() drawer;
   user: User;
-  adminPermissions: AppPermissions;
+  ADMIN_PERMISSIONS = ADMIN_PERMISSIONS;
+  ADMIN_AND_SOURCER_PERMISSIONS=ADMIN_AND_SOURCER_PERMISSIONS;
   collections: AppCollection[];
 
   constructor(private documentService: DocumentService,
@@ -57,10 +60,7 @@ export class NavBarComponent implements OnInit, OnChanges {
           this.user = userInStore;
         }
     });
-    this.adminPermissions = {
-      targetType: AppTargetTypes.USER,
-      roles: [UserRoleTypes.ROLE_ADMIN],
-    };
+
     this.loadCollections();
   }
 
