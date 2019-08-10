@@ -33,7 +33,7 @@
       <span *ngIf="document.creationDate">Creation Date: {{document.creationDate}}<br/></span>
       <span *ngIf="document.lastUpdateDate && document.lastUpdateDate !== document.creationDate">Last update Date: {{document.lastUpdateDate}}</span>
     </p>
-    <div [appPermissions]="adminPermissions">
+    <div [appPermissions]="ADMIN_AND_SOURCER_PERMISSIONS">
       <button class="btn btn-default btn-sm" (click)="addDocumentToCollection(document)">
         <i class="fa fa-plus-square"></i> Add to collection
       </button>
@@ -47,7 +47,7 @@
       </button>
       <button mat-stroked-button color="info" [appPermissions]="getDocumentPermissions(document)"
         (click)="openDialogCreateUpdateDocument(document)"
-        title="Rename document">
+        title="Update document">
         <i class="fa fa-pencil"></i>
       </button>
     </div>

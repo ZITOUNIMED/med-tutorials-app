@@ -7,6 +7,7 @@ import {filter, map} from 'rxjs/internal/operators';
 import {ExportDocumentService} from '../shared/service/export-document.service';
 import { DisplayPdfReportComponent } from '../shared/modal/display-pdf-report/display-pdf-report.document';
 import {BreakpointObserver} from '@angular/cdk/layout';
+import { ADMIN_AND_SOURCER_PERMISSIONS } from 'src/app/permissions/model/app.permissions.model';
 
 @Component({
   selector: 'app-document-sheet',
@@ -17,6 +18,7 @@ export class DocumentSheetComponent implements OnInit {
   document: AppDocument;
   @Output() returnToSelectDocument = new EventEmitter<boolean>();
   canDisplayModalPdf = false;
+  ADMIN_AND_SOURCER_PERMISSIONS = ADMIN_AND_SOURCER_PERMISSIONS;
 
   constructor(private route: ActivatedRoute,
               private exportDocumentService: ExportDocumentService,

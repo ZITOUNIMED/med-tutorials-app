@@ -24,11 +24,11 @@ export class DocumentService {
     return this.http.get<AppDocument[]>(this.url + '/' + subUrl);
   }
 
-  getUrlByCollectionId(collectionId: String): string {
+  private getUrlByCollectionId(collectionId: String): string {
     return `byCollectionId/${collectionId}`;
   }
 
-  getUrlByCollectionType(collectionType: DocumentCollectionTypes): string {
+  private getUrlByCollectionType(collectionType: DocumentCollectionTypes): string {
     switch(collectionType){
       case DocumentCollectionTypes.PUBLIC_TUTOS:
         return 'publicDocuments';

@@ -1,6 +1,6 @@
-import { UserRoleTypes } from "src/app/permissions/model/user-role-types";
+import { RoleNameTypes } from "./role-name-types.enum";
 
 export interface Role {
     id: number;
-    name: UserRoleTypes;
+    name: RoleNameTypes;
 }

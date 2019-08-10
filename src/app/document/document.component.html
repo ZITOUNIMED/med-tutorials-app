@@ -6,13 +6,13 @@
       queryParams.collectionType === DocumentCollectionTypes.MY_TUTOS ? 'Mes tutos' :
       queryParams.collectionType === DocumentCollectionTypes.ALL_TUTOS ? 'Tous les tutos':
       queryParams.collectionType === DocumentCollectionTypes.PUBLIC_TUTOS ? 'Tutos publiques':
-      !!queryParams.collectionId ? queryParams.collectionName : 'Documents'
+      !!queryParams.collectionId ? queryParams.collectionName : 'Tutos publiques'
     }}
     </h2>
   </div>
   <div class="card-body">
     <div>
-      <button mat-stroked-button color="primary" (click)="openImportDocumentFileDialog()" class="pull-right">
+      <button [appPermissions]="ADMIN_AND_SOURCER_PERMISSIONS" mat-stroked-button color="primary" (click)="openImportDocumentFileDialog()" class="pull-right">
         Import
       </button>
       <button mat-stroked-button color="primary" (click)="openCreateDocumentDialog()" class="pull-right">

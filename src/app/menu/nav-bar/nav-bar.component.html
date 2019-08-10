@@ -5,7 +5,7 @@
       <i class="fa fa-times"></i>
     </mat-icon>
   </mat-toolbar>
-  <a href="" mat-list-item [appPermissions]="adminPermissions"  (click)="drawer.close()"
+  <a href="" mat-list-item [appPermissions]="ADMIN_PERMISSIONS"  (click)="drawer.close()"
   [routerLink]="[{outlets: { homeOutlet: 'user'}}]">G&eacute;rer les utilisateurs</a>
   <!-- Tutos -->
   <h2 matSubheader>
@@ -16,13 +16,15 @@
   </h2>
   <a mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'document'}}]"
     [queryParams]="{collectionType: DocumentCollectionTypes.ALL_TUTOS}"
-    [appPermissions]="adminPermissions">Tous les tutos</a>
+    [appPermissions]="ADMIN_PERMISSIONS">Tous les tutos</a>
   <a mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'document'}}]"
     [queryParams]="{collectionType: DocumentCollectionTypes.MY_TUTOS}">Mes tutos</a>
   <a mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'document'}}]"
     [queryParams]="{collectionType: DocumentCollectionTypes.PUBLIC_TUTOS}">Tutos publiques</a>
   <a mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'document'}}]"
-    [queryParams]="{collectionType: DocumentCollectionTypes.MY_FAVORITE_TUTOS}">
+    [queryParams]="{collectionType: DocumentCollectionTypes.MY_FAVORITE_TUTOS}"
+    [appPermissions]="CLOSED_FEATURE_PERMISSIONS"
+    >
     Mes Tutos Favoris</a>
 <!-- <h2 matSubheader>
   <mat-icon matListIcon color="warn">
@@ -40,7 +42,7 @@
     Collections
   </h2>
   <a mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'collection'}}]"
-    [appPermissions]="adminPermissions">Gérer les collections</a>
+    [appPermissions]="ADMIN_AND_SOURCER_PERMISSIONS">Gérer les collections</a>
   <a mat-list-item (click)="drawer.close()"
     *ngFor="let collection of collections"
     [routerLink]="[{outlets: { homeOutlet: 'document'}}]"

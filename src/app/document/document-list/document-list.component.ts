@@ -10,7 +10,7 @@ import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import { CreateUpdateDocumentComponent } from '../shared/modal/create-update-document/create-update-document.component';
-import { AppPermissions } from 'src/app/permissions/model/app.permissions.model';
+import { AppPermissions, ADMIN_AND_SOURCER_PERMISSIONS } from 'src/app/permissions/model/app.permissions.model';
 import { AppTargetTypes } from 'src/app/permissions/model/app.target-types';
 import { ConfidentialityTypes } from 'src/app/permissions/model/confidentiality-types';
 import { oc } from 'src/app/shared/app-utils';
@@ -18,7 +18,6 @@ import { AddDocumentToCollectionComponent } from '../shared/modal/add-document-t
 import { AppCollection } from 'src/app/app-collection/shared/model/app-collection.model';
 import { AppCollectionService } from 'src/app/app-collection/shared/service/app-collection.service';
 import { AppStoreService } from 'src/app/shared/service/app.store.service';
-import { UserRoleTypes } from 'src/app/permissions/model/user-role-types';
 
 @Component({
   selector: 'app-document-list',
@@ -33,7 +32,8 @@ export class DocumentListComponent implements OnInit {
   filteredDocuments: Observable<AppDocument[]>;
   ConfidentialityTypes = ConfidentialityTypes;
   collections: AppCollection[];
-  adminPermissions: AppPermissions;
+  ADMIN_AND_SOURCER_PERMISSIONS = ADMIN_AND_SOURCER_PERMISSIONS;
+
   constructor(private documentService: DocumentService,
               private appSnackbarService: AppSnackbarService,
               private dialog: MatDialog,
@@ -53,11 +53,6 @@ export class DocumentListComponent implements OnInit {
       );
 
       this.loadCollections();
-
-      this.adminPermissions = {
-        targetType: AppTargetTypes.USER,
-        roles: [UserRoleTypes.ROLE_ADMIN],
-      };
   }
 
   private loadCollections(){
@@ -159,7 +154,7 @@ export class DocumentListComponent implements OnInit {
     return document ? document.name : undefined;
   }
 
-  getDocumentPermissions(document: AppDocument): AppPermissions{
+  getDocumentPermissions(document: AppDocument): AppPermissions {
     return {
       targetType: AppTargetTypes.DOCUMENT,
       confidentialities: [],
