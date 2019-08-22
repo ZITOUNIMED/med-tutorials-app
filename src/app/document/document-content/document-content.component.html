@@ -11,7 +11,7 @@
       #todoList="cdkDropList"
       [cdkDropListData]="(documentWrapperState$ | async).currentPageElements"
       (cdkDropListDropped)="onDrop($event)">
-      <mat-card *ngFor="let element of (documentWrapperState$ | async).currentPageElements"
+      <mat-card class="app-card" *ngFor="let element of (documentWrapperState$ | async).currentPageElements"
       cdkDrag
       [cdkDragDisabled]="(documentWrapperState$ | async).selectedElement &&
       (documentWrapperState$ | async).selectedElement.row === element.row
