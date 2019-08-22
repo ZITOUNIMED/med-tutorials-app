@@ -5,45 +5,57 @@
     [doc]="doc"></app-content-header>
   </div>
   <div class="card-body contentBady">
-    <div *ngFor="let element of (documentWrapperState$ | async).currentPageElements">
-      <div class="row"
-        [hidden]="(documentWrapperState$ | async).selectedElement?.row === element.row &&
-          (documentWrapperState$ | async).selectedElement?.page === element.page &&
-          (documentWrapperState$ | async).editMode">
-        <div [ngClass]="{ 'col-md-10': (documentWrapperState$ | async).editMode,
-          'col-md-12': !(documentWrapperState$ | async).editMode }">
-          <app-element-text-sheet [element]="element"></app-element-text-sheet>
-        </div>
-        <div class="col-md-2" *ngIf="(documentWrapperState$ | async).editMode">
-          <div *ngIf="element.row !== (documentWrapperState$ | async).movedItem.row ||
-            element.page !== (documentWrapperState$ | async).movedItem.page"
-            class="btn-group">
-            <button class="btn btn-xs btn-primary" (click)="appStoreService.selectElement(element)">
-              <i class="fa fa-pencil" aria-hidden="true"></i>
-            </button>
-            <button class="btn btn-xs btn-default btn-danger"
-              (click)="appStoreService.deleteElement({row: element.row, page: element.page})">
-              <i class="fa fa-times" aria-hidden="true"></i>
-            </button>
-            <button class="btn btn-xs btn-default"
-              (click)="appStoreService.moveElement({row: element.row, page: element.page})">
-              <i class="fa fa-arrows" aria-hidden="true"></i>
-            </button>
+    <div class="list"
+      cdkDropList
+      [cdkDropListDisabled]="!(documentWrapperState$ | async).editMode"
+      #todoList="cdkDropList"
+      [cdkDropListData]="(documentWrapperState$ | async).currentPageElements"
+      (cdkDropListDropped)="onDrop($event)">
+      <mat-card *ngFor="let element of (documentWrapperState$ | async).currentPageElements"
+      cdkDrag
+      [cdkDragDisabled]="(documentWrapperState$ | async).selectedElement &&
+      (documentWrapperState$ | async).selectedElement.row === element.row
+       && (documentWrapperState$ | async).selectedElement.page == element.page"
+      >
+        <div class="row"
+          [hidden]="(documentWrapperState$ | async).selectedElement?.row === element.row &&
+            (documentWrapperState$ | async).selectedElement?.page === element.page &&
+            (documentWrapperState$ | async).editMode">
+          <div [ngClass]="{ 'col-md-10': (documentWrapperState$ | async).editMode,
+            'col-md-12': !(documentWrapperState$ | async).editMode }">
+            <app-element-text-sheet [element]="element"></app-element-text-sheet>
           </div>
-          <app-content-move-element
-            [documentWrapperState$]="documentWrapperState$"
-            [element]="element">
-          </app-content-move-element>
+          <div class="col-md-2" *ngIf="(documentWrapperState$ | async).editMode">
+            <div *ngIf="element.row !== (documentWrapperState$ | async).movedItem.row ||
+              element.page !== (documentWrapperState$ | async).movedItem.page"
+              class="btn-group">
+              <button class="btn btn-xs btn-primary" (click)="appStoreService.selectElement(element)">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              </button>
+              <button class="btn btn-xs btn-default btn-danger"
+                (click)="appStoreService.deleteElement({row: element.row, page: element.page})">
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </button>
+              <button class="btn btn-xs btn-default"
+                (click)="appStoreService.moveElement({row: element.row, page: element.page})">
+                <i class="fa fa-arrows" aria-hidden="true"></i>
+              </button>
+            </div>
+            <app-content-move-element
+              [documentWrapperState$]="documentWrapperState$"
+              [element]="element">
+            </app-content-move-element>
+          </div>
         </div>
-      </div>
-      <div [hidden]="(documentWrapperState$ | async).selectedElement?.row !== element.row ||
-        (documentWrapperState$ | async).selectedElement?.page !== element.page ||
-        !(documentWrapperState$ | async).editMode">
-        <app-document-palette [element]="(documentWrapperState$ | async).selectedElement"
-          (onSubmitChange)="appStoreService.saveElement($event)"
-          (cancelChange)="appStoreService.cancelEditElement($event)">
-        </app-document-palette>
-      </div>
+        <div [hidden]="(documentWrapperState$ | async).selectedElement?.row !== element.row ||
+          (documentWrapperState$ | async).selectedElement?.page !== element.page ||
+          !(documentWrapperState$ | async).editMode">
+          <app-document-palette [element]="(documentWrapperState$ | async).selectedElement"
+            (onSubmitChange)="appStoreService.saveElement($event)"
+            (cancelChange)="appStoreService.cancelEditElement($event)">
+          </app-document-palette>
+        </div>
+      </mat-card>
     </div>
     <div *ngIf="!(documentWrapperState$ | async).selectedElement && (documentWrapperState$ | async).editMode">
       <app-document-palette (onSubmitChange)="appStoreService.saveElement($event)"

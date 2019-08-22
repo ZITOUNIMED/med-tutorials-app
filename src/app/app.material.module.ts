@@ -14,7 +14,10 @@ import {
   MatMenuModule,
   MatSidenavModule,
   MatRadioModule,
+  MatCardModule,
 } from '@angular/material';
+
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 const modules = [
   MatFormFieldModule,
@@ -32,7 +35,9 @@ const modules = [
   MatSidenavModule,
   MatToolbarModule,
   MatIconModule,
-  MatRadioModule
+  MatRadioModule,
+  MatCardModule,
+  DragDropModule
 ];
 
 @NgModule({
