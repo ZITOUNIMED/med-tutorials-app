@@ -17,7 +17,8 @@ import {
   DocumentWrapperMoveUpAction, DocumentWrapperChangeEditModeAction,
   DocumentWrapperCancelEditElementAction, DocumentWrapperMoveToPageAction,
   DocumentWrapperSelectElementAction, DocumentWrapperDeletePagesAction,
-  DocumentWrapperGoToPageAction
+  DocumentWrapperGoToPageAction,
+  DocumentWrapperMoveToRowAction
 } from '../../document/document-content/shared/document-wrapper.actions';
 import {DocumentWrapperState, Point} from '../../document/document-content/shared/document-wrapper.state';
 import { oc } from '../app-utils';
@@ -84,6 +85,10 @@ export class AppStoreService {
 
   moveElement(point: Point) {
     this.store.dispatch(new DocumentWrapperMoveElementAction(point));
+  }
+
+  moveToRow(previousRow: number, currentRow: number){
+    this.store.dispatch(new DocumentWrapperMoveToRowAction({previousRow: previousRow, currentRow: currentRow}));
   }
 
   returnToPreviousPage(accept?: boolean) {

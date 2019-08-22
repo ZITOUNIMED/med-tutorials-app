@@ -16,7 +16,7 @@ import { AbstractPaletteComponent } from '../abstract-palette.component';
 })
 export class ListPaletteComponent extends AbstractPaletteComponent implements AfterViewChecked {
   newItemControl = new FormControl();
-  @ViewChild('items') items: ElementRef;
+  @ViewChild('items', {static: false}) items: ElementRef;
   ids = 0;
 
   ngAfterViewChecked(): void {

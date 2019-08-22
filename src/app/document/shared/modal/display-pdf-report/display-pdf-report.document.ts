@@ -6,7 +6,7 @@ import { MAT_DIALOG_DATA } from '@angular/material';
     styleUrls: ['./display-pdf-report.document.css']
 })
 export class DisplayPdfReportComponent implements OnInit {
-    @ViewChild('iframe') iframe: ElementRef;
+    @ViewChild('iframe', {static: false}) iframe: ElementRef;
 
     constructor(@Inject(MAT_DIALOG_DATA) public data: {doc: any}) {}
 

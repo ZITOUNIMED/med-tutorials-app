@@ -17,6 +17,7 @@ export const DOCUMENT_WRAPPER_CANCEL_EDIT_ELEMENT = 'DOCUMENT_WRAPPER_CANCEL_EDI
 export const DOCUMENT_WRAPPER_MOVE_TO_PAGE = 'DOCUMENT_WRAPPER_MOVE_TO_PAGE';
 export const DOCUMENT_WRAPPER_DELETE_PAGES = 'DOCUMENT_WRAPPER_DELETE_PAGES';
 export const DOCUMENT_WRAPPER_GO_TO_PAGE = 'DOCUMENT_WRAPPER_GO_TO_PAGE';
+export const DOCUMENT_WRAPPER_MOVE_TO_ROW = 'DOCUMENT_WRAPPER_MOVE_TO_ROW';
 
 export type DocumentWrapperActions = DocumentWrapperInitAction |
   DocumentWrapperGoToNextPageAction |
@@ -32,7 +33,8 @@ export type DocumentWrapperActions = DocumentWrapperInitAction |
   DocumentWrapperCancelEditElementAction |
   DocumentWrapperMoveToPageAction |
   DocumentWrapperSelectElementAction |
-  DocumentWrapperGoToPageAction
+  DocumentWrapperGoToPageAction |
+  DocumentWrapperMoveToRowAction
   ;
 
 export class DocumentWrapperInitAction implements Action {
@@ -53,6 +55,16 @@ export class DocumentWrapperMoveDownAction implements Action {
   readonly type = DOCUMENT_WRAPPER_MOVE_DOWN;
 
   constructor(public payload: Point) {
+  }
+}
+
+export class DocumentWrapperMoveToRowAction implements Action {
+  readonly type = DOCUMENT_WRAPPER_MOVE_TO_ROW;
+
+  constructor(public payload: {
+    previousRow: number,
+    currentRow: number,
+  }) {
   }
 }
 

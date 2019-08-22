@@ -1,11 +1,13 @@
 import {Component, Input, OnChanges, OnInit, Output, EventEmitter} from '@angular/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+
 import {DocumentService} from '../shared/service/document.service';
 import {AppSnackbarService} from '../../shared/app-snackbar.service';
 import {AppDocument} from '../shared/model/document.model';
 import {AppStoreService} from '../../shared/service/app.store.service';
 import {Observable} from 'rxjs';
 import { first } from 'rxjs/operators';
-import {DocumentWrapperState} from './shared/document-wrapper.state';
+import {DocumentWrapperState, Point} from './shared/document-wrapper.state';
 
 @Component({
   selector: 'app-document-content',
@@ -20,6 +22,16 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   constructor(private documentService: DocumentService,
               private appSnackbarService: AppSnackbarService,
               public appStoreService: AppStoreService) {
+  }
+
+  onDrop(event: CdkDragDrop<string[]>) {
+    if (event.previousContainer === event.container) {
+      //moveItemInArray(event.container.data,
+       // event.previousIndex,
+       // event.currentIndex);
+    
+      this.appStoreService.moveToRow(event.previousIndex, event.currentIndex);
+    }
   }
 
   ngOnInit() {
