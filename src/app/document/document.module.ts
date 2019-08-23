@@ -30,6 +30,7 @@ import { DisplayListComponent } from './document-content/element-text-sheet/disp
 import { DisplayAttachmentComponent } from './document-content/element-text-sheet/display-attachment/display-attachment.component';
 import { AttachmentPaletteComponent } from './document-content/document-palette/attachment-palette/attachment-palette.component';
 import { AddDocumentToCollectionComponent } from './shared/modal/add-document-to-collection/add-document-to-collection.component';
+import { ContentFooterComponent } from './document-content/content-footer/content-footer.component';
 
 @NgModule({
   imports: [AppMaterialModule,
@@ -62,6 +63,7 @@ import { AddDocumentToCollectionComponent } from './shared/modal/add-document-to
     DisplayAttachmentComponent,
     AttachmentPaletteComponent,
     AddDocumentToCollectionComponent,
+    ContentFooterComponent,
   ],
   providers: [ExportDocumentService, DocumentPermissionsService],
   entryComponents: [
