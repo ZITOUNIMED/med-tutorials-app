@@ -26,11 +26,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
 
   onDrop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
-      //moveItemInArray(event.container.data,
-       // event.previousIndex,
-       // event.currentIndex);
-    
-      this.appStoreService.moveToRow(event.previousIndex, event.currentIndex);
+      this.appStoreService.moveRow(event.previousIndex, event.currentIndex);
     }
   }
 

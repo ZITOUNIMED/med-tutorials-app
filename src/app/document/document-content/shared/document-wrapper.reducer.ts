@@ -5,17 +5,17 @@ import {
   DOCUMENT_WRAPPER_MOVE_ELEMENT,
   DOCUMENT_WRAPPER_RETURN_TO_PREVIOUS_PAGE,
   DOCUMENT_WRAPPER_SAVE_ELEMENT,
-  DOCUMENT_WRAPPER_INSERT_PAGES,
+  DOCUMENT_WRAPPER_INSERT_PAGE,
   DOCUMENT_WRAPPER_DELETE_ELEMENT,
   DOCUMENT_WRAPPER_MOVE_UP,
   DOCUMENT_WRAPPER_CHANGE_EDIT_MODE,
   DOCUMENT_WRAPPER_CANCEL_EDIT_ELEMENT,
-  DOCUMENT_WRAPPER_MOVE_TO_PAGE,
   DOCUMENT_WRAPPER_SELECT_ELEMENT,
-  DOCUMENT_WRAPPER_DELETE_PAGES,
+  DOCUMENT_WRAPPER_DELETE_PAGE,
   DOCUMENT_WRAPPER_GO_TO_PAGE,
-  DOCUMENT_WRAPPER_MOVE_TO_ROW,
-  DocumentWrapperActions
+  DOCUMENT_WRAPPER_MOVE_ROW,
+  DocumentWrapperActions,
+  DOCUMENT_WRAPPER_MOVE_PAGE
 } from './document-wrapper.actions';
 import {DocumentWrapperState, Point} from './document-wrapper.state';
 import {Element} from '../../shared/model/element.model';
@@ -54,25 +54,25 @@ export function documentWrapperReducer(state: DocumentWrapperState, action: Docu
       service.moveUp(state, action.payload as Point);
       return buildWrapper(state);
 
-    case DOCUMENT_WRAPPER_MOVE_TO_ROW:
+    case DOCUMENT_WRAPPER_MOVE_ROW:
       const {previousRow, currentRow} = action.payload;
-      service.moveToRow(state, previousRow, currentRow);
+      service.moveRow(state, previousRow, currentRow);
       return buildWrapper(state);
 
     case DOCUMENT_WRAPPER_SAVE_ELEMENT:
       service.saveElement(state, action.payload as Element)
       return buildWrapper(state);
 
-    case DOCUMENT_WRAPPER_INSERT_PAGES:
-      service.insertPages(state, action.payload as number);
+    case DOCUMENT_WRAPPER_INSERT_PAGE:
+      service.insertPage(state, action.payload as boolean);
       return buildWrapper(state);
 
-    case DOCUMENT_WRAPPER_DELETE_PAGES:
-      service.deletePages(state, action.payload as number);
+    case DOCUMENT_WRAPPER_DELETE_PAGE:
+      service.deletePage(state, action.payload as boolean);
     return buildWrapper(state);
-
-    case DOCUMENT_WRAPPER_MOVE_TO_PAGE:
-      service.moveToPage(state, action.payload.p, action.payload.jump);
+    
+    case DOCUMENT_WRAPPER_MOVE_PAGE:
+      service.movePage(state, action.payload.previousIndex, action.payload.currentIndex);
       return buildWrapper(state);
 
     case DOCUMENT_WRAPPER_DELETE_ELEMENT:
