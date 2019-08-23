@@ -6,24 +6,9 @@
       <i class="fa fa-chevron-up" aria-hidden="true"></i>
     </button>
     <button class="btn btn-xs btn-info" (click)="appStoreService.moveDown({row: element.row, page: element.page})"
-      *ngIf="(documentWrapperState$ | async).biggestRowOfCurrentPage !== element.row">
+      >
       <i class="fa fa-chevron-down" aria-hidden="true"></i>
     </button>
-    <div class="btn-group" role="group"
-      *ngIf="(documentWrapperState$ | async).biggestRowOfCurrentPage === element.row">
-      <button id="btnGroupDrop1" type="button" class="btn btn-xs btn-info dropdown-toggle"
-        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-      <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-        <a class="dropdown-item" href="" data-toggle="collapse"
-          (click)="appStoreService.moveDown({row: element.row, page: element.page})"><i
-            class="fa fa-chevron-right" aria-hidden="true"></i> Next
-          Page</a>
-        <a class="dropdown-item" href="" data-toggle="collapse"
-          (click)="appStoreService.moveToPage({row: element.row, page: element.page}, 1)"><i
-            class="fa fa-map-o" aria-hidden="true"></i> New page
-        </a>
-      </div>
-    </div>
   </div>
   <button class="btn btn-xs btn-default"
     (click)="appStoreService.moveElement({row: element.row, page: element.page})">

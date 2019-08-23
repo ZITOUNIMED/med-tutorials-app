@@ -2,6 +2,9 @@ import { DocumentWrapperGenericService } from "./document-wrapper-generic.servic
 import { DocumentWrapperState, Point } from "./document-wrapper.state";
 import {Element} from '../../shared/model/element.model';
 
+const ROW_FLAG = -125;
+const PAGE_FLAG = -523;
+
 export class DocumentWrapperService implements DocumentWrapperGenericService {
     initDocument(elements: Element[]): DocumentWrapperState {
         return {
@@ -69,7 +72,7 @@ export class DocumentWrapperService implements DocumentWrapperGenericService {
         }
     }
 
-    moveToRow(state: DocumentWrapperState, previousRow: number, currentRow: number){
+    moveRow(state: DocumentWrapperState, previousRow: number, currentRow: number){
       const p = {
         row: previousRow,
         page: state.currentPage,
@@ -78,19 +81,28 @@ export class DocumentWrapperService implements DocumentWrapperGenericService {
         row: currentRow, 
         page: state.currentPage
       };
+
+      this.putFlag(state, p);
       
-      this.switchTowPositions(state, p, toP);
+      if(previousRow<currentRow){// move down
+        this.decreaseRows(state, state.currentPage, previousRow + 1, currentRow);
+      } else {// move up
+        this.increaseRows(state, state.currentPage, currentRow, previousRow - 1);
+      }
+      
+      this.applyPointOnFlag(state, toP);
+
     }
 
-    moveToPage(state: DocumentWrapperState, p: Point, jump: number){
-        this.shiftPagesRight(state, p.page, jump);
-        const toP = {
-          row: 0,
-          page: p.page + jump
-        };
-
-        this.changeElementPosition(state, p, toP);
-        state.currentPage = p.page + jump;
+    movePage(state: DocumentWrapperState, previousPage: number, currentPage: number){
+      this.putFlagOnPage(state, previousPage);
+      if(previousPage<currentPage){ // move right
+        this.shiftPagesLeft(state, previousPage + 1, currentPage);
+      } else {
+        this.shiftPagesRight(state, currentPage, previousPage - 1);
+      }
+      this.applyPageOnFlag(state, currentPage);
+      state.currentPage = currentPage;
     }
 
     goToNextPage(state: DocumentWrapperState, accept?: boolean){
@@ -111,20 +123,24 @@ export class DocumentWrapperService implements DocumentWrapperGenericService {
         state.currentPage = page;
     }
 
-    insertPages(state: DocumentWrapperState, pages: number){
-        state.currentPage+=pages;
+    insertPage(state: DocumentWrapperState, accept?: boolean){
+      if(accept){
         this.doCancelEditElement(state);
-        this.shiftPagesRight(state, state.currentPage, pages);
+        this.shiftPagesRight(state, state.currentPage + 1);
+        state.currentPage++;
+      }
     }
 
-    deletePages(state: DocumentWrapperState, pages: number){
-        for(let page = state.currentPage; page<state.currentPage + pages; page++){
-          state.elements = state.elements.filter(elt => elt.page !== page);
-        }
+    deletePage(state: DocumentWrapperState, accept?: boolean){
+      if(accept){
+        // remove page elements from wrapper
+        state.elements = state.elements.filter(elt => elt.page !== state.currentPage);
 
-        this.shiftPagesLeft(state, state.currentPage + pages, pages);
+        this.shiftPagesLeft(state, state.currentPage + 1);
         this.doCancelEditElement(state);
+      
         state.currentPage--;
+      }
     }
 
     moveElement(state: DocumentWrapperState, p: Point) {
@@ -211,20 +227,30 @@ export class DocumentWrapperService implements DocumentWrapperGenericService {
         }
     }
 
-    private increaseRows(state: DocumentWrapperState, page: number) {
-        state.elements
+    private increaseRows(state: DocumentWrapperState, page: number, fromRow?: number, toRow?: number) {
+      fromRow = fromRow || 0;
+      toRow = toRow || (state.elements.length - 1) || 0;
+
+      state.elements
           .filter(elt => elt.page === page)
           .map(elt => {
-            elt.row++;
+            if(elt.row>=fromRow && elt.row<=toRow){
+              elt.row++;
+            }
             return elt;
           });
       }
 
-    private decreaseRows(state: DocumentWrapperState, page) {
-        state.elements
+    private decreaseRows(state: DocumentWrapperState, page: number, fromRow?: number, toRow?: number) {
+      fromRow = fromRow || 0;
+      toRow = toRow || (state.elements.length - 1) || 0;
+
+      state.elements
           .filter(elt => elt.page === page)
           .map(elt => {
-            elt.row--;
+            if(elt.row>=fromRow && elt.row<=toRow){
+              elt.row--;
+            }
             return elt;
           });
     }
@@ -244,25 +270,75 @@ export class DocumentWrapperService implements DocumentWrapperGenericService {
         return elts && elts.length === 1 ? elts[0] : null;
     }
 
-    private shiftPagesRight(state: DocumentWrapperState, page: number, pages: number) {
-        state.elements = state.elements.map(element => {
-          if (element.page >= page) {
-            element.page+=pages;
-          }
-          return element;
-        });
+    private shiftPagesRight(state: DocumentWrapperState, fromPage: number, toPage?: number) {
+      toPage = toPage || this.getBiggerPage(state);
+
+      state.elements = state.elements.map(elt => {
+        if (elt.page >= fromPage && elt.page<= toPage) {
+          elt.page++;;
+        }
+        return elt;
+      });
+    }
+
+    private shiftPagesLeft(state: DocumentWrapperState,
+      fromPage: number,
+      toPage?: number
+      ) {
+
+      toPage = toPage || this.getBiggerPage(state);
+
+      state.elements = state.elements.map(elt => {
+        if (elt.page >= fromPage && elt.page<=toPage) {
+          elt.page--;
+        }
+        return elt;
+      });
     }
     
     private doCancelEditElement(state: DocumentWrapperState){
         state.selectedElement = null;
     }
-    
-    private shiftPagesLeft(state: DocumentWrapperState, page: number, pages: number) {
-        state.elements = state.elements.map(element => {
-          if (element.page >= page) {
-            element.page-=pages;
-          }
-          return element;
-        });
+
+    private getBiggerPage(state: DocumentWrapperState) {
+      return state.elements && state.elements.length && state.elements.sort((e1, e2) => e2.page - e1.page)[0].page;
+    }
+
+    private putFlag(state: DocumentWrapperState, p: Point){
+      state.elements
+          .filter(elt => elt.page === p.page && elt.row === p.row)
+          .map(elt => {
+            elt.row = ROW_FLAG;
+            elt.page = PAGE_FLAG;
+            return elt;
+          });
+    }
+
+    private applyPointOnFlag(state: DocumentWrapperState, p: Point){
+      state.elements
+      .filter(elt => elt.page === PAGE_FLAG && elt.row === ROW_FLAG)
+      .map(elt => {
+        elt.row = p.row;
+        elt.page = p.page;
+        return elt;
+      });
+    }
+
+    private putFlagOnPage(state: DocumentWrapperState, page: number){
+      state.elements
+      .filter(elt => elt.page === page)
+      .map(elt => {
+        elt.page = PAGE_FLAG;
+        return elt;
+      });
+    }
+
+    private applyPageOnFlag(state: DocumentWrapperState, page: number){
+      state.elements
+      .filter(elt => elt.page === PAGE_FLAG)
+      .map(elt => {
+        elt.page = page;
+        return elt;
+      });
     }
 }

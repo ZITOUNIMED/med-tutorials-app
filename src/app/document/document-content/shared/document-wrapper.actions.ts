@@ -10,14 +10,14 @@ export const DOCUMENT_WRAPPER_MOVE_ELEMENT = 'DOCUMENT_WRAPPER_MOVE_ELEMENT';
 export const DOCUMENT_WRAPPER_RETURN_TO_PREVIOUS_PAGE = 'DOCUMENT_WRAPPER_RETURN_TO_PREVIOUS_PAGE';
 export const DOCUMENT_WRAPPER_SAVE_ELEMENT = 'DOCUMENT_WRAPPER_SAVE_ELEMENT';
 export const DOCUMENT_WRAPPER_SELECT_ELEMENT = 'DOCUMENT_WRAPPER_SELECT_ELEMENT';
-export const DOCUMENT_WRAPPER_INSERT_PAGES = 'DOCUMENT_WRAPPER_INSERT_PAGES';
+export const DOCUMENT_WRAPPER_INSERT_PAGE = 'DOCUMENT_WRAPPER_INSERT_PAGE';
 export const DOCUMENT_WRAPPER_DELETE_ELEMENT = 'DOCUMENT_WRAPPER_DELETE_ELEMENT';
 export const DOCUMENT_WRAPPER_CHANGE_EDIT_MODE = 'DOCUMENT_WRAPPER_CHANGE_EDIT_MODE';
 export const DOCUMENT_WRAPPER_CANCEL_EDIT_ELEMENT = 'DOCUMENT_WRAPPER_CANCEL_EDIT_ELEMENT';
-export const DOCUMENT_WRAPPER_MOVE_TO_PAGE = 'DOCUMENT_WRAPPER_MOVE_TO_PAGE';
-export const DOCUMENT_WRAPPER_DELETE_PAGES = 'DOCUMENT_WRAPPER_DELETE_PAGES';
+export const DOCUMENT_WRAPPER_DELETE_PAGE = 'DOCUMENT_WRAPPER_DELETE_PAGE';
 export const DOCUMENT_WRAPPER_GO_TO_PAGE = 'DOCUMENT_WRAPPER_GO_TO_PAGE';
-export const DOCUMENT_WRAPPER_MOVE_TO_ROW = 'DOCUMENT_WRAPPER_MOVE_TO_ROW';
+export const DOCUMENT_WRAPPER_MOVE_ROW = 'DOCUMENT_WRAPPER_MOVE_ROW';
+export const DOCUMENT_WRAPPER_MOVE_PAGE = 'DOCUMENT_WRAPPER_MOVE_PAGE';
 
 export type DocumentWrapperActions = DocumentWrapperInitAction |
   DocumentWrapperGoToNextPageAction |
@@ -26,15 +26,15 @@ export type DocumentWrapperActions = DocumentWrapperInitAction |
   DocumentWrapperMoveElementAction |
   DocumentWrapperReturnToPreviousPageAction |
   DocumentWrapperSaveElementAction |
-  DocumentWrapperInserPagesAction |
-  DocumentWrapperDeletePagesAction |
+  DocumentWrapperInserPageAction |
+  DocumentWrapperDeletePageAction |
   DocumentWrapperDeleteElementAction |
   DocumentWrapperChangeEditModeAction |
   DocumentWrapperCancelEditElementAction |
-  DocumentWrapperMoveToPageAction |
   DocumentWrapperSelectElementAction |
   DocumentWrapperGoToPageAction |
-  DocumentWrapperMoveToRowAction
+  DocumentWrapperMoveRowAction |
+  DocumentWrapperMovePageAction
   ;
 
 export class DocumentWrapperInitAction implements Action {
@@ -58,12 +58,22 @@ export class DocumentWrapperMoveDownAction implements Action {
   }
 }
 
-export class DocumentWrapperMoveToRowAction implements Action {
-  readonly type = DOCUMENT_WRAPPER_MOVE_TO_ROW;
+export class DocumentWrapperMoveRowAction implements Action {
+  readonly type = DOCUMENT_WRAPPER_MOVE_ROW;
 
   constructor(public payload: {
     previousRow: number,
     currentRow: number,
+  }) {
+  }
+}
+
+export class DocumentWrapperMovePageAction implements Action {
+  readonly type = DOCUMENT_WRAPPER_MOVE_PAGE;
+
+  constructor(public payload: {
+    previousIndex: number,
+    currentIndex: number,
   }) {
   }
 }
@@ -103,10 +113,10 @@ export class DocumentWrapperSelectElementAction implements Action {
   }
 }
 
-export class DocumentWrapperInserPagesAction implements Action {
-  readonly type = DOCUMENT_WRAPPER_INSERT_PAGES;
+export class DocumentWrapperInserPageAction implements Action {
+  readonly type = DOCUMENT_WRAPPER_INSERT_PAGE;
 
-  constructor(public payload: number) {
+  constructor(public payload: boolean) {
   }
 }
 
@@ -117,10 +127,10 @@ export class DocumentWrapperGoToPageAction implements Action {
   }
 }
 
-export class DocumentWrapperDeletePagesAction implements Action {
-  readonly type = DOCUMENT_WRAPPER_DELETE_PAGES;
+export class DocumentWrapperDeletePageAction implements Action {
+  readonly type = DOCUMENT_WRAPPER_DELETE_PAGE;
 
-  constructor(public payload: number) {
+  constructor(public payload: boolean) {
   }
 }
 
@@ -142,12 +152,5 @@ export class DocumentWrapperCancelEditElementAction implements Action {
   readonly type = DOCUMENT_WRAPPER_CANCEL_EDIT_ELEMENT;
 
   constructor(public payload: boolean) {
-  }
-}
-
-export class DocumentWrapperMoveToPageAction implements Action {
-  readonly type = DOCUMENT_WRAPPER_MOVE_TO_PAGE;
-
-  constructor(public payload: {p: Point, jump: number}) {
   }
 }

@@ -13,12 +13,13 @@ import {
   DocumentWrapperGoToNextPageAction,
   DocumentWrapperInitAction, DocumentWrapperMoveDownAction, DocumentWrapperMoveElementAction,
   DocumentWrapperReturnToPreviousPageAction, DocumentWrapperSaveElementAction,
-  DocumentWrapperInserPagesAction, DocumentWrapperDeleteElementAction,
+  DocumentWrapperInserPageAction, DocumentWrapperDeleteElementAction,
   DocumentWrapperMoveUpAction, DocumentWrapperChangeEditModeAction,
-  DocumentWrapperCancelEditElementAction, DocumentWrapperMoveToPageAction,
-  DocumentWrapperSelectElementAction, DocumentWrapperDeletePagesAction,
+  DocumentWrapperCancelEditElementAction,
+  DocumentWrapperSelectElementAction, DocumentWrapperDeletePageAction,
   DocumentWrapperGoToPageAction,
-  DocumentWrapperMoveToRowAction
+  DocumentWrapperMoveRowAction,
+  DocumentWrapperMovePageAction,
 } from '../../document/document-content/shared/document-wrapper.actions';
 import {DocumentWrapperState, Point} from '../../document/document-content/shared/document-wrapper.state';
 import { oc } from '../app-utils';
@@ -87,8 +88,8 @@ export class AppStoreService {
     this.store.dispatch(new DocumentWrapperMoveElementAction(point));
   }
 
-  moveToRow(previousRow: number, currentRow: number){
-    this.store.dispatch(new DocumentWrapperMoveToRowAction({previousRow: previousRow, currentRow: currentRow}));
+  moveRow(previousRow: number, currentRow: number){
+    this.store.dispatch(new DocumentWrapperMoveRowAction({previousRow: previousRow, currentRow: currentRow}));
   }
 
   returnToPreviousPage(accept?: boolean) {
@@ -99,12 +100,12 @@ export class AppStoreService {
     this.store.dispatch(new DocumentWrapperSaveElementAction(element));
   }
 
-  insertPages(pages: number) {
-    this.store.dispatch(new DocumentWrapperInserPagesAction(pages));
+  insertPage(accept?: boolean) {
+    this.store.dispatch(new DocumentWrapperInserPageAction(accept));
   }
 
-  deletePages(pages: number){
-    this.store.dispatch(new DocumentWrapperDeletePagesAction(pages));
+  deletePage(accept?: boolean){
+    this.store.dispatch(new DocumentWrapperDeletePageAction(accept));
   }
 
   deleteElement(p: Point) {
@@ -119,8 +120,10 @@ export class AppStoreService {
     this.store.dispatch(new DocumentWrapperCancelEditElementAction(accept));
   }
 
-  moveToPage(p: Point, jump: number) {
-    this.store.dispatch(new DocumentWrapperMoveToPageAction({p: p, jump: jump}));
+  movePage(previousIndex, currentIndex){
+    this.store.dispatch(new DocumentWrapperMovePageAction(
+      {previousIndex: previousIndex, currentIndex: currentIndex}
+      ));
   }
 
   selectElement(element: Element) {

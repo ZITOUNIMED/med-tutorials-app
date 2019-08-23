@@ -8,15 +8,15 @@ export interface DocumentWrapperGenericService {
     // move element actions
     moveUp(state, p: Point);
     moveDown(state, p: Point);
-    moveToRow(state, previousRow: number, currentRow: number);
+    moveRow(state, previousRow: number, currentRow: number);
 
     // page actions
     goToNextPage(state: DocumentWrapperState, accept?: boolean);
     goToPage(state: DocumentWrapperState, page: number);
     returnToPreviousPage(state: DocumentWrapperState, accept?: boolean);
-    moveToPage(state: DocumentWrapperState, p: Point, jump: number);
-    insertPages(state: DocumentWrapperState, pages: number);
-    deletePages(state: DocumentWrapperState, pages: number);
+    insertPage(state: DocumentWrapperState, accept?: boolean);
+    deletePage(state: DocumentWrapperState, accept?: boolean);
+    movePage(state: DocumentWrapperState, previousIndex: number, currentIndex: number);
     
     
     // element crud actions
