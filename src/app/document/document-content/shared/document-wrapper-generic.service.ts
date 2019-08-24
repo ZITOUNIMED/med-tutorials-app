@@ -11,9 +11,9 @@ export interface DocumentWrapperGenericService {
     moveRow(state, previousRow: number, currentRow: number);
 
     // page actions
-    goToNextPage(state: DocumentWrapperState, accept?: boolean);
+    goToNextPage(state: DocumentWrapperState, isLockedRepetition?: boolean);
     goToPage(state: DocumentWrapperState, page: number);
-    returnToPreviousPage(state: DocumentWrapperState, accept?: boolean);
+    returnToPreviousPage(state: DocumentWrapperState, isLockedRepetition?: boolean);
     insertPage(state: DocumentWrapperState, accept?: boolean);
     deletePage(state: DocumentWrapperState, accept?: boolean);
     movePage(state: DocumentWrapperState, previousIndex: number, currentIndex: number);
@@ -22,6 +22,7 @@ export interface DocumentWrapperGenericService {
     // element crud actions
     saveElement(state: DocumentWrapperState, element: Element);
     moveElement(state: DocumentWrapperState, p: Point);
+    dragAndDropElement(state: DocumentWrapperState, p: Point);
     deleteElement(state: DocumentWrapperState, p: Point);
     selectElement(state: DocumentWrapperState, element: Element);
     cancelEditElement(state: DocumentWrapperState, accept?: boolean);

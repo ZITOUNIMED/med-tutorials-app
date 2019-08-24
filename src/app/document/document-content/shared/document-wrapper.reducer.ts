@@ -15,12 +15,14 @@ import {
   DOCUMENT_WRAPPER_GO_TO_PAGE,
   DOCUMENT_WRAPPER_MOVE_ROW,
   DocumentWrapperActions,
-  DOCUMENT_WRAPPER_MOVE_PAGE
+  DOCUMENT_WRAPPER_MOVE_PAGE,
+  DOCUMENT_WRAPPER_DRAG_AND_DROP_ELEMENT
 } from './document-wrapper.actions';
 import {DocumentWrapperState, Point} from './document-wrapper.state';
 import {Element} from '../../shared/model/element.model';
 import { DocumentWrapperService } from './document-wrapper.service';
 import { DocumentWrapperGenericService } from './document-wrapper-generic.service';
+import { ok } from 'assert';
 
 const service:DocumentWrapperGenericService = new DocumentWrapperService();
 
@@ -61,6 +63,10 @@ export function documentWrapperReducer(state: DocumentWrapperState, action: Docu
 
     case DOCUMENT_WRAPPER_SAVE_ELEMENT:
       service.saveElement(state, action.payload as Element)
+      return buildWrapper(state);
+    
+    case DOCUMENT_WRAPPER_DRAG_AND_DROP_ELEMENT:
+      service.dragAndDropElement(state, action.payload as Point)
       return buildWrapper(state);
 
     case DOCUMENT_WRAPPER_INSERT_PAGE:
@@ -121,7 +127,23 @@ function checkCanMoveUp(state: DocumentWrapperState){
 }
 
 function getCurrentPageElements(state: DocumentWrapperState) {
-  return state && state.elements && state.elements.filter(elt => elt.page === state.currentPage);
+  return state && state.elements && state.elements
+  .filter(elt => {
+    let ok = false;
+    if(state.draggedElementPosition && (elt.row === state.draggedElementPosition.row &&
+      elt.page === state.draggedElementPosition.page)){
+      ok = true;
+    }
+
+    if(elt.page === state.currentPage){
+      ok = true;
+    }
+    // elt.page === state.currentPage &&
+    // (state.draggedElementPosition && elt.row !== state.draggedElementPosition.row ||
+    //    !state.draggedElementPosition));
+    //    return ok;
+    return ok;
+    });
 }
 
 function getBiggerPage(state: DocumentWrapperState) {

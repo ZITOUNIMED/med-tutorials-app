@@ -1,7 +1,7 @@
 <div>
   <button mat-stroked-button
   [disabled]="!(documentWrapperState$ | async).canReturnToPreviousPage"
-  (click)="appStoreService.returnToPreviousPage(true)"
+  (click)="appStoreService.returnToPreviousPage(false)"
   title="Previous Page">
   Before
 </button>
@@ -30,7 +30,7 @@
   <span>&nbsp;&nbsp;</span>
   <button mat-stroked-button
     [disabled]="!(documentWrapperState$ | async).canGoToNextPage"
-    (click)="appStoreService.goToNextPage(true)"
+    (click)="appStoreService.goToNextPage(false)"
     title="Next Page">
     Next
   </button>

@@ -20,6 +20,7 @@ import {
   DocumentWrapperGoToPageAction,
   DocumentWrapperMoveRowAction,
   DocumentWrapperMovePageAction,
+  DocumentWrapperDragAndDropElementAction,
 } from '../../document/document-content/shared/document-wrapper.actions';
 import {DocumentWrapperState, Point} from '../../document/document-content/shared/document-wrapper.state';
 import { oc } from '../app-utils';
@@ -68,8 +69,8 @@ export class AppStoreService {
       this.store.dispatch(new DocumentWrapperInitAction(elements));
   }
 
-  goToNextPage(accept?: boolean) {
-      this.store.dispatch(new DocumentWrapperGoToNextPageAction(accept));
+  goToNextPage(isLockedRepetition?: boolean) {
+      this.store.dispatch(new DocumentWrapperGoToNextPageAction(isLockedRepetition));
   }
 
   goToPage(page: number){
@@ -88,12 +89,16 @@ export class AppStoreService {
     this.store.dispatch(new DocumentWrapperMoveElementAction(point));
   }
 
+  dragAndDropElement(point: Point){
+    this.store.dispatch(new DocumentWrapperDragAndDropElementAction(point));
+  }
+
   moveRow(previousRow: number, currentRow: number){
     this.store.dispatch(new DocumentWrapperMoveRowAction({previousRow: previousRow, currentRow: currentRow}));
   }
 
-  returnToPreviousPage(accept?: boolean) {
-    this.store.dispatch(new DocumentWrapperReturnToPreviousPageAction(accept));
+  returnToPreviousPage(isLockedRepetition?: boolean) {
+    this.store.dispatch(new DocumentWrapperReturnToPreviousPageAction(isLockedRepetition));
   }
 
   saveElement(element: Element) {

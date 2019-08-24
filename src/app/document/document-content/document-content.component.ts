@@ -24,15 +24,32 @@ export class DocumentContentComponent implements OnInit, OnChanges {
               public appStoreService: AppStoreService) {
   }
 
+  ngOnInit() {
+    this.appStoreService.initDocumentWrapper(this.doc.elements);
+    this.documentWrapperState$ = this.appStoreService.getDocumentWrapper();
+    this.windowWidth = window.innerWidth;
+  }
+
   onDrop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       this.appStoreService.moveRow(event.previousIndex, event.currentIndex);
     }
   }
 
-  ngOnInit() {
-    this.appStoreService.initDocumentWrapper(this.doc.elements);
-    this.documentWrapperState$ = this.appStoreService.getDocumentWrapper();
+  position;
+  windowWidth;
+
+  cdkDragMoved($event){
+    this.position = $event;
+    this.windowWidth = window.innerWidth;
+    if($event && $event.distance){
+      if($event.distance.x>(window.innerWidth / 2)){
+        this.appStoreService.goToNextPage(true);
+      } else if(-$event.distance.x>(window.innerWidth / 2)) {
+        this.appStoreService.returnToPreviousPage(true);
+      }
+    }
+    
   }
 
   saveDocument() {

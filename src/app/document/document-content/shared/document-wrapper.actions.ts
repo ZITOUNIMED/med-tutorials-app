@@ -18,6 +18,7 @@ export const DOCUMENT_WRAPPER_DELETE_PAGE = 'DOCUMENT_WRAPPER_DELETE_PAGE';
 export const DOCUMENT_WRAPPER_GO_TO_PAGE = 'DOCUMENT_WRAPPER_GO_TO_PAGE';
 export const DOCUMENT_WRAPPER_MOVE_ROW = 'DOCUMENT_WRAPPER_MOVE_ROW';
 export const DOCUMENT_WRAPPER_MOVE_PAGE = 'DOCUMENT_WRAPPER_MOVE_PAGE';
+export const DOCUMENT_WRAPPER_DRAG_AND_DROP_ELEMENT = 'DOCUMENT_WRAPPER_DRAG_AND_DROP_ELEMENT';
 
 export type DocumentWrapperActions = DocumentWrapperInitAction |
   DocumentWrapperGoToNextPageAction |
@@ -34,7 +35,8 @@ export type DocumentWrapperActions = DocumentWrapperInitAction |
   DocumentWrapperSelectElementAction |
   DocumentWrapperGoToPageAction |
   DocumentWrapperMoveRowAction |
-  DocumentWrapperMovePageAction
+  DocumentWrapperMovePageAction |
+  DocumentWrapperDragAndDropElementAction
   ;
 
 export class DocumentWrapperInitAction implements Action {
@@ -87,6 +89,13 @@ export class DocumentWrapperMoveUpAction implements Action {
 
 export class DocumentWrapperMoveElementAction implements Action {
   readonly type = DOCUMENT_WRAPPER_MOVE_ELEMENT;
+
+  constructor(public payload: Point) {
+  }
+}
+
+export class DocumentWrapperDragAndDropElementAction implements Action {
+  readonly type = DOCUMENT_WRAPPER_DRAG_AND_DROP_ELEMENT;
 
   constructor(public payload: Point) {
   }

@@ -63,6 +63,6 @@ export class ContentFooterComponent implements OnInit {
   }
 
   private applyMaxSise(window){
-    this.maxDisplayedPagesIndex = window.innerWidth / 50;
+    this.maxDisplayedPagesIndex = window.innerWidth / 55;
   }
 }
