@@ -16,6 +16,8 @@ export class DocumentWrapperService implements DocumentWrapperGenericService {
             selectedElement: null,
             canMoveUp: true,
             canDeletePage: false,
+            draggedElementPosition: null,
+            isLockedRepetition: false,
           } as DocumentWrapperState;
     }
 
@@ -73,25 +75,48 @@ export class DocumentWrapperService implements DocumentWrapperGenericService {
     }
 
     moveRow(state: DocumentWrapperState, previousRow: number, currentRow: number){
-      const p = {
-        row: previousRow,
-        page: state.currentPage,
-      };
-      const toP = { 
-        row: currentRow, 
-        page: state.currentPage
-      };
+      // move in the same page
+      if(!state.draggedElementPosition ||
+        state.draggedElementPosition.page === state.currentPage){
+          //console.log('in same page');
+        const p = {
+          row: previousRow,
+          page: state.currentPage,
+        };
+        const toP = { 
+          row: currentRow, 
+          page: state.currentPage
+        };
+  
+        this.putFlag(state, p);
+        
+        if(previousRow<currentRow){// move down
+          this.decreaseRows(state, state.currentPage, previousRow + 1, currentRow);
+        } else {// move up
+          this.increaseRows(state, state.currentPage, currentRow, previousRow - 1);
+        }
+        
+        this.applyPointOnFlag(state, toP);
+      } else { // in other page
+        //console.log('in other page');
+        const p = state.draggedElementPosition;
+        const toP = { 
+          row: currentRow, 
+          page: state.currentPage,
+        };
 
-      this.putFlag(state, p);
-      
-      if(previousRow<currentRow){// move down
-        this.decreaseRows(state, state.currentPage, previousRow + 1, currentRow);
-      } else {// move up
-        this.increaseRows(state, state.currentPage, currentRow, previousRow - 1);
+        // prepare element position in the new page
+        this.increaseRows(state, state.currentPage, currentRow);
+
+        // put element in the new position
+        this.changeElementPosition(state, p, toP);
+
+        // fill element position in last page
+        this.decreaseRows(state, p.page, p.row + 1);
+
+        state.draggedElementPosition = null;
+        state.isLockedRepetition = false;
       }
-      
-      this.applyPointOnFlag(state, toP);
-
     }
 
     movePage(state: DocumentWrapperState, previousPage: number, currentPage: number){
@@ -105,15 +130,17 @@ export class DocumentWrapperService implements DocumentWrapperGenericService {
       state.currentPage = currentPage;
     }
 
-    goToNextPage(state: DocumentWrapperState, accept?: boolean){
-        if (accept) {
+    goToNextPage(state: DocumentWrapperState, isLockedRepetition?: boolean){
+        if (!state.isLockedRepetition) {
+            state.isLockedRepetition = isLockedRepetition;
             state.currentPage++;
             this.doCancelEditElement(state);
           }
     }
 
-    returnToPreviousPage(state: DocumentWrapperState, accept?: boolean){
-        if (accept) {
+    returnToPreviousPage(state: DocumentWrapperState, isLockedRepetition?: boolean){
+        if (!state.isLockedRepetition) {
+            state.isLockedRepetition = isLockedRepetition;
             state.currentPage--;
             this.doCancelEditElement(state);
         }
@@ -149,6 +176,10 @@ export class DocumentWrapperService implements DocumentWrapperGenericService {
       } else {
           this.moveToPosition(state, p);
       }
+    }
+
+    dragAndDropElement(state: DocumentWrapperState, p: Point){
+      state.draggedElementPosition = p;
     }
 
     saveElement(state: DocumentWrapperState, element: Element) {

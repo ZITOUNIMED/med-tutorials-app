@@ -1,3 +1,14 @@
+<!-- <div>
+  delta: {{position?.delta|json}}<br/>
+  distance: {{position?.distance|json}}<br/>
+  windowWidth: {{windowWidth}}<br/>
+  draggedElementPosition: {{(documentWrapperState$ | async).draggedElementPosition | json}}
+</div>
+<div>
+  <span *ngFor="let elt of (documentWrapperState$ | async).currentPageElements">
+    {{'('+elt.row+','+elt.page+'),'}}
+  </span>
+</div> -->
 <div class="card"
   *ngIf="(documentWrapperState$ | async).biggerPage>=0 || (documentWrapperState$ | async).editMode">
   <div class="card-header">
@@ -13,6 +24,8 @@
       (cdkDropListDropped)="onDrop($event)">
       <mat-card class="app-card" *ngFor="let element of (documentWrapperState$ | async).currentPageElements"
       cdkDrag
+      (cdkDragMoved)="cdkDragMoved($event)"
+      (cdkDragStarted)="appStoreService.dragAndDropElement({row: element.row, page: element.page})"
       [cdkDragDisabled]="(documentWrapperState$ | async).selectedElement &&
       (documentWrapperState$ | async).selectedElement.row === element.row
        && (documentWrapperState$ | async).selectedElement.page == element.page"

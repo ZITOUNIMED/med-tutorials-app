@@ -13,6 +13,8 @@ export interface DocumentWrapperState {
   selectedElement: Element;
   canMoveUp: boolean;
   canDeletePage: boolean;
+  draggedElementPosition: Point;
+  isLockedRepetition: boolean;
 }
 
 export interface Point {

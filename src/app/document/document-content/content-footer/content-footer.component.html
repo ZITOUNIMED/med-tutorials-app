@@ -8,7 +8,8 @@
         <div class="example-box move-set-index-box" (click)="previousSet()">
           <i class="fa fa-angle-double-left" aria-hidden="true"></i>
         </div>
-        <div class="example-box" *ngFor="let pageIndex of displayedPagesIndex" cdkDrag
+        <div class="example-box" *ngFor="let pageIndex of displayedPagesIndex" 
+        cdkDrag
         [ngClass]="{'current-box': pageIndex === (documentWrapperState$ | async).currentPage}"
         (click)="appStoreService.goToPage(pageIndex)"
         >{{pageIndex + 1}}</div>
