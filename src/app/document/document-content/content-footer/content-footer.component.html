@@ -12,7 +12,10 @@
         cdkDrag
         [ngClass]="{'current-box': pageIndex === (documentWrapperState$ | async).currentPage}"
         (click)="appStoreService.goToPage(pageIndex)"
-        >{{pageIndex + 1}}</div>
+        (mouseover)="appStoreService.goToPage(pageIndex, true)"  
+        >
+        {{pageIndex + 1}}
+        </div>
         <div class="example-box move-set-index-box" (click)="nextSet()">
           <i class="fa fa-angle-double-right" aria-hidden="true"></i>
         </div>

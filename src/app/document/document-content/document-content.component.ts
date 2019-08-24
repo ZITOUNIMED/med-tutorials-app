@@ -27,7 +27,6 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.appStoreService.initDocumentWrapper(this.doc.elements);
     this.documentWrapperState$ = this.appStoreService.getDocumentWrapper();
-    this.windowWidth = window.innerWidth;
   }
 
   onDrop(event: CdkDragDrop<string[]>) {
@@ -36,12 +35,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     }
   }
 
-  position;
-  windowWidth;
-
   cdkDragMoved($event){
-    this.position = $event;
-    this.windowWidth = window.innerWidth;
     if($event && $event.distance){
       if($event.distance.x>(window.innerWidth / 2)){
         this.appStoreService.goToNextPage(true);
@@ -49,7 +43,6 @@ export class DocumentContentComponent implements OnInit, OnChanges {
         this.appStoreService.returnToPreviousPage(true);
       }
     }
-    
   }
 
   saveDocument() {
