@@ -19,6 +19,7 @@ export const DOCUMENT_WRAPPER_GO_TO_PAGE = 'DOCUMENT_WRAPPER_GO_TO_PAGE';
 export const DOCUMENT_WRAPPER_MOVE_ROW = 'DOCUMENT_WRAPPER_MOVE_ROW';
 export const DOCUMENT_WRAPPER_MOVE_PAGE = 'DOCUMENT_WRAPPER_MOVE_PAGE';
 export const DOCUMENT_WRAPPER_DRAG_AND_DROP_ELEMENT = 'DOCUMENT_WRAPPER_DRAG_AND_DROP_ELEMENT';
+export const DOCUMENT_WRAPPER_DRAG_AND_DROP_ENDED = 'DOCUMENT_WRAPPER_DRAG_AND_DROP_ENDED';
 
 export type DocumentWrapperActions = DocumentWrapperInitAction |
   DocumentWrapperGoToNextPageAction |
@@ -36,7 +37,8 @@ export type DocumentWrapperActions = DocumentWrapperInitAction |
   DocumentWrapperGoToPageAction |
   DocumentWrapperMoveRowAction |
   DocumentWrapperMovePageAction |
-  DocumentWrapperDragAndDropElementAction
+  DocumentWrapperDragAndDropElementAction|
+  DocumentWrapperDragAndDropEndedAction
   ;
 
 export class DocumentWrapperInitAction implements Action {
@@ -101,6 +103,13 @@ export class DocumentWrapperDragAndDropElementAction implements Action {
   }
 }
 
+export class DocumentWrapperDragAndDropEndedAction implements Action {
+  readonly type = DOCUMENT_WRAPPER_DRAG_AND_DROP_ENDED;
+
+  constructor(public payload: boolean) {
+  }
+}
+
 export class DocumentWrapperReturnToPreviousPageAction implements Action {
   readonly type = DOCUMENT_WRAPPER_RETURN_TO_PREVIOUS_PAGE;
 
@@ -132,7 +141,10 @@ export class DocumentWrapperInserPageAction implements Action {
 export class DocumentWrapperGoToPageAction implements Action {
   readonly type = DOCUMENT_WRAPPER_GO_TO_PAGE;
 
-  constructor(public payload: number) {
+  constructor(public payload: {
+    page: number,
+    isBlurMode: boolean
+  }) {
   }
 }
 

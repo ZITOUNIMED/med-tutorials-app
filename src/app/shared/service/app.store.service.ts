@@ -21,6 +21,7 @@ import {
   DocumentWrapperMoveRowAction,
   DocumentWrapperMovePageAction,
   DocumentWrapperDragAndDropElementAction,
+  DocumentWrapperDragAndDropEndedAction,
 } from '../../document/document-content/shared/document-wrapper.actions';
 import {DocumentWrapperState, Point} from '../../document/document-content/shared/document-wrapper.state';
 import { oc } from '../app-utils';
@@ -73,8 +74,11 @@ export class AppStoreService {
       this.store.dispatch(new DocumentWrapperGoToNextPageAction(isLockedRepetition));
   }
 
-  goToPage(page: number){
-    this.store.dispatch(new DocumentWrapperGoToPageAction(page));
+  goToPage(page: number, isBlurMode?: boolean){
+    this.store.dispatch(new DocumentWrapperGoToPageAction({
+      page: page,
+      isBlurMode: isBlurMode
+    }));
   }
 
   moveDown(point: Point) {
@@ -99,6 +103,10 @@ export class AppStoreService {
 
   returnToPreviousPage(isLockedRepetition?: boolean) {
     this.store.dispatch(new DocumentWrapperReturnToPreviousPageAction(isLockedRepetition));
+  }
+
+  dragAndDropEnded(accept?: boolean){
+    this.store.dispatch(new DocumentWrapperDragAndDropEndedAction(accept));
   }
 
   saveElement(element: Element) {

@@ -12,7 +12,7 @@ export interface DocumentWrapperGenericService {
 
     // page actions
     goToNextPage(state: DocumentWrapperState, isLockedRepetition?: boolean);
-    goToPage(state: DocumentWrapperState, page: number);
+    goToPage(state: DocumentWrapperState, page: number, isBlurMode?: boolean);
     returnToPreviousPage(state: DocumentWrapperState, isLockedRepetition?: boolean);
     insertPage(state: DocumentWrapperState, accept?: boolean);
     deletePage(state: DocumentWrapperState, accept?: boolean);
@@ -29,4 +29,5 @@ export interface DocumentWrapperGenericService {
     
     // other actions
     changeEditMode(state: DocumentWrapperState, accept?: boolean);
+    dragAndDropEnded(state: DocumentWrapperState, accept: boolean);
 }

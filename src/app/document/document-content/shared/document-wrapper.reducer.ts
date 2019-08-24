@@ -16,7 +16,8 @@ import {
   DOCUMENT_WRAPPER_MOVE_ROW,
   DocumentWrapperActions,
   DOCUMENT_WRAPPER_MOVE_PAGE,
-  DOCUMENT_WRAPPER_DRAG_AND_DROP_ELEMENT
+  DOCUMENT_WRAPPER_DRAG_AND_DROP_ELEMENT,
+  DOCUMENT_WRAPPER_DRAG_AND_DROP_ENDED
 } from './document-wrapper.actions';
 import {DocumentWrapperState, Point} from './document-wrapper.state';
 import {Element} from '../../shared/model/element.model';
@@ -37,7 +38,7 @@ export function documentWrapperReducer(state: DocumentWrapperState, action: Docu
       return buildWrapper(state);
 
     case DOCUMENT_WRAPPER_GO_TO_PAGE:
-      service.goToPage(state, action.payload);
+      service.goToPage(state, action.payload.page, action.payload.isBlurMode);
       return buildWrapper(state);
 
     case DOCUMENT_WRAPPER_RETURN_TO_PREVIOUS_PAGE:
@@ -95,6 +96,10 @@ export function documentWrapperReducer(state: DocumentWrapperState, action: Docu
       
     case DOCUMENT_WRAPPER_CANCEL_EDIT_ELEMENT:
       service.cancelEditElement(state, action.payload);
+      return state;
+    
+    case DOCUMENT_WRAPPER_DRAG_AND_DROP_ENDED:
+      service.dragAndDropEnded(state, action.payload as boolean);
       return state;
     default:
       return state;

@@ -57,6 +57,10 @@ export class ContentFooterComponent implements OnInit {
     this.appStoreService.movePage(event.previousIndex, event.currentIndex);
   }
 
+  myFunction(pageIndex){
+    console.log(pageIndex);
+  }
+
   private applyDispayedPagesIndex(){
     this.displayedPagesIndex = this.pagesIndex.slice(this.currentSetIndex * this.maxDisplayedPagesIndex,
       (this.currentSetIndex + 1) * this.maxDisplayedPagesIndex);

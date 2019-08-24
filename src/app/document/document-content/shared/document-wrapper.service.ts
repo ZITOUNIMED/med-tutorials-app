@@ -1,6 +1,7 @@
 import { DocumentWrapperGenericService } from "./document-wrapper-generic.service";
 import { DocumentWrapperState, Point } from "./document-wrapper.state";
 import {Element} from '../../shared/model/element.model';
+import { state } from "@angular/animations";
 
 const ROW_FLAG = -125;
 const PAGE_FLAG = -523;
@@ -74,11 +75,14 @@ export class DocumentWrapperService implements DocumentWrapperGenericService {
         }
     }
 
+    dragAndDropEnded(state: DocumentWrapperState, accept: boolean){
+      
+    }
+
     moveRow(state: DocumentWrapperState, previousRow: number, currentRow: number){
       // move in the same page
       if(!state.draggedElementPosition ||
         state.draggedElementPosition.page === state.currentPage){
-          //console.log('in same page');
         const p = {
           row: previousRow,
           page: state.currentPage,
@@ -98,7 +102,6 @@ export class DocumentWrapperService implements DocumentWrapperGenericService {
         
         this.applyPointOnFlag(state, toP);
       } else { // in other page
-        //console.log('in other page');
         const p = state.draggedElementPosition;
         const toP = { 
           row: currentRow, 
@@ -114,9 +117,10 @@ export class DocumentWrapperService implements DocumentWrapperGenericService {
         // fill element position in last page
         this.decreaseRows(state, p.page, p.row + 1);
 
-        state.draggedElementPosition = null;
         state.isLockedRepetition = false;
       }
+
+      state.draggedElementPosition = null;
     }
 
     movePage(state: DocumentWrapperState, previousPage: number, currentPage: number){
@@ -146,8 +150,10 @@ export class DocumentWrapperService implements DocumentWrapperGenericService {
         }
     }
 
-    goToPage(state: DocumentWrapperState, page: number){
+    goToPage(state: DocumentWrapperState, page: number, isBlurMode?: boolean){
+      if(!isBlurMode || isBlurMode && state.editMode){
         state.currentPage = page;
+      }
     }
 
     insertPage(state: DocumentWrapperState, accept?: boolean){
