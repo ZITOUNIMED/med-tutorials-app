@@ -11,7 +11,7 @@
       #todoList="cdkDropList"
       [cdkDropListData]="(documentWrapperState$ | async).currentPageElements"
       (cdkDropListDropped)="onDrop($event)">
-      <mat-card class="app-card" *ngFor="let element of (documentWrapperState$ | async).currentPageElements"
+      <div class="app-card" *ngFor="let element of (documentWrapperState$ | async).currentPageElements"
       cdkDrag
       (cdkDragMoved)="cdkDragMoved($event)"
       (cdkDragEnded)="appStoreService.dragAndDropEnded(true)"
@@ -24,11 +24,11 @@
           [hidden]="(documentWrapperState$ | async).selectedElement?.row === element.row &&
             (documentWrapperState$ | async).selectedElement?.page === element.page &&
             (documentWrapperState$ | async).editMode">
-          <div [ngClass]="{ 'col-md-10': (documentWrapperState$ | async).editMode,
+          <div [ngClass]="{ 'col-md-11': (documentWrapperState$ | async).editMode,
             'col-md-12': !(documentWrapperState$ | async).editMode }">
             <app-element-text-sheet [element]="element"></app-element-text-sheet>
           </div>
-          <div class="col-md-2" *ngIf="(documentWrapperState$ | async).editMode">
+          <div class="col-md-1" *ngIf="(documentWrapperState$ | async).editMode">
             <div *ngIf="element.row !== (documentWrapperState$ | async).movedItem.row ||
               element.page !== (documentWrapperState$ | async).movedItem.page"
               class="btn-group">
@@ -39,10 +39,10 @@
                 (click)="appStoreService.deleteElement({row: element.row, page: element.page})">
                 <i class="fa fa-times" aria-hidden="true"></i>
               </button>
-              <button class="btn btn-xs btn-default"
+              <!-- <button class="btn btn-xs btn-default"
                 (click)="appStoreService.moveElement({row: element.row, page: element.page})">
                 <i class="fa fa-arrows" aria-hidden="true"></i>
-              </button>
+              </button> -->
             </div>
             <app-content-move-element
               [documentWrapperState$]="documentWrapperState$"
@@ -58,7 +58,7 @@
             (cancelChange)="appStoreService.cancelEditElement($event)">
           </app-document-palette>
         </div>
-      </mat-card>
+      </div>
     </div>
     <div *ngIf="!(documentWrapperState$ | async).selectedElement && (documentWrapperState$ | async).editMode">
       <app-document-palette (onSubmitChange)="appStoreService.saveElement($event)"

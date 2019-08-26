@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, Output, EventEmitter} from '@angular/core';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 import {DocumentService} from '../shared/service/document.service';
 import {AppSnackbarService} from '../../shared/app-snackbar.service';
@@ -8,6 +8,7 @@ import {AppStoreService} from '../../shared/service/app.store.service';
 import {Observable} from 'rxjs';
 import { first } from 'rxjs/operators';
 import {DocumentWrapperState, Point} from './shared/document-wrapper.state';
+import {Element} from '../shared/model/element.model';
 
 @Component({
   selector: 'app-document-content',
@@ -49,12 +50,23 @@ export class DocumentContentComponent implements OnInit, OnChanges {
 	this.documentWrapperState$
 	.pipe(first())
 	.subscribe( documentWrapperState =>{
-		const doc = {...this.doc, elements: documentWrapperState.elements};
+    let elements= this.checkRowsOrder(documentWrapperState);
+		const doc = {...this.doc, elements: elements};
 		this.documentService.saveDocument(doc).subscribe(res => {
 		  this.appSnackbarService.openSnackBar('Success!: Document Saved', 'save');
 		  this.loadDocument();
 		});
 	});
+  }
+
+  private checkRowsOrder(documentWrapperState: DocumentWrapperState): Element[]{
+    let row = 0;
+    return documentWrapperState.elements.map(elt => {
+      if(elt.page === documentWrapperState.currentPage){
+        elt.row = row++;
+      }
+      return elt;
+    });
   }
 
   loadDocument() {
