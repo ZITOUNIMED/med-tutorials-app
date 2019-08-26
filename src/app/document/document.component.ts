@@ -132,7 +132,7 @@ export class DocumentComponent implements OnInit {
     this.appStoreService.startLoading();
     const {collectionType, collectionId} = this.queryParams;
     this.documentService.getDocuments(collectionType, collectionId).subscribe(documents => {
-      this.documents = documents;
+      this.documents = documents.sort((d1, d2) => d1.creationDate<d2.creationDate ? 1 : 0);
       this.appSnackbarService.openSnackBar('SUCCESS!: Loading documents', 'LOAD');
       this.appStoreService.stopLoading();
     }, error => {
