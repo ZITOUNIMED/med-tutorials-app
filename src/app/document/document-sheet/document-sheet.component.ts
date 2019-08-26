@@ -27,10 +27,10 @@ export class DocumentSheetComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.breakpointObserver.observe(['(min-width: 1200px)'])
-      .pipe(map(res => res && res.matches))
-      .subscribe(canDisplayModalPdf => (this.canDisplayModalPdf = canDisplayModalPdf));
-
+    // this.breakpointObserver.observe(['(min-width: 1200px)'])
+    //   .pipe(map(res => res && res.matches))
+    //   .subscribe(canDisplayModalPdf => (this.canDisplayModalPdf = canDisplayModalPdf));
+    this.canDisplayModalPdf = false;
     this.route.data
       .pipe(
         filter(data => data && !!data['document']),
