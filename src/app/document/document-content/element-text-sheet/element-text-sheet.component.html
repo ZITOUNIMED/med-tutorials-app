@@ -23,5 +23,8 @@
   <div *ngSwitchCase="ElementType.VERY_SMALL_TITLE">
     <h4>{{ element.text }}</h4>
   </div>
+  <div *ngSwitchCase="ElementType.HYPERLINK">
+      <app-display-hyperlink [text]="element.text"></app-display-hyperlink> 
+  </div>
   <!-- {{'('+element.row+','+element.page+')'}} -->
 </div>

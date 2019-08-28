@@ -35,6 +35,9 @@
     <div *ngSwitchCase="element.type === ElementType.LIST" class="form-group">
       <app-list-palette [(ngModel)]="element"></app-list-palette>
     </div>
+    <div *ngSwitchCase="element.type === ElementType.HYPERLINK" class="form-group">
+        <app-hyperlink-palette [(ngModel)]="element"></app-hyperlink-palette>
+    </div>
   </div>
   <div class="form-group">
     <button
