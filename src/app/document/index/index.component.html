@@ -1,21 +1,8 @@
-<nav>
-  <div>
-    <button class="btn btn-sm btn-outline-primary navbar-toggler"  (click)="showIndex = !showIndex;">Index</button>
-  </div>
-  <p></p>
-  <div class="collapse navbar-collapse" [ngClass]="{'show': showIndex}" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item" *ngFor="let elt of elements">
-        <a href="" class="nav-link" data-toggle="collapse" (click)="showIndex = false; appStoreService.goToPage(elt.page)">
-          <span *ngIf="elt.type===ElementType.MEDIUM_TITLE">&nbsp;</span>
-          <span *ngIf="elt.type===ElementType.SMALL_TITLE">&nbsp;&nbsp;&nbsp;</span>
-          {{elt.text}}
-        </a>
-      </li>
-    </ul>
-  </div>
-</nav>
-<!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-  aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-  Index
-</button> -->
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" (click)="closeNav(-1)">&times;</a>
+  <a href="" *ngFor="let elt of elements" class="nav-link" data-toggle="collapse" (click)="closeNav(elt.page)">
+    <span *ngIf="elt.type===ElementType.MEDIUM_TITLE">&nbsp;</span>
+    <span *ngIf="elt.type===ElementType.SMALL_TITLE">&nbsp;&nbsp;&nbsp;</span>
+    {{elt.text}}
+  </a>
+</div>

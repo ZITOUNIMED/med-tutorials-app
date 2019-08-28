@@ -10,4 +10,5 @@ export enum ElementType {
   CONTENT = 'CONTENT',
   LIST = 'LIST',
   ATTACHMENT= 'ATTACHMENT',
+  HYPERLINK = 'HYPERLINK',
 }

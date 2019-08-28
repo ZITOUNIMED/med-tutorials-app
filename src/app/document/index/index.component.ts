@@ -11,11 +11,18 @@ import { AppStoreService } from "src/app/shared/service/app.store.service";
 })
 export class IndexComponent implements OnInit{
   ElementType = ElementType;
-  showIndex = false;
+  showIndex = true;
 
   elements: Element[];
 
   constructor(public appStoreService: AppStoreService){}
+
+  closeNav(page) {
+    document.getElementById("mySidenav").style.width = "0";
+    if(page>=0){
+      this.appStoreService.goToPage(page);
+    }
+  }
 
   ngOnInit(){
     this.appStoreService.getDocumentWrapper()

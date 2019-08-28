@@ -6,8 +6,7 @@ import {AppStoreService} from '../../../shared/service/app.store.service';
 import { AppDocument } from '../../shared/model/document.model';
 import { AppPermissions } from 'src/app/permissions/model/app.permissions.model';
 import { AppTargetTypes } from 'src/app/permissions/model/app.target-types';
-import { oc, isNotEmptyArray } from 'src/app/shared/app-utils';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { oc } from 'src/app/shared/app-utils';
 
 @Component({
   selector: 'app-content-header',
@@ -28,6 +27,10 @@ export class ContentHeaderComponent implements OnInit, OnChanges{
       targetObject: this.doc,
     };
     
+  }
+
+  openNav(){
+    document.getElementById("mySidenav").style.width = "250px";
   }
 
   ngOnChanges(changes: SimpleChanges): void {
