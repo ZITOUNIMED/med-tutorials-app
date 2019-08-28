@@ -28,7 +28,6 @@ export abstract class AbstractPaletteComponent implements ControlValueAccessor {
   }
 
   setDisabledState?(isDisabled: boolean): void {
-    // throw new Error("Method not implemented.");
   }
 
   protected onChange($event) {
@@ -37,7 +36,6 @@ export abstract class AbstractPaletteComponent implements ControlValueAccessor {
   }
 
   protected onTouch($event){
-    console.log('touched');
   }
 
 }
