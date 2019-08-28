@@ -31,6 +31,8 @@ import { DisplayAttachmentComponent } from './document-content/element-text-shee
 import { AttachmentPaletteComponent } from './document-content/document-palette/attachment-palette/attachment-palette.component';
 import { AddDocumentToCollectionComponent } from './shared/modal/add-document-to-collection/add-document-to-collection.component';
 import { ContentFooterComponent } from './document-content/content-footer/content-footer.component';
+import { HyperlinkPaletteComponent } from './document-content/document-palette/hyperlink-palette/hyperlink-palette.component';
+import { DisplayHyperlinkComponent } from './document-content/element-text-sheet/display-hyperlink/display-hyperlink.component';
 
 @NgModule({
   imports: [AppMaterialModule,
@@ -56,11 +58,13 @@ import { ContentFooterComponent } from './document-content/content-footer/conten
     IndexComponent,
     DisplayTextComponent,
     ListPaletteComponent,
+    HyperlinkPaletteComponent,
     TextPaletteComponent,
     TextareaPaletteComponent,
     TitlePaletteComponent,
     DisplayListComponent,
     DisplayAttachmentComponent,
+    DisplayHyperlinkComponent,
     AttachmentPaletteComponent,
     AddDocumentToCollectionComponent,
     ContentFooterComponent,
