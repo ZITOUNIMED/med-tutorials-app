@@ -15,6 +15,7 @@ import { ADMIN_AND_SOURCER_PERMISSIONS } from 'src/app/permissions/model/app.per
   styleUrls: ['./document-sheet.component.css']
 })
 export class DocumentSheetComponent implements OnInit {
+
   document: AppDocument;
   @Output() returnToSelectDocument = new EventEmitter<boolean>();
   canDisplayModalPdf = false;

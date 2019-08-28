@@ -16,25 +16,29 @@ export const ELEMENTS_CHOICES = [{
 },
 {
   key: ElementType.BIG_TITLE,
-  value: 'Titre grand'
+  value: 'Big title'
 },
 {
   key: ElementType.MEDIUM_TITLE,
-  value: 'Titre moyen'
+  value: 'Medium title'
 },
 {
   key: ElementType.SMALL_TITLE,
-  value: 'Titre petit'
+  value: 'Small title'
 },
 {
   key: ElementType.VERY_SMALL_TITLE,
-  value: 'Très petit titre'
+  value: 'Very small title'
 },
 {
   key: ElementType.LIST,
-  value: 'Liste'
+  value: 'List'
 },
 {
   key: ElementType.ATTACHMENT,
-  value: 'Attachment'
+  value: 'Image'
+},
+{
+  key: ElementType.HYPERLINK,
+  value: 'Link'
 }];

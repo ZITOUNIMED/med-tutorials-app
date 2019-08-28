@@ -1,4 +1,6 @@
 <div>
+  <span style="font-size:20px;cursor:pointer" (click)="openNav()">&#9776;</span>
+  <span>&nbsp;&nbsp;</span>
   <button mat-stroked-button
   [disabled]="!(documentWrapperState$ | async).canReturnToPreviousPage"
   (click)="appStoreService.returnToPreviousPage(false)"
