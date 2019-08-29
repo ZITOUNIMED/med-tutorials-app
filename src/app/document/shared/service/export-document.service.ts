@@ -176,7 +176,7 @@ export class ExportDocumentService {
         let marginLineLeft = this.getLineLeftMargin(txt);
         return {
           leftPosition: marginLineLeft,
-          text: `<pre><code>${txt}</code></pre>`
+          text: `<pre><textarea>${txt}</textarea></pre>`
         };
       });
     }
