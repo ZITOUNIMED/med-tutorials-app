@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material';
 import { AppSnackbarService } from 'src/app/shared/app-snackbar.service';
 import { AppStoreService } from 'src/app/shared/service/app.store.service';
 import { AppCollectionService } from '../shared/service/app-collection.service';
+import { GenerecDialogComponent } from 'src/app/generec-dialog/generec-dialog.component';
 
 @Component({
   selector: 'app-collection-list',
@@ -20,6 +21,27 @@ export class AppCollectionListComponent implements OnInit {
           private appStoreService: AppStoreService,) { }
 
   ngOnInit() {
+  }
+
+  openDialogDeleteCollection(collection: AppCollection) {
+    const dialogRef = this.dialog.open(GenerecDialogComponent, {
+      width: '350px',
+      data: {title: 'Delete Document', message: 'Do you want to delete the collection: ' + collection.name + ' ?'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteCollection(collection.id);
+      }
+    });
+  }
+
+  deleteCollection(id: number){
+    this.appCollectionService.deleteCollection(id)
+    .subscribe(res => {
+      this.appSnackbarService.openSnackBar('Success!: Collection Deleted', 'delete');
+      this.reloadChanged.emit(true);
+    });
   }
 
   openDialogCreateUpdateCollection(collection: AppCollection) {

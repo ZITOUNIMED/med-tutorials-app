@@ -21,4 +21,8 @@ export class AppCollectionService {
   getCollection(id: string): Observable<AppCollection> {
     return this.http.get<AppCollection>(this.url + `/${id}`);
   }
+
+  deleteCollection(id: number): Observable<any> {
+    return this.http.delete(this.url + `/${id}`);
+  }
 }
