@@ -60,13 +60,29 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   }
 
   private checkRowsOrder(documentWrapperState: DocumentWrapperState): Element[]{
-    let row = 0;
-    return documentWrapperState.elements.map(elt => {
-      if(elt.page === documentWrapperState.currentPage){
-        elt.row = row++;
-      }
-      return elt;
+    let currentPageElements = documentWrapperState.currentPageElements;
+    let totalRows = 0;
+    for(let i = 0; i<currentPageElements.length; i++){
+      totalRows+=i;
+    }
+
+    const elt = currentPageElements.reduce((e1, e2) => {
+      return {
+        ...e1,
+        row: e1.row + e2.row
+      };
     });
+    if(elt.row !== totalRows){
+      let row = 0;
+      return documentWrapperState.elements.map(elt => {
+        if(elt.page === documentWrapperState.currentPage){
+          elt.row = row++;
+        }
+        return elt;
+      });
+    }
+    
+    return documentWrapperState.elements;
   }
 
   loadDocument() {
