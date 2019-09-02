@@ -19,6 +19,11 @@ export const ADMIN_AND_SOURCER_PERMISSIONS: AppPermissions = {
   roles: [RoleNameTypes.ROLE_ADMIN, RoleNameTypes.ROLE_SOURCER],
 };
 
+export const USER_PERMISSIONS: AppPermissions = {
+  targetType: AppTargetTypes.USER,
+  roles: [RoleNameTypes.ROLE_USER],
+};
+
 export const ADMIN_PERMISSIONS: AppPermissions = {
   targetType: AppTargetTypes.USER,
   roles: [RoleNameTypes.ROLE_ADMIN],

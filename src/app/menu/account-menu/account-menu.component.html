@@ -19,7 +19,7 @@
                         <p class="text-muted small">{{user?.email}}</p>
                         <div class="divider">
                         </div>
-                        <a href="" class="btn btn-primary btn-sm active"
+                        <a href="" class="btn btn-primary btn-sm active" [ngClass]="{'disabled': isGuest}"
                           [routerLink]="[{outlets: { homeOutlet: 'account'}}]"
                         >View Profile</a>
                     </div>

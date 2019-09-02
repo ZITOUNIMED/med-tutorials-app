@@ -7,6 +7,7 @@ import { PrincipalCleanAction } from 'src/app/authentication/shared/principal.ac
 import { USERNAME_KEY, CRIPTED_PASSWAORD_KEY } from 'src/app/authentication/shared/model/principal.model';
 import { AppStoreService } from 'src/app/shared/service/app.store.service';
 import { User } from '../../user/shared/model/user.model';
+import { RoleNameTypes } from 'src/app/user/shared/model/role-name-types.enum';
 
 @Component({
   selector: 'app-account-menu',
@@ -15,6 +16,7 @@ import { User } from '../../user/shared/model/user.model';
 })
 export class AccountMenuComponent implements OnInit {
   user: User;
+  isGuest= true;
   constructor(private appLocalStorageService: AppLocalStorageService,
               private store: Store<AppState>,
               private router: Router,
@@ -22,7 +24,10 @@ export class AccountMenuComponent implements OnInit {
 
   ngOnInit() {
     this.appStoreService.getUser()
-    .subscribe(user => (this.user = user));
+    .subscribe(user => {
+      this.user = user;
+      this.isGuest =  !user || user.roles.some(role => role.name === RoleNameTypes.ROLE_GUEST);
+    });
   }
 
   signout() {
