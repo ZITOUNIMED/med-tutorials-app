@@ -27,6 +27,7 @@
               <select>
                 <option *ngFor="let role of user.roles">
                   {{role.name === RoleNameTypes.ROLE_USER ? 'User':
+                    role.name === RoleNameTypes.ROLE_GUEST ? 'Guest':
                     role.name === RoleNameTypes.ROLE_ADMIN ? 'Admin' :
                     role.name === RoleNameTypes.ROLE_SOURCER ? 'Sourceur': ''}}</option>
               </select>
