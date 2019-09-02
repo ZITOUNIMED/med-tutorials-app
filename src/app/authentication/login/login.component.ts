@@ -56,7 +56,8 @@ export class LoginComponent implements OnInit {
         this.appStoreService.stopLoading();
         this.store.dispatch(new PrincipalSaveAction(res));
       }, error => {
-        this.appStoreService.addErrorNotif(error.status, error.message);
+        this.appStoreService.addErrorNotif(error.status, 
+          `${error.error.status} ${error.error.error}: ${error.error.message}`);
         this.appStoreService.stopLoading();
       });
   }
