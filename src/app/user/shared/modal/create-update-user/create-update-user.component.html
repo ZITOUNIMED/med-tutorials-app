@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>
-  Update User
+  {{ data?.user?.id ? 'Update User' : 'Create New User'}}
 </h2>
 <mat-dialog-content class="mat-typography">
   <form [formGroup]="userForm">
@@ -7,7 +7,13 @@
       <label>Username:
         <input class="form-control" type="text" formControlName="username" />
       </label>
-      <div class="form-group">
+    </div>
+    <div class="form-group">
+        <label *ngIf="!data?.user?.id">Password:
+          <input class="form-control" type="text" formControlName="password" />
+        </label>
+    </div>
+     <div class="form-group">
         <label for="exampleSelect1">Roles</label>
         <table class="table">
           <tbody>
@@ -33,17 +39,16 @@
           <option [value]="RoleNameTypes.ROLE_GUEST">Guest</option>
         </select>
         <button (click)="addRole()">Add Role</button>
-      </div>
-      <div class="form-group form-check">
-        <input type="checkbox" class="form-check-input" formControlName="enable">
-        <label class="form-check-label">Enable user</label>
-      </div>
+    </div>
+    <div class="form-group form-check">
+      <input type="checkbox" class="form-check-input" formControlName="enable">
+      <label class="form-check-label">Enable user</label>
     </div>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close cdkFocusInitial>Cancel</button>
   <button mat-button [mat-dialog-close]="buildUser()" color="primary">
-    Update
+      {{ data?.user?.id ? 'Update' : 'Create'}}
   </button>
 </mat-dialog-actions>

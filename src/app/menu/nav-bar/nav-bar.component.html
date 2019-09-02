@@ -34,15 +34,17 @@
     <i [hidden]="!publicChevronUp" class="fa fa-chevron-up" aria-hidden="true"></i>
   </a>
   <div class="collapse app-list-items" id="collapsePublicTutos">
+    
     <a mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'document'}}]"
       [queryParams]="{collectionType: DocumentCollectionTypes.PUBLIC_TUTOS}">
+      &nbsp;&nbsp;
       <i class="fa fa-eye fa-1" aria-hidden="true"></i>&nbsp;&nbsp;
       Display All
     </a>
     <a mat-list-item *ngFor="let tuto of publicTutosLight"
       (click)="drawer.close()"
       [routerLink]="['/home', {outlets: { homeOutlet: 'document/' + tuto.id}}]">
-      {{tuto.name}}
+      &nbsp;&nbsp;{{tuto.name}}
     </a>
   </div>
 
@@ -59,13 +61,13 @@
   <div class="collapse app-list-items" id="collapseMyTutos" [appPermissions]="USER_PERMISSIONS">
     <a mat-list-item (click)="drawer.close()" [routerLink]="[{outlets: { homeOutlet: 'document'}}]"
       [queryParams]="{collectionType: DocumentCollectionTypes.MY_TUTOS}"
-      [appPermissions]="USER_PERMISSIONS">
+      [appPermissions]="USER_PERMISSIONS">&nbsp;&nbsp;
       <i class="fa fa-eye fa-1" aria-hidden="true"></i>&nbsp;&nbsp;
       Display All</a>
     <a mat-list-item *ngFor="let tuto of myTutosLight"
       (click)="drawer.close()"
       [routerLink]="['/home', {outlets: { homeOutlet: 'document/' + tuto.id}}]">
-      {{tuto.name}}
+      &nbsp;&nbsp;{{tuto.name}}
     </a>
   </div>
   <p></p>
