@@ -15,7 +15,9 @@
       <button [appPermissions]="ADMIN_AND_SOURCER_PERMISSIONS" mat-stroked-button color="primary" (click)="openImportDocumentFileDialog()" class="pull-right">
         Import
       </button>
-      <button mat-stroked-button color="primary" (click)="openCreateDocumentDialog()" class="pull-right">
+      <button
+      [appPermissions]="USER_PERMISSIONS"
+      mat-stroked-button color="primary" (click)="openCreateDocumentDialog()" class="pull-right">
         New
       </button>
       <span>&nbsp;</span>

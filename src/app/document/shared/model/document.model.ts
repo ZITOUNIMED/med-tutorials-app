@@ -13,10 +13,3 @@ export interface AppDocument {
   readonly lastUpdateDate?: string;
   readonly creationDate?: string;
 }
-
-export interface DocumentSample {
-  id: number;
-  name: string;
-  ownerUsername: string;
-  confidentiality?: ConfidentialityTypes;
-}

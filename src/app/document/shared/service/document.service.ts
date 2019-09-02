@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {environment} from '../../../../environments/environment';
-import { AppDocument, DocumentSample } from '../model/document.model';
+import { AppDocument } from '../model/document.model';
 import { DocumentCollectionTypes } from '../document-collection-types';
 
 @Injectable({
@@ -54,8 +54,9 @@ export class DocumentService {
     return this.http.post(this.url + '/all', documents);
   }
 
-  getDocumentsSamples(): Observable<DocumentSample[]> {
-    return this.http.get<DocumentSample[]>(this.url + '/samples');
+  getTutoslight(collectionType?: DocumentCollectionTypes): Observable<AppDocument[]> {
+    let subUrl = this.getUrlByCollectionType(collectionType);
+    return this.http.get<AppDocument[]>(this.url + '/light/' + subUrl);
   }
 
   deleteDocument(id: number): Observable<any> {

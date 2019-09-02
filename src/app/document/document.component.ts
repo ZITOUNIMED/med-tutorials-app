@@ -11,7 +11,7 @@ import {isNotEmptyArray, oc} from '../shared/app-utils';
 import { ConfidentialityTypes } from '../permissions/model/confidentiality-types';
 import { ActivatedRoute } from '@angular/router';
 import { DocumentCollectionTypes } from './shared/document-collection-types';
-import { ADMIN_AND_SOURCER_PERMISSIONS } from '../permissions/model/app.permissions.model';
+import { ADMIN_AND_SOURCER_PERMISSIONS, USER_PERMISSIONS } from '../permissions/model/app.permissions.model';
 
 @Component({
   selector: 'app-document',
@@ -25,6 +25,7 @@ export class DocumentComponent implements OnInit {
   queryParams: any;
 
   ADMIN_AND_SOURCER_PERMISSIONS = ADMIN_AND_SOURCER_PERMISSIONS;
+  USER_PERMISSIONS = USER_PERMISSIONS;
 
   constructor(private documentService: DocumentService,
               public dialog: MatDialog,

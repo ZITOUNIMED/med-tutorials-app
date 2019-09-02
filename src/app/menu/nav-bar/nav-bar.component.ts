@@ -1,19 +1,17 @@
 import {Component, Input, OnInit, OnChanges } from '@angular/core';
-import {DocumentSample} from '../../document/shared/model/document.model';
+import {AppDocument} from '../../document/shared/model/document.model';
 import { DocumentService } from '../../document/shared/service/document.service';
 import { User } from '../../user/shared/model/user.model';
 import { AppStoreService } from '../../shared/service/app.store.service';
 import { combineLatest } from 'rxjs';
 import { UserSaveAction } from '../../user/shared/user.actions';
 import { UserService } from '../../user/shared/service/user.service';
-import { ADMIN_PERMISSIONS, CLOSED_FEATURE_PERMISSIONS, ADMIN_AND_SOURCER_PERMISSIONS } from 'src/app/permissions/model/app.permissions.model';
-import { AppTargetTypes } from 'src/app/permissions/model/app.target-types';
-import {Store} from "@ngrx/store";
+import { ADMIN_PERMISSIONS, USER_PERMISSIONS, CLOSED_FEATURE_PERMISSIONS, ADMIN_AND_SOURCER_PERMISSIONS } from 'src/app/permissions/model/app.permissions.model';
+import { Store } from "@ngrx/store";
 import {AppState} from "../../shared/app.state";
 import { DocumentCollectionTypes } from '../../document/shared/document-collection-types';
 import { AppCollection } from 'src/app/app-collection/shared/model/app-collection.model';
 import { AppCollectionService } from 'src/app/app-collection/shared/service/app-collection.service';
-import { RoleNameTypes } from 'src/app/user/shared/model/role-name-types.enum';
 import { ConfidentialityTypes } from 'src/app/permissions/model/confidentiality-types';
 
 @Component({
@@ -23,8 +21,8 @@ import { ConfidentialityTypes } from 'src/app/permissions/model/confidentiality-
 })
 export class NavBarComponent implements OnInit, OnChanges {
   DocumentCollectionTypes = DocumentCollectionTypes;
-  documentsSamples: DocumentSample[] = [];
   CLOSED_FEATURE_PERMISSIONS = CLOSED_FEATURE_PERMISSIONS;
+  USER_PERMISSIONS = USER_PERMISSIONS;
   ConfidentialityTypes = ConfidentialityTypes;
   @Input() toolBarOpenClicked: boolean;
   @Input() drawer;
@@ -32,6 +30,12 @@ export class NavBarComponent implements OnInit, OnChanges {
   ADMIN_PERMISSIONS = ADMIN_PERMISSIONS;
   ADMIN_AND_SOURCER_PERMISSIONS=ADMIN_AND_SOURCER_PERMISSIONS;
   collections: AppCollection[];
+  
+  publicTutosLight: AppDocument[] = [];
+  myTutosLight: AppDocument[] = [];
+
+  myTutoChevronUp = false;
+  publicChevronUp = false;
 
   constructor(private documentService: DocumentService,
               private store: Store<AppState>,
@@ -41,7 +45,8 @@ export class NavBarComponent implements OnInit, OnChanges {
               ) { }
 
   ngOnInit() {
-    this.loadDocumentsSamples();
+    this.loadTutosLight();
+
     combineLatest(
       this.appStoreService.getUser(),
       this.appStoreService.getPrincipal()).subscribe(([userInStore, principal]) => {
@@ -77,19 +82,34 @@ export class NavBarComponent implements OnInit, OnChanges {
     );
   }
 
-  loadDocumentsSamples() {
-    this.appStoreService.startLoading();
-    this.documentService.getDocumentsSamples().subscribe(samples => {
-      this.documentsSamples = samples;
+  loadPublicTutosLight(){
+    const collectionType= DocumentCollectionTypes.PUBLIC_TUTOS;
+    this.documentService.getTutoslight(collectionType).subscribe(tutos => {
+      this.publicTutosLight = tutos;
     }, () => {},
       () => {
         this.appStoreService.stopLoading();
       });
   }
 
+  loadMyTutosLight(){
+    const collectionType= DocumentCollectionTypes.MY_TUTOS;
+    this.documentService.getTutoslight(collectionType).subscribe(tutos => {
+      this.myTutosLight = tutos;
+    }, () => {},
+      () => {
+        this.appStoreService.stopLoading();
+      });
+  }
+
+  loadTutosLight() {
+    this.loadPublicTutosLight();
+    this.loadMyTutosLight();
+  }
+
   ngOnChanges(changes: any) {
     if (changes && changes.toolBarOpenClicked) {
-      this.loadDocumentsSamples();
+      this.loadTutosLight();
     }
   }
 }
