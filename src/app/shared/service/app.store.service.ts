@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../app.state';
 import { Notification, NotificationTypes } from '../notification/notification.model';
-import { NotificationsAddAction } from '../notification/notifications.actions';
+import { NotificationsAddAction, NotificationsCleanAction } from '../notification/notifications.actions';
 import {StartLoadingAction, StopLoadingAction} from '../loading.actions';
 import {map} from 'rxjs/internal/operators';
 import {UserState} from '../../user/shared/user.state';
@@ -43,6 +43,10 @@ export class AppStoreService {
           message: message
       };
       this.store.dispatch(new NotificationsAddAction(notif));
+  }
+
+  cleanNotification(accept?: boolean) {
+    this.store.dispatch(new NotificationsCleanAction(accept));
   }
 
   startLoading() {

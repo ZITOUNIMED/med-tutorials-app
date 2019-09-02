@@ -17,7 +17,9 @@ export class NotificationComponent implements OnInit {
 
   ngOnInit() {
     this.store.select('notificationsState').subscribe(notificationsState => {
-      this.notifications = notificationsState && notificationsState.notifications || [];
+      const notifications = notificationsState && notificationsState.notifications || [];
+      this.notifications = Array.from(new Set(notifications.map(notif => notif.message)))
+       .map(message => notifications.find(notif => notif.message === message));
     });
   }
 
