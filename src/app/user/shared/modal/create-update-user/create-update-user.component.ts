@@ -22,6 +22,7 @@ export class CreateUpdateUserComponent implements OnInit {
       username: new FormControl('', Validators.required),
       enable: new FormControl(false),
       newRoleName: new FormControl(''),
+      password: new FormControl(''),
     });
 
     if (this.data.user) {
@@ -36,11 +37,17 @@ export class CreateUpdateUserComponent implements OnInit {
   }
 
   buildUser(): User {
+    let password = '';
+    if(!this.data.user || !this.data.user.id){
+       password = this.userForm.get('password').value;
+    }
+
     return {
       ...this.data.user,
       roles: this.roles,
       enable: this.userForm.get('enable').value,
-      username: this.userForm.get('username').value
+      username: this.userForm.get('username').value,
+      password: password 
     };
   }
 
