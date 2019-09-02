@@ -20,7 +20,7 @@ function wakeUpServer() {
 
 	if(now < endHour ){
     request(
-      "https://med-tutorials-app.herokuapp.com/",
+      "https://tuto-share.herokuapp.com/",
       function(err, body) {
         if (err) {
           console.log("Can't call server!");
