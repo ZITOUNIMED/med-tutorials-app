@@ -4,4 +4,4 @@ heroku:
  - master
  script:
  - echo "Wake up prod server"
- - curl 'https://med-tutorials-app.herokuapp.com/'
+ - curl 'https://tuto-share.herokuapp.com/'
