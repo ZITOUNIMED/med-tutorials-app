@@ -30,7 +30,7 @@ export class ContentHeaderComponent implements OnInit, OnChanges{
   }
 
   openNav(){
-    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("mySidenav").style.width = "400px";
   }
 
   ngOnChanges(changes: SimpleChanges): void {

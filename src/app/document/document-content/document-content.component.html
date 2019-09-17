@@ -4,7 +4,7 @@
     <app-content-header [documentWrapperState$]="documentWrapperState$"
     [doc]="doc"></app-content-header>
   </div>
-  <div class="card-body contentBady">
+  <div class="card-body content-body">
     <div class="list"
       cdkDropList
       [cdkDropListDisabled]="!(documentWrapperState$ | async).editMode"
