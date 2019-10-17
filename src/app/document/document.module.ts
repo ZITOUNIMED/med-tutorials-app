@@ -15,7 +15,6 @@ import { CreateUpdateDocumentComponent } from './shared/modal/create-update-docu
 import {ImportDocumentFileComponent} from './shared/modal/import-document-file/import-document-file.component';
 import {AppDirectivesModule} from '../directive/app-directives.module';
 import { ElementTextSheetComponent } from './document-content/element-text-sheet/element-text-sheet.component';
-import {ExportDocumentService} from './shared/service/export-document.service';
 import { DisplayPdfReportComponent } from './shared/modal/display-pdf-report/display-pdf-report.document';
 import { ContentHeaderComponent } from './document-content/content-header/content-header.component';
 import { ContentMoveElementComponent } from './document-content/content-move-element/content-move-element.component';
@@ -33,6 +32,7 @@ import { AddDocumentToCollectionComponent } from './shared/modal/add-document-to
 import { ContentFooterComponent } from './document-content/content-footer/content-footer.component';
 import { HyperlinkPaletteComponent } from './document-content/document-palette/hyperlink-palette/hyperlink-palette.component';
 import { DisplayHyperlinkComponent } from './document-content/element-text-sheet/display-hyperlink/display-hyperlink.component';
+import { ExportPdfDocumentAdvancedService } from './shared/service/export-to-pdf/export-pdf-document-advanced-service';
 
 @NgModule({
   imports: [AppMaterialModule,
@@ -69,7 +69,7 @@ import { DisplayHyperlinkComponent } from './document-content/element-text-sheet
     AddDocumentToCollectionComponent,
     ContentFooterComponent,
   ],
-  providers: [ExportDocumentService, DocumentPermissionsService],
+  providers: [ExportPdfDocumentAdvancedService, DocumentPermissionsService],
   entryComponents: [
     CreateUpdateDocumentComponent,
     ImportDocumentFileComponent,
