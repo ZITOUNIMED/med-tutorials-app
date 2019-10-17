@@ -1,8 +1,8 @@
 import {Angular2CsvComponent, Options} from 'angular2-csv';
 import {Component, Input} from '@angular/core';
 import {excelReportConfig} from '../../../environments/report/excel.config';
-import {ExportDocumentService} from '../../document/shared/service/export-document.service';
 import {AppDocument} from '../../document/shared/model/document.model';
+import { ExportPdfDocumentAdvancedService } from 'src/app/document/shared/service/export-to-pdf/export-pdf-document-advanced-service';
 
 @Component({
   selector: 'app-excel-export',
@@ -15,7 +15,7 @@ export class AppExcelExportComponent extends Angular2CsvComponent {
   filename: string;
   options: Options;
 
-  constructor(private ExportDocumentService: ExportDocumentService) {
+  constructor(private ExportDocumentService: ExportPdfDocumentAdvancedService) {
     super();
   }
 

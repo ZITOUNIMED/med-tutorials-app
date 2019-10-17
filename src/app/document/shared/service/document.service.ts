@@ -66,4 +66,8 @@ export class DocumentService {
   wakeUp(): Observable<any> {
     return this.http.get(this.url + '/up');
   }
+
+  exportDocumentPdf(appDocument: AppDocument): Observable<any>{
+    return this.http.post(this.url + '/export-pdf', appDocument, { responseType:'blob' });
+  }
 }

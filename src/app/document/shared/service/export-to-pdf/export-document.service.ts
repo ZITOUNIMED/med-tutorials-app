@@ -1,24 +1,12 @@
-import {AppDocument} from '../model/document.model';
-import {Element} from '../model/element.model';
-import {ElementType} from '../element-type';
+import {AppDocument} from '../../model/document.model';
+import {Element} from '../../model/element.model';
+import {ElementType} from '../../element-type';
 import * as jsPDF from 'jspdf';
-import {Injectable, ElementRef} from '@angular/core';
-import {excelReportConfig} from '../../../../environments/report/excel.config';
-import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
+import {excelReportConfig} from '../../../../../environments/report/excel.config';
+import { ExportToPdfGenericService } from './export-to-pdf-abstract.service';
+import { AppPdfHtmlNode, FIRST_LINE, MAX_CONTENT_WITH, LINES_MARGIN, PAGE_CENTER, LINES_LEFT_MARGIN } from './export-to-pdf-utils';
 
-const FIRST_LINE = 30;
-const LINES_MARGIN = 8;
-const LINES_LEFT_MARGIN = 20;
-const MAX_CONTENT_WITH = 250;
-const PAGE_CENTER = 100;
-
-interface AppPdfHtmlNode {
-  leftPosition: number;
-  text: string;
-}
-
-@Injectable()
-export class ExportDocumentService {
+export class ExportDocumentService extends ExportToPdfGenericService{
 
   exportAsPdf(doc: AppDocument): any {
     const pdf = new jsPDF();
@@ -79,31 +67,38 @@ export class ExportDocumentService {
 
   private convertPageElementstoHtmlNodes(elements: Element[], page: number): AppPdfHtmlNode[]{
     const htmlTexts = [];
+    
+
+    const elts = elements.filter(element => element.page === page)
+      .sort((e1, e2) => e1.row - e2.row);
+
+    for (let i = 0; i < elts.length; i++) {
+      
+      let htmlNodes = this.convertElementToHtmlNodes(elts[i]);
+      htmlTexts.push(...htmlNodes);
+    }
+    return htmlTexts;
+  }
+
+  protected convertElementToHtmlNodes(element: Element): AppPdfHtmlNode[] {
+    let subTexts = [];
     const titlesMap = new Map();
     titlesMap.set(ElementType.BIG_TITLE, 'h1');
     titlesMap.set(ElementType.MEDIUM_TITLE, 'h2');
     titlesMap.set(ElementType.SMALL_TITLE, 'h3');
     titlesMap.set(ElementType.VERY_SMALL_TITLE, 'h4');
 
-    const elts = elements.filter(element => element.page === page)
-      .sort((e1, e2) => e1.row - e2.row);
-
-    for (let i = 0; i < elts.length; i++) {
-      let subTexts = [];
-      const element = elts[i];
-      const titletag = titlesMap.get(element.type);
-      if (element.text) {
-        if (titletag) {
-          subTexts = this.convertTitleToHtmlNodes(titletag, element.text);
-        } else if (element.type === ElementType.TEXT) {
-          subTexts = this.convertTextToHtmlNodes(element.text);
-        } else if (element.type === ElementType.SOURCE_CODE) {
-          subTexts = this.convertSourceCodeToHtmlNodes(element.text);
-        }
-        htmlTexts.push(...subTexts);
+    const titletag = titlesMap.get(element.type);
+    if (element.text) {
+      if (titletag) {
+        subTexts = this.convertTitleToHtmlNodes(titletag, element.text);
+      } else if (element.type === ElementType.TEXT) {
+        subTexts = this.convertTextToHtmlNodes(element.text);
+      } else if (element.type === ElementType.SOURCE_CODE) {
+        subTexts = this.convertSourceCodeToHtmlNodes(element.text);
       }
     }
-    return htmlTexts;
+    return subTexts;
   }
 
   private getElementsBiggerPage(elements: Element[]): number {

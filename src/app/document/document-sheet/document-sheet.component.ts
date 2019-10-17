@@ -1,13 +1,15 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MatDialog} from '@angular/material';
+import { saveAs } from 'file-saver'
 
 import {AppDocument} from '../shared/model/document.model';
 import {ActivatedRoute} from '@angular/router';
 import {filter, map} from 'rxjs/internal/operators';
-import {ExportDocumentService} from '../shared/service/export-document.service';
 import { DisplayPdfReportComponent } from '../shared/modal/display-pdf-report/display-pdf-report.document';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import { ADMIN_AND_SOURCER_PERMISSIONS } from 'src/app/permissions/model/app.permissions.model';
+import { ExportPdfDocumentAdvancedService } from '../shared/service/export-to-pdf/export-pdf-document-advanced-service';
+import { DocumentService } from '../shared/service/document.service';
 
 @Component({
   selector: 'app-document-sheet',
@@ -22,9 +24,10 @@ export class DocumentSheetComponent implements OnInit {
   ADMIN_AND_SOURCER_PERMISSIONS = ADMIN_AND_SOURCER_PERMISSIONS;
 
   constructor(private route: ActivatedRoute,
-              private exportDocumentService: ExportDocumentService,
+              private exportDocumentService: ExportPdfDocumentAdvancedService,
               public dialog: MatDialog,
-              private breakpointObserver: BreakpointObserver
+              private breakpointObserver: BreakpointObserver,
+              private documentService: DocumentService,
   ) {}
 
   ngOnInit() {
@@ -43,22 +46,9 @@ export class DocumentSheetComponent implements OnInit {
   }
 
   exportAsPdf() {
-    const doc = this.exportDocumentService.exportAsPdf(this.document);
-    if (this.canDisplayModalPdf) {
-      const dialogRef = this.dialog.open(DisplayPdfReportComponent, {
-        height: '700px',
-        width: '900px',
-        data: {
-          doc: doc
-        }
-      });
-      dialogRef.afterClosed().subscribe(res => {
-        if (res) {
-          console.log(res);
-        }
-      });
-    } else {
-      doc.save(this.document.name + '.pdf');
-    }
+    this.documentService.exportDocumentPdf(this.document)
+    .subscribe( blob => {
+      saveAs(blob, `${this.document.name}.pdf`);
+    });
   }
 }
