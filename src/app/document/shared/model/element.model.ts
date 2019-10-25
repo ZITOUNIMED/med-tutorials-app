@@ -2,6 +2,7 @@ import { FormGroup } from '@angular/forms';
 
 import { ElementType } from '../element-type';
 import { Attachment, emptyAttachment } from './attachment.model';
+import {AppElementContent, TextContent} from "./app-element-content";
 
 export interface Element {
   id: number;
@@ -11,6 +12,7 @@ export interface Element {
   row: number;
   page: number;
   form?: FormGroup;
+  appElementContent?: AppElementContent | TextContent;
 }
 
 export const emptyElement = (): Element => {

@@ -7,7 +7,7 @@ import {AppDocument} from '../shared/model/document.model';
 import {AppStoreService} from '../../shared/service/app.store.service';
 import {Observable} from 'rxjs';
 import { first } from 'rxjs/operators';
-import {DocumentWrapperState, Point} from './shared/document-wrapper.state';
+import {DocumentWrapperState} from './shared/document-wrapper.state';
 import {Element} from '../shared/model/element.model';
 
 @Component({

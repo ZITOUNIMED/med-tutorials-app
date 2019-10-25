@@ -3,11 +3,11 @@ import {Element} from '../../shared/model/element.model';
 import {ElementType} from '../../shared/element-type';
 
 @Component({
-  selector: 'app-element-text-sheet',
-  templateUrl: './element-text-sheet.component.html',
-  styleUrls: ['./element-text-sheet.component.css']
+  selector: 'app-display-element',
+  templateUrl: './display-element.component.html',
+  styleUrls: ['./display-element.component.css']
 })
-export class ElementTextSheetComponent implements OnChanges {
+export class DisplayElementComponent implements OnChanges {
   ElementType = ElementType;
   @Input() element: Element;
   lineTotalCount = 1;
