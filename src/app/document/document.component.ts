@@ -12,6 +12,7 @@ import { ConfidentialityTypes } from '../permissions/model/confidentiality-types
 import { ActivatedRoute } from '@angular/router';
 import { DocumentCollectionTypes } from './shared/document-collection-types';
 import { ADMIN_AND_SOURCER_PERMISSIONS, USER_PERMISSIONS } from '../permissions/model/app.permissions.model';
+import {PageModel} from "../shared/model/page.model";
 
 @Component({
   selector: 'app-document',
@@ -23,6 +24,9 @@ export class DocumentComponent implements OnInit {
   user: User;
   DocumentCollectionTypes = DocumentCollectionTypes;
   queryParams: any;
+  page: PageModel<AppDocument>;
+  paginationIndexs = [];
+  pageIndex = 0;
 
   ADMIN_AND_SOURCER_PERMISSIONS = ADMIN_AND_SOURCER_PERMISSIONS;
   USER_PERMISSIONS = USER_PERMISSIONS;
@@ -129,11 +133,36 @@ export class DocumentComponent implements OnInit {
     }
   }
 
-  loadDocuments() {
+  canLoadPreviousPageDocuments(){
+    return this.pageIndex>0;
+  }
+
+  canLoadNextPageDocuments(){
+    return this.page && this.pageIndex<(this.page.totalPages - 1);
+  }
+
+  loadPreviousPageDocuments(){
+    if(this.canLoadPreviousPageDocuments()){
+      this.pageIndex--;
+      this.loadDocuments(this.pageIndex);
+    }
+  }
+
+  loadNextPageDocuments(){
+    if(this.canLoadNextPageDocuments()){
+      this.pageIndex++;
+      this.loadDocuments(this.pageIndex);
+    }
+  }
+
+  loadDocuments(pageIndex = 0) {
     this.appStoreService.startLoading();
     const {collectionType, collectionId} = this.queryParams;
-    this.documentService.getDocuments(collectionType, collectionId).subscribe(documents => {
-      this.documents = documents.sort((d1, d2) => d1.creationDate<d2.creationDate ? 1 : 0);
+    this.documentService.getDocuments(collectionType,pageIndex, 5, collectionId).subscribe(page => {
+      // this.documents = documents.sort((d1, d2) => d1.creationDate<d2.creationDate ? 1 : 0);
+      this.page = page;
+      this.paginationIndexs= Array(page.totalPages).fill(0).map((x,i)=>i + 1);
+      this.documents = page && page.content || [];
       this.appSnackbarService.openSnackBar('SUCCESS!: Loading documents', 'LOAD');
       this.appStoreService.stopLoading();
     }, error => {

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import {environment} from '../../../../environments/environment';
 import { AppDocument } from '../model/document.model';
 import { DocumentCollectionTypes } from '../document-collection-types';
+import {PageModel} from "../../../shared/model/page.model";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class DocumentService {
 
   constructor(private http: HttpClient) {}
 
-  getDocuments(collectionType?: DocumentCollectionTypes, collectionId?: String): Observable<AppDocument[]> {
+  getDocuments(collectionType?: DocumentCollectionTypes, page?: number, limit?: number, collectionId?: String): Observable<PageModel<AppDocument>> {
     let subUrl = '';
     if(collectionId){
       subUrl = this.getUrlByCollectionId(collectionId);
@@ -21,7 +22,7 @@ export class DocumentService {
       subUrl = this.getUrlByCollectionType(collectionType);
     }
 
-    return this.http.get<AppDocument[]>(this.url + '/' + subUrl);
+    return this.http.get<PageModel<AppDocument>>(this.url + '/' + subUrl + `?page=${page>=0 ? page : 0}&limit=${limit>0 ? limit : 5}`);
   }
 
   private getUrlByCollectionId(collectionId: String): string {
