@@ -4,7 +4,7 @@
     placeholder="Text Content here!"
     rows="7"
     (ngModelChange)="onTextChange($event)"
-    [ngModel]="element.text"
+    [ngModel]="element.appElementContent?.text"
   ></textarea>
 </mat-form-field>
-<div>Size: {{ element.text.length }}/{{ MAX_TEXT_LENGTH }}</div>
+<div>Size: {{ element.appElementContent?.text?.length }}/{{ MAX_TEXT_LENGTH }}</div>

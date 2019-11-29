@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  OnChanges
-} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {ELEMENTS_CHOICES} from '../../shared/element-choice';
 import {ElementType} from '../../shared/element-type';
 import {Element, emptyElement} from '../../shared/model/element.model';
@@ -15,17 +8,13 @@ import {Element, emptyElement} from '../../shared/model/element.model';
   templateUrl: './document-palette.component.html',
   styleUrls: ['./document-palette.component.css']
 })
-export class DocumentPaletteComponent implements OnInit, OnChanges {
+export class DocumentPaletteComponent implements OnChanges {
   ELEMENTS_CHOICES = ELEMENTS_CHOICES;
   ElementType = ElementType;
   @Output() onSubmitChange = new EventEmitter<Element>();
   @Output() cancelChange = new EventEmitter<boolean>();
   @Input() element: Element = emptyElement();
   isEditElement = false;
-
-  ngOnInit() {
-    this.element = emptyElement();
-  }
 
   onSubmit() {
     this.onSubmitChange.emit(this.element);
@@ -40,6 +29,10 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
   clearForm() {
     this.isEditElement = false;
     this.element = emptyElement();
+  }
+
+  isValidAppElementContent(appElementContent){
+    return true;
   }
 
   ngOnChanges(changes: any) {

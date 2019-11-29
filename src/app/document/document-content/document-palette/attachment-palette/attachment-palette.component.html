@@ -1,44 +1,32 @@
 <div>
   <input type="file" (change)="onFileChange($event)">
-  <div *ngIf="selectedFileUrl || element.attachment.id">
-    Widht: <input type="number" name="width" [ngModel]="element.attachment.width"
-    (ngModelChange)="onWidthChange($event)"/>&nbsp;&nbsp;
-    height: <input type="number" name="height" [ngModel]="element.attachment.height"
-    (ngModelChange)="onHeightChange($event)" />&nbsp;&nbsp;
-    Image size:
-    <mat-form-field>
-      <mat-select
-        placeholder="Select Attachment Type!"
-        name="attachmentSizeType"
-        [(ngModel)]="attachmentSizeType"
-        (ngModelChange)="selectAttachmentSizeType()"
-      >
-        <mat-option
-          *ngFor="let choice of ATTACHMENT_SIZE_CHOICES"
-          [value]="choice.key"
-          >{{ choice.value }}</mat-option
+  <div *ngIf="element.appElementContent">
+    <div>
+      Widht: <input type="number" name="width" [ngModel]="element.appElementContent.width"
+                    (ngModelChange)="onWidthChange($event)"/>&nbsp;&nbsp;
+      height: <input type="number" name="height" [ngModel]="element.appElementContent.height"
+                     (ngModelChange)="onHeightChange($event)" />&nbsp;&nbsp;
+      Image size:
+      <mat-form-field>
+        <mat-select
+          placeholder="Select Attachment Type!"
+          name="attachmentSizeType"
+          [(ngModel)]="attachmentSizeType"
+          (ngModelChange)="selectAttachmentSizeType()"
         >
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div *ngIf="selectedFileUrl">
-    <div>
-      <img [src]="selectedFileUrl" width="{{element.attachment.width}}" height="{{element.attachment.height}}" />
+          <mat-option
+            *ngFor="let choice of ATTACHMENT_SIZE_CHOICES"
+            [value]="choice.key"
+          >{{ choice.value }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
     </div>
-    <br/>
-    <div>
-      <button mat-stroked-button color="warn" (click)="removeImage()">
-        Remove
-      </button>
-      <button mat-stroked-button class="pull-right" color="primary" (click)="uploadImage()">
-        Upload
-      </button>
+    <div *ngIf="element.appElementContent.data">
+      <img [src]="'data:image/jpeg;base64,'+ element.appElementContent.data"
+           width="{{element.appElementContent.width}}"
+           height="{{element.appElementContent.height}}"
+      />
     </div>
-  </div>
-  <div *ngIf="element.attachment.id && !this.selectedFile">
-    <img [src]="'data:image/jpeg;base64,'+ element.attachment.data"
-      width="{{element.attachment.width}}"
-      height="{{element.attachment.height}}"
-    />
   </div>
 </div>

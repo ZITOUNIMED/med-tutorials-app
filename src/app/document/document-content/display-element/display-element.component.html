@@ -1,5 +1,5 @@
 <div *ngIf="element && element.appElementContent">
-  <div [ngSwitch]="element?.appElementContent.type">
+  <div [ngSwitch]="element.appElementContent.type">
     <div *ngSwitchCase="ElementType.SOURCE_CODE">
       <pre><code>{{element.appElementContent.text}}</code></pre>
     </div>
@@ -7,7 +7,7 @@
       <app-display-text [text]="element.appElementContent.text"></app-display-text>
     </div>
     <div *ngSwitchCase="ElementType.ATTACHMENT">
-      <app-display-attachment [element]="element"></app-display-attachment>
+      <app-display-attachment [attachmentContent]="element.appElementContent"></app-display-attachment>
     </div>
     <div *ngSwitchCase="ElementType.LIST">
       <app-display-list [text]="element.appElementContent.text"></app-display-list>

@@ -1,11 +1,12 @@
-import { Component, forwardRef } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { AbstractPaletteComponent } from '../abstract-palette.component';
-import { oc } from 'src/app/shared/app-utils';
-import { DomSanitizer } from '@angular/platform-browser';
-import { AttachmentSizeType, sizeValues, ATTACHMENT_SIZE_CHOICES } from 'src/app/document/shared/attachmet-size-type';
-import { UploadService } from 'src/app/shared/service/upload.service';
-import { AppStoreService } from 'src/app/shared/service/app.store.service';
+import {Component, forwardRef, OnInit} from '@angular/core';
+import {NG_VALUE_ACCESSOR} from '@angular/forms';
+import {AbstractPaletteComponent} from '../abstract-palette.component';
+import {oc} from 'src/app/shared/app-utils';
+import {DomSanitizer} from '@angular/platform-browser';
+import {ATTACHMENT_SIZE_CHOICES, AttachmentSizeType, sizeValues} from 'src/app/document/shared/attachmet-size-type';
+import {UploadService} from "../../../../shared/service/upload.service";
+import {AppStoreService} from "../../../../shared/service/app.store.service";
+import {ElementType} from "../../../shared/element-type";
 
 @Component({
   selector: 'app-attachment-palette',
@@ -18,11 +19,9 @@ import { AppStoreService } from 'src/app/shared/service/app.store.service';
                }
          ]
 })
-export class AttachmentPaletteComponent extends AbstractPaletteComponent {
-  selectedFile = null;
-  width = 20;
-  AttachmentSizeType = AttachmentSizeType;
-  attachmentSizeType = null;
+export class AttachmentPaletteComponent extends AbstractPaletteComponent implements OnInit{
+  AttachmentSizeType = AttachmentSizeType; // used in html
+  attachmentSizeType = AttachmentSizeType.SMALL;
   ATTACHMENT_SIZE_CHOICES = ATTACHMENT_SIZE_CHOICES;
 
   constructor(private sanitizer: DomSanitizer,
@@ -31,49 +30,68 @@ export class AttachmentPaletteComponent extends AbstractPaletteComponent {
     super();
   }
 
-  selectAttachmentSizeType(){
-    const imageSize = sizeValues(this.attachmentSizeType);
-    this.element.attachment.width = imageSize.width;
-    this.element.attachment.height = imageSize.height;
-    this.onChange(this.element);
+  ngOnInit(): void {
+    if(!this.element.appElementContent){
+      const imageSize = sizeValues(this.attachmentSizeType);
+      this.element.appElementContent = {
+        id: null,
+        data: null,
+        width: imageSize.width,
+        height: imageSize.height,
+        type: ElementType.ATTACHMENT
+      };
+    }
   }
 
-  get selectedFileUrl() {
-    return this.selectedFile && this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.selectedFile)) || '';
+  selectAttachmentSizeType(){
+    const imageSize = sizeValues(this.attachmentSizeType);
+    this.element.appElementContent = {
+      ...this.element.appElementContent,
+      width: imageSize.width,
+      height: imageSize.height
+    };
+    this.onChange(this.element);
   }
 
   onFileChange($event){
     const files = $event.srcElement.files;
     if (oc(files).length) {
       const file = files[0];
-      this.selectedFile = file;
+      this.uploadImage(file);
     }
   }
 
+  uploadImage(file: any){
+    this.appStoreService.startLoading();
+    const width = 100;
+    const height = 120;
+    this.uploadService.uploadFile(file, width, height)
+      .subscribe(savedAttachment => {
+        this.element.appElementContent = {
+          ...this.element.appElementContent,
+          data: savedAttachment.data,
+        };
+        this.appStoreService.stopLoading();
+        this.onChange(this.element);
+      }, error =>{},
+      () => {
+        this.appStoreService.stopLoading();
+      });
+  }
+
   onWidthChange(width){
-    this.element.attachment.width = width;
+    this.element.appElementContent = {
+      ...this.element.appElementContent,
+      width: width
+    };
     this.onChange(this.element);
   }
 
   onHeightChange(height){
-    this.element.attachment.height = height;
+    this.element.appElementContent = {
+      ...this.element.appElementContent,
+      height: height
+    };
     this.onChange(this.element);
-  }
-
-  uploadImage(){
-    this.appStoreService.startLoading();
-    this.uploadService.uploadFile(this.selectedFile, this.element.attachment.width, this.element.attachment.height)
-    .subscribe(savedAttachment => {
-      this.element.attachment = savedAttachment;
-      this.onChange(this.element);
-    }, error =>{},
-    () => {
-      this.appStoreService.stopLoading();
-    });
-  }
-
-  removeImage(){
-    // TODO: remove image from db
-    this.selectedFile = null;
   }
 }
