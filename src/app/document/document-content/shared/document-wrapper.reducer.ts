@@ -19,11 +19,10 @@ import {
   DOCUMENT_WRAPPER_DRAG_AND_DROP_ELEMENT,
   DOCUMENT_WRAPPER_DRAG_AND_DROP_ENDED
 } from './document-wrapper.actions';
-import {DocumentWrapperState, Point} from './document-wrapper.state';
-import {Element} from '../../shared/model/element.model';
+import { DocumentWrapperState, Point} from './document-wrapper.state';
+import { Element } from '../../shared/model/element.model';
 import { DocumentWrapperService } from './document-wrapper.service';
 import { DocumentWrapperGenericService } from './document-wrapper-generic.service';
-import { ok } from 'assert';
 
 const service:DocumentWrapperGenericService = new DocumentWrapperService();
 

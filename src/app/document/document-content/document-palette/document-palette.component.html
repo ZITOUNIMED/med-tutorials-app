@@ -1,19 +1,4 @@
 <div>
-  <div class="form-group">
-    <mat-form-field class="example-full-width">
-      <mat-select
-        placeholder="Select Element Type!"
-        name="elementType"
-        [(ngModel)]="element.type"
-      >
-        <mat-option
-          *ngFor="let elementChoice of ELEMENTS_CHOICES"
-          [value]="elementChoice.key"
-          >{{ elementChoice.value }}</mat-option
-        >
-      </mat-select>
-    </mat-form-field>
-  </div>
   <div [ngSwitch]="true" *ngIf="element.type">
     <div *ngSwitchCase="element.type === ElementType.TEXT" class="form-group">
       <app-text-palette [(ngModel)]="element"></app-text-palette>

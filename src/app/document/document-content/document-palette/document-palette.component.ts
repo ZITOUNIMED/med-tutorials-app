@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   Input,
   Output,
   EventEmitter,
@@ -15,17 +14,13 @@ import {Element, emptyElement} from '../../shared/model/element.model';
   templateUrl: './document-palette.component.html',
   styleUrls: ['./document-palette.component.css']
 })
-export class DocumentPaletteComponent implements OnInit, OnChanges {
+export class DocumentPaletteComponent implements OnChanges {
   ELEMENTS_CHOICES = ELEMENTS_CHOICES;
   ElementType = ElementType;
   @Output() onSubmitChange = new EventEmitter<Element>();
   @Output() cancelChange = new EventEmitter<boolean>();
   @Input() element: Element = emptyElement();
   isEditElement = false;
-
-  ngOnInit() {
-    this.element = emptyElement();
-  }
 
   onSubmit() {
     this.onSubmitChange.emit(this.element);
@@ -44,7 +39,9 @@ export class DocumentPaletteComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: any) {
     if ( changes.element && changes.element.currentValue) {
-      this.isEditElement = true;
+      if(changes.element.currentValue.row>-1 && changes.element.currentValue.page>-1){
+        this.isEditElement = true;
+      }
     } else {
       this.element = emptyElement();
     }

@@ -197,8 +197,8 @@ export class DocumentWrapperService implements DocumentWrapperGenericService {
         } else {
           state.elements = state.elements.filter(elt => elt.row !== element.row || elt.page !== element.page);
           state.elements.push({...element});
-          this.doCancelEditElement(state);
         }
+        this.doCancelEditElement(state);
       }
 
     deleteElement(state: DocumentWrapperState, p: Point) {
@@ -220,7 +220,12 @@ export class DocumentWrapperService implements DocumentWrapperGenericService {
     }
 
     selectElement(state: DocumentWrapperState, element: Element){
-        state.selectedElement = element;
+        if(!state.selectedElement){
+          state.selectedElement = element;
+        } else {
+          state.selectedElement.type = element.type;
+        }
+        
     }
 
     cancelEditElement(state: DocumentWrapperState, accept?: boolean){

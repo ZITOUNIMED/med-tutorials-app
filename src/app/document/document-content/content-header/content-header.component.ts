@@ -7,6 +7,8 @@ import { AppDocument } from '../../shared/model/document.model';
 import { AppPermissions } from 'src/app/permissions/model/app.permissions.model';
 import { AppTargetTypes } from 'src/app/permissions/model/app.target-types';
 import { oc } from 'src/app/shared/app-utils';
+import { emptyElement } from '../../shared/model/element.model';
+import { ElementType } from '../../shared/element-type';
 
 @Component({
   selector: 'app-content-header',
@@ -17,7 +19,8 @@ export class ContentHeaderComponent implements OnInit, OnChanges{
   @Input() documentWrapperState$: Observable<DocumentWrapperState>;
   @Input() doc: AppDocument;
   documentPermissions: AppPermissions;
-  
+  ElementType = ElementType;
+
   constructor(public appStoreService: AppStoreService){}
   
   ngOnInit(): void {
@@ -31,6 +34,12 @@ export class ContentHeaderComponent implements OnInit, OnChanges{
 
   openNav(){
     document.getElementById("mySidenav").style.width = "450px";
+  }
+
+  newEmptyElement(type: ElementType){
+    const element = emptyElement();
+    element.type = type;
+    return element;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
