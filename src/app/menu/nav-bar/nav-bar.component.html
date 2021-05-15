@@ -16,6 +16,9 @@
   <a mat-list-item href=""
   [appPermissions]="ADMIN_PERMISSIONS"  (click)="drawer.close()"
   [routerLink]="[{outlets: { homeOutlet: 'user'}}]">Manage Users</a>
+  <a mat-list-item href=""
+  [appPermissions]="ADMIN_PERMISSIONS"  (click)="drawer.close()"
+  [routerLink]="[{outlets: { homeOutlet: 'management'}}]">Manage App</a>
 
   <!-- Tutos -->
   <h2 matSubheader>

@@ -10,6 +10,7 @@ import { UserComponent } from './user/user.component';
 import { AppCollectionComponent } from './app-collection/app-collection.component';
 import { AppCollectionSheetComponent } from './app-collection/app-collection-sheet/app-collection-sheet.component';
 import { AppCollectionResolverService } from './app-collection/shared/service/app-collection-resolver.service';
+import { ManagementComponent } from './management/management.component';
 
 const appRoutes: Routes = [
   { path: 'auth', loadChildren: './authentication/authentication.routed.module#AuthenticationRoutedModule'},
@@ -20,6 +21,7 @@ const appRoutes: Routes = [
     children: [
       { path: 'account', component: AccountComponent, outlet: 'homeOutlet'},
       { path: 'user', component: UserComponent, outlet: 'homeOutlet'},
+      { path: 'management', component: ManagementComponent, outlet: 'homeOutlet'},
       { path: 'document', component: DocumentComponent, outlet: 'homeOutlet'},
       { path: '', component: DocumentComponent, outlet: 'homeOutlet'},
       {
@@ -52,5 +54,5 @@ const appRoutes: Routes = [
     RouterModule
   ]
 })
-export class AppModuleRouting {
+export class AppRoutingModule {
 }

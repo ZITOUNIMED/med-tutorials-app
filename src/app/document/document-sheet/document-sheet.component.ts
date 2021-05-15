@@ -5,7 +5,6 @@ import { saveAs } from 'file-saver'
 import {AppDocument} from '../shared/model/document.model';
 import {ActivatedRoute} from '@angular/router';
 import {filter, map} from 'rxjs/internal/operators';
-import { DisplayPdfReportComponent } from '../shared/modal/display-pdf-report/display-pdf-report.document';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import { ADMIN_AND_SOURCER_PERMISSIONS } from 'src/app/permissions/model/app.permissions.model';
 import { ExportPdfDocumentAdvancedService } from '../shared/service/export-to-pdf/export-pdf-document-advanced-service';
@@ -31,9 +30,6 @@ export class DocumentSheetComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this.breakpointObserver.observe(['(min-width: 1200px)'])
-    //   .pipe(map(res => res && res.matches))
-    //   .subscribe(canDisplayModalPdf => (this.canDisplayModalPdf = canDisplayModalPdf));
     this.canDisplayModalPdf = false;
     this.route.data
       .pipe(
