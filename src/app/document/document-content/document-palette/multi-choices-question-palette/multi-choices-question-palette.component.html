@@ -1,0 +1,67 @@
+<form [formGroup]="questionForm">
+    <div>
+        <mat-form-field class="example-full-width">
+            <input
+              type="text"
+              placeholder="Question"
+              matInput
+              formControlName="question"
+              (ngModelChange)="changed()"
+            />
+          </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field class="example-full-width">
+            <input
+              type="number"
+              placeholder="Unit Score"
+              matInput
+              formControlName="unitScore"
+              (ngModelChange)="changed()"
+            />
+          </mat-form-field>
+    </div>
+    <div>
+      <ol>
+        <li *ngFor="let item of question?.items">{{item}}
+          <span class="text-danger" (click)="deleteChoice(item)">
+            <i class="fa fa-minus-circle"></i>
+          </span>
+        </li>
+      </ol>
+    </div>
+    <div>
+        <mat-form-field class="example-full-width">
+            <input
+              type="text"
+              placeholder="New choice"
+              matInput
+              formControlName="newChoice"/>
+          </mat-form-field>
+          <button mat-stroked-button color="primary" (click)="addNewChoice()">
+            ADD
+          </button>
+    </div>
+    <div>
+        <ol>
+          <li *ngFor="let item of question?.correctAnswers">{{item}}
+            <span class="text-danger" (click)="deleteCorrectAnswer(item)">
+              <i class="fa fa-minus-circle"></i>
+            </span>
+          </li>
+        </ol>
+      </div>
+    <div>
+        <mat-form-field class="example-full-width">
+            <input
+              type="text"
+              placeholder="New Correct Answer"
+              matInput
+              formControlName="newCorrectAnswer"/>
+          </mat-form-field>
+          <button mat-stroked-button color="primary" (click)="addNewCorrectAnswer()">
+            ADD
+          </button>
+    </div>
+    
+  </form>

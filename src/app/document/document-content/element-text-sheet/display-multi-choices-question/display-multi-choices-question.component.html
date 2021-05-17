@@ -1,0 +1,4 @@
+<label>{{question?.question}}</label>
+<div *ngFor="let item of question?.items">
+    <input type="checkbox" [value]="item" [name]="question?.question"/> {{item}}
+</div>

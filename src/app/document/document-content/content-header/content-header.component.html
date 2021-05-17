@@ -12,31 +12,46 @@
 <span *ngIf="(documentWrapperState$ | async).editMode">
   <button class="btn btn-xs" (click)="appStoreService.selectElement(newEmptyElement(ElementType.TEXT))"
     [ngClass]="{selectedItem: (documentWrapperState$ | async).selectedElement?.type==ElementType.TEXT}">
-    <i class="fa fa-text-width" aria-hidden="true"></i></button>
+    <i class="fa fa-text-width" aria-hidden="true"></i>
+  </button>
   <button class="btn btn-xs" (click)="appStoreService.selectElement(newEmptyElement(ElementType.SOURCE_CODE))"
     [ngClass]="{selectedItem: (documentWrapperState$ | async).selectedElement?.type==ElementType.SOURCE_CODE}">
-    <i class="fa fa-code" aria-hidden="true"></i></button>
+    <i class="fa fa-code" aria-hidden="true"></i>
+  </button>
   <button class="btn btn-xs" (click)="appStoreService.selectElement(newEmptyElement(ElementType.LIST))"
     [ngClass]="{selectedItem: (documentWrapperState$ | async).selectedElement?.type==ElementType.LIST}">
-    <i class="fa fa-list-ol" aria-hidden="true"></i></button>
+    <i class="fa fa-list-ol" aria-hidden="true"></i>
+  </button>
   <button class="btn btn-xs" (click)="appStoreService.selectElement(newEmptyElement(ElementType.BIG_TITLE))"
     [ngClass]="{selectedItem: (documentWrapperState$ | async).selectedElement?.type==ElementType.BIG_TITLE}">
-    <i class="fa fa-header fa-2x" aria-hidden="true"></i></button>
+    <i class="fa fa-header fa-2x" aria-hidden="true"></i>
+  </button>
   <button class="btn btn-xs" (click)="appStoreService.selectElement(newEmptyElement(ElementType.MEDIUM_TITLE))"
     [ngClass]="{selectedItem: (documentWrapperState$ | async).selectedElement?.type==ElementType.MEDIUM_TITLE}">
-    <i class="fa fa-header fa-lg" aria-hidden="true"></i></button>
+    <i class="fa fa-header fa-lg" aria-hidden="true"></i>
+  </button>
   <button class="btn btn-xs" (click)="appStoreService.selectElement(newEmptyElement(ElementType.SMALL_TITLE))"
     [ngClass]="{selectedItem: (documentWrapperState$ | async).selectedElement?.type==ElementType.SMALL_TITLE}">
-    <i class="fa fa-header" aria-hidden="true"></i></button>
+    <i class="fa fa-header" aria-hidden="true"></i>
+  </button>
   <button class="btn btn-xs" (click)="appStoreService.selectElement(newEmptyElement(ElementType.VERY_SMALL_TITLE))"
     [ngClass]="{selectedItem: (documentWrapperState$ | async).selectedElement?.type==ElementType.VERY_SMALL_TITLE}">
-    <i class="fa fa-header my-fa-xs" aria-hidden="true"></i></button>
+    <i class="fa fa-header my-fa-xs" aria-hidden="true"></i>
+  </button>
   <button class="btn btn-xs" (click)="appStoreService.selectElement(newEmptyElement(ElementType.ATTACHMENT))"
     [ngClass]="{selectedItem: (documentWrapperState$ | async).selectedElement?.type==ElementType.ATTACHMENT}">
     <i class="fa fa-picture-o" aria-hidden="true"></i></button>
   <button class="btn btn-xs" (click)="appStoreService.selectElement(newEmptyElement(ElementType.HYPERLINK))"
     [ngClass]="{selectedItem: (documentWrapperState$ | async).selectedElement?.type==ElementType.HYPERLINK}">
     <i class="fa fa-link" aria-hidden="true"></i></button>
+  <button class="btn btn-xs" (click)="appStoreService.selectElement(newEmptyElement(ElementType.ONE_CHOICE_QUESTION))"
+    [ngClass]="{selectedItem: (documentWrapperState$ | async).selectedElement?.type==ElementType.ONE_CHOICE_QUESTION}">
+    <i class="fa fa-dot-circle-o" aria-hidden="true"></i>
+  </button>
+  <button class="btn btn-xs" (click)="appStoreService.selectElement(newEmptyElement(ElementType.MULTI_CHOICES_QUESTION))"
+    [ngClass]="{selectedItem: (documentWrapperState$ | async).selectedElement?.type==ElementType.MULTI_CHOICES_QUESTION}">
+    <i class="fa fa-check-square-o" aria-hidden="true"></i>
+  </button>
 </span>
 <div class="pull-right">
   <button class="btn btn-xs btn-default" [appPermissions]="documentPermissions"

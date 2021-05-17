@@ -23,6 +23,12 @@
     <div *ngSwitchCase="element.type === ElementType.HYPERLINK" class="form-group">
         <app-hyperlink-palette [(ngModel)]="element"></app-hyperlink-palette>
     </div>
+    <div *ngSwitchCase="element.type === ElementType.ONE_CHOICE_QUESTION" class="form-group">
+      <app-one-choice-question-palette [(ngModel)]="element"></app-one-choice-question-palette>
+    </div>
+    <div *ngSwitchCase="element.type === ElementType.MULTI_CHOICES_QUESTION" class="form-group">
+      <app-multi-choices-question-palette [(ngModel)]="element"></app-multi-choices-question-palette>
+    </div>
   </div>
   <div class="form-group">
     <button

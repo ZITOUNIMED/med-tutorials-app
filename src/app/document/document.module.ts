@@ -33,6 +33,10 @@ import { ContentFooterComponent } from './document-content/content-footer/conten
 import { HyperlinkPaletteComponent } from './document-content/document-palette/hyperlink-palette/hyperlink-palette.component';
 import { DisplayHyperlinkComponent } from './document-content/element-text-sheet/display-hyperlink/display-hyperlink.component';
 import { ExportPdfDocumentAdvancedService } from './shared/service/export-to-pdf/export-pdf-document-advanced-service';
+import { DisplayOneChoiceQuestionComponent } from './document-content/element-text-sheet/display-one-choice-question/display-one-choice-question.component';
+import { DisplayMultiChoicesQuestionComponent } from './document-content/element-text-sheet/display-multi-choices-question/display-multi-choices-question.component';
+import { OneChoiceQuestionPaletteComponent } from './document-content/document-palette/one-choice-question-palette/one-choice-question-palette.component';
+import { MultiChoicesQuestionPaletteComponent } from './document-content/document-palette/multi-choices-question-palette/multi-choices-question-palette.component';
 
 @NgModule({
   imports: [AppMaterialModule,
@@ -68,6 +72,10 @@ import { ExportPdfDocumentAdvancedService } from './shared/service/export-to-pdf
     AttachmentPaletteComponent,
     AddDocumentToCollectionComponent,
     ContentFooterComponent,
+    DisplayOneChoiceQuestionComponent,
+    DisplayMultiChoicesQuestionComponent,
+    OneChoiceQuestionPaletteComponent,
+    MultiChoicesQuestionPaletteComponent,
   ],
   providers: [ExportPdfDocumentAdvancedService, DocumentPermissionsService],
   entryComponents: [
