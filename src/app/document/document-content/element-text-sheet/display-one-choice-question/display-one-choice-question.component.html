@@ -1,4 +1,22 @@
-<label>{{question?.question}}</label>
+<div> 
+   <label>{{question?.question}} </label>
+    <button mat-stroked-button (click)="showHideAnswer()">Answer
+        <i [hidden]="isAnswerDisplayed" class="fa fa-eye" aria-hidden="true"></i>
+        <i [hidden]="!isAnswerDisplayed" class="fa fa-eye-slash" aria-hidden="true"></i>
+    </button>
+</div>
 <div *ngFor="let item of question?.items">
-    <input type="radio" [value]="item" [name]="question?.question"/> {{item}}
+    <input type="radio" [value]="item" [formControl]="questionCtrl" [name]="question?.question"/> {{item}} 
+    <span *ngIf="isAnswerDisplayed">
+        <span *ngIf="item === question?.correctAnswer && question?.correctAnswer === questionCtrl?.value">
+            <i class="fa fa-check" [ngStyle]="{'color': 'green'}" aria-hidden="true"></i>
+        </span>
+        <span *ngIf="item === question?.correctAnswer && question?.correctAnswer !== questionCtrl?.value">
+            <i class="fa fa-check" aria-hidden="true"></i>
+        </span>
+        <span *ngIf="item === questionCtrl?.value && question?.correctAnswer !== questionCtrl?.value">
+            <i class="fa fa-check" [ngStyle]="{'color': 'red'}" aria-hidden="true"></i>
+        </span>
+    </span>
+    
 </div>
