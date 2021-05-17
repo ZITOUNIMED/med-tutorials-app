@@ -3,7 +3,7 @@ import {Element} from '../../shared/model/element.model';
 
 export interface DocumentWrapperGenericService {
     // init document wrapper data
-    initDocument(elements: Element[]): DocumentWrapperState;
+    initDocument(elements: Element[], score: number): DocumentWrapperState;
 
     // move element actions
     moveUp(state, p: Point);
@@ -30,4 +30,8 @@ export interface DocumentWrapperGenericService {
     // other actions
     changeEditMode(state: DocumentWrapperState, accept?: boolean);
     dragAndDropEnded(state: DocumentWrapperState, accept: boolean);
+
+    // score actions
+    setQuestionScore(state: DocumentWrapperState, question: {questionKey: string, score: number});
+    calculateDocumentScore(state: DocumentWrapperState);
 }

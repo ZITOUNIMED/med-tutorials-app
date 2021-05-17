@@ -61,6 +61,10 @@ export class ContentFooterComponent implements OnInit {
     console.log(pageIndex);
   }
 
+  calculateDocumentScore(){
+    this.appStoreService.calculateDocumentScore();
+  }
+
   private applyDispayedPagesIndex(){
     this.displayedPagesIndex = this.pagesIndex.slice(this.currentSetIndex * this.maxDisplayedPagesIndex,
       (this.currentSetIndex + 1) * this.maxDisplayedPagesIndex);

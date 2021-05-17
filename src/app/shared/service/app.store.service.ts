@@ -22,6 +22,8 @@ import {
   DocumentWrapperMovePageAction,
   DocumentWrapperDragAndDropElementAction,
   DocumentWrapperDragAndDropEndedAction,
+  DocumentWrapperSetQuestionScoreAction,
+  DocumentWrapperCalculateDocumentScoreAction,
 } from '../../document/document-content/shared/document-wrapper.actions';
 import {DocumentWrapperState, Point} from '../../document/document-content/shared/document-wrapper.state';
 import { oc } from '../app-utils';
@@ -70,8 +72,8 @@ export class AppStoreService {
       return this.store.select('documentWrapperState');
   }
 
-  initDocumentWrapper(elements: Element[]) {
-      this.store.dispatch(new DocumentWrapperInitAction(elements));
+  initDocumentWrapper(elements: Element[], score) {
+      this.store.dispatch(new DocumentWrapperInitAction({elements: elements, score: score}));
   }
 
   goToNextPage(isLockedRepetition?: boolean) {
@@ -170,5 +172,13 @@ export class AppStoreService {
   checkLoading(): Observable<boolean> {
     return this.store.select('loadingState')
       .pipe(map((loadingState: LoadingState) => loadingState && loadingState.loading));
+  }
+
+  setQuestionScore(questionKey: string, score: number){
+    this.store.dispatch(new DocumentWrapperSetQuestionScoreAction({'questionKey': questionKey, 'score':score}));
+  }
+
+  calculateDocumentScore(){
+    this.store.dispatch(new DocumentWrapperCalculateDocumentScoreAction());
   }
 }

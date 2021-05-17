@@ -12,4 +12,5 @@ export interface AppDocument {
   description: string;
   readonly lastUpdateDate?: string;
   readonly creationDate?: string;
+  score?: number;
 }

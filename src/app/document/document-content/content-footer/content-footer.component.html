@@ -5,6 +5,12 @@
     (cdkDropListDropped)="drop($event)"
     [cdkDropListDisabled]="!(documentWrapperState$ | async).editMode"
     >
+    <span>
+      Score: {{(documentWrapperState$ | async).score}}/20 
+      <button mat-stroked-button (click)="calculateDocumentScore()">
+        <i class="fa fa-refresh" aria-hidden="true"></i>
+      </button>
+    </span>
         <div class="example-box move-set-index-box" (click)="previousSet()">
           <i class="fa fa-angle-double-left" aria-hidden="true"></i>
         </div>

@@ -5,9 +5,7 @@ import { saveAs } from 'file-saver'
 import {AppDocument} from '../shared/model/document.model';
 import {ActivatedRoute} from '@angular/router';
 import {filter, map} from 'rxjs/internal/operators';
-import {BreakpointObserver} from '@angular/cdk/layout';
 import { ADMIN_AND_SOURCER_PERMISSIONS } from 'src/app/permissions/model/app.permissions.model';
-import { ExportPdfDocumentAdvancedService } from '../shared/service/export-to-pdf/export-pdf-document-advanced-service';
 import { DocumentService } from '../shared/service/document.service';
 
 @Component({
@@ -23,9 +21,7 @@ export class DocumentSheetComponent implements OnInit {
   ADMIN_AND_SOURCER_PERMISSIONS = ADMIN_AND_SOURCER_PERMISSIONS;
 
   constructor(private route: ActivatedRoute,
-              private exportDocumentService: ExportPdfDocumentAdvancedService,
               public dialog: MatDialog,
-              private breakpointObserver: BreakpointObserver,
               private documentService: DocumentService,
   ) {}
 

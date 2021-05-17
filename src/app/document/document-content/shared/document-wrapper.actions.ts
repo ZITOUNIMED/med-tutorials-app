@@ -20,6 +20,8 @@ export const DOCUMENT_WRAPPER_MOVE_ROW = 'DOCUMENT_WRAPPER_MOVE_ROW';
 export const DOCUMENT_WRAPPER_MOVE_PAGE = 'DOCUMENT_WRAPPER_MOVE_PAGE';
 export const DOCUMENT_WRAPPER_DRAG_AND_DROP_ELEMENT = 'DOCUMENT_WRAPPER_DRAG_AND_DROP_ELEMENT';
 export const DOCUMENT_WRAPPER_DRAG_AND_DROP_ENDED = 'DOCUMENT_WRAPPER_DRAG_AND_DROP_ENDED';
+export const DOCUMENT_WRAPPER_SET_QUESTION_SCORE = 'DOCUMENT_WRAPPER_SET_QUESTION_SCORE';
+export const DOCUMENT_WRAPPER_CALCULATE_DOCUMENT_SCORE = 'DOCUMENT_WRAPPER_CALCULATE_DOCUMENT_SCORE';
 
 export type DocumentWrapperActions = DocumentWrapperInitAction |
   DocumentWrapperGoToNextPageAction |
@@ -38,13 +40,15 @@ export type DocumentWrapperActions = DocumentWrapperInitAction |
   DocumentWrapperMoveRowAction |
   DocumentWrapperMovePageAction |
   DocumentWrapperDragAndDropElementAction|
-  DocumentWrapperDragAndDropEndedAction
+  DocumentWrapperDragAndDropEndedAction|
+  DocumentWrapperSetQuestionScoreAction|
+  DocumentWrapperCalculateDocumentScoreAction
   ;
 
 export class DocumentWrapperInitAction implements Action {
   readonly type = DOCUMENT_WRAPPER_INIT;
 
-  constructor(public payload: Element[]) {
+  constructor(public payload: {elements: Element[], score: number}) {
   }
 }
 
@@ -174,4 +178,13 @@ export class DocumentWrapperCancelEditElementAction implements Action {
 
   constructor(public payload: boolean) {
   }
+}
+
+export class DocumentWrapperSetQuestionScoreAction implements Action {
+  readonly type = DOCUMENT_WRAPPER_SET_QUESTION_SCORE;
+  constructor(public payload: {questionKey: string, score: number}){}
+}
+
+export class DocumentWrapperCalculateDocumentScoreAction implements Action {
+  readonly type = DOCUMENT_WRAPPER_CALCULATE_DOCUMENT_SCORE;
 }

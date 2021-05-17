@@ -26,7 +26,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.appStoreService.initDocumentWrapper(this.doc.elements);
+    this.appStoreService.initDocumentWrapper(this.doc.elements, this.doc.score);
     this.documentWrapperState$ = this.appStoreService.getDocumentWrapper();
   }
 
@@ -89,7 +89,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
     this.documentService.getDocument(this.doc.id).subscribe(doc => {
       this.doc = doc;
       this.documentChaned.emit(this.doc);
-      this.appStoreService.initDocumentWrapper(this.doc.elements);
+      this.appStoreService.initDocumentWrapper(this.doc.elements, this.doc.score);
     });
   }
 
@@ -100,7 +100,7 @@ export class DocumentContentComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes) {
     if (changes.doc) {
-      this.appStoreService.initDocumentWrapper(this.doc.elements);
+      this.appStoreService.initDocumentWrapper(this.doc.elements, this.doc.score);
     }
   }
 }

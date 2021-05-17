@@ -17,7 +17,9 @@ import {
   DocumentWrapperActions,
   DOCUMENT_WRAPPER_MOVE_PAGE,
   DOCUMENT_WRAPPER_DRAG_AND_DROP_ELEMENT,
-  DOCUMENT_WRAPPER_DRAG_AND_DROP_ENDED
+  DOCUMENT_WRAPPER_DRAG_AND_DROP_ENDED,
+  DOCUMENT_WRAPPER_SET_QUESTION_SCORE,
+  DOCUMENT_WRAPPER_CALCULATE_DOCUMENT_SCORE
 } from './document-wrapper.actions';
 import { DocumentWrapperState, Point} from './document-wrapper.state';
 import { Element } from '../../shared/model/element.model';
@@ -29,7 +31,7 @@ const service:DocumentWrapperGenericService = new DocumentWrapperService();
 export function documentWrapperReducer(state: DocumentWrapperState, action: DocumentWrapperActions) {
   switch (action.type) {
     case DOCUMENT_WRAPPER_INIT:
-      const initState = service.initDocument(action.payload);
+      const initState = service.initDocument(action.payload.elements, action.payload.score);
       return buildWrapper(initState);
       
     case DOCUMENT_WRAPPER_GO_TO_NEXT_PAGE:
@@ -100,6 +102,15 @@ export function documentWrapperReducer(state: DocumentWrapperState, action: Docu
     case DOCUMENT_WRAPPER_DRAG_AND_DROP_ENDED:
       service.dragAndDropEnded(state, action.payload as boolean);
       return state;
+
+    case DOCUMENT_WRAPPER_SET_QUESTION_SCORE:
+      service.setQuestionScore(state, action.payload);
+      return state;
+
+    case DOCUMENT_WRAPPER_CALCULATE_DOCUMENT_SCORE:
+      service.calculateDocumentScore(state);
+      return state;
+      
     default:
       return state;
   }

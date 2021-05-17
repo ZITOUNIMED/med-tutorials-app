@@ -1,7 +1,7 @@
 import { Component, forwardRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ElementType } from 'src/app/document/shared/element-type';
-import { MultiChoicesQuestionDTO, emptyMultiChoicesQuestionDTO } from 'src/app/document/shared/model/multi-choices-question-dto.model';
+import { emptyMultiChoicesQuestionDTO } from 'src/app/document/shared/model/multi-choices-question-dto.model';
 import { AbstractPaletteComponent } from '../abstract-palette.component';
 
 @Component({
@@ -17,13 +17,13 @@ import { AbstractPaletteComponent } from '../abstract-palette.component';
 })
 export class MultiChoicesQuestionPaletteComponent extends AbstractPaletteComponent implements OnInit {
   questionForm: FormGroup;
-  question: MultiChoicesQuestionDTO;
+  question = emptyMultiChoicesQuestionDTO();
 
   ngOnInit() {
     const fb = new FormBuilder();
     this.questionForm = fb.group({
       question: [''],
-      unitScore: [0],
+      score: [0],
       newCorrectAnswer: [''],
       newChoice: []
     });
@@ -77,19 +77,15 @@ export class MultiChoicesQuestionPaletteComponent extends AbstractPaletteCompone
     if(value && value.text){
       this.question = JSON.parse(value.text);
     }
-
-    if(!this.question){
-      this.question = emptyMultiChoicesQuestionDTO();
-    }
   }
 
   private questionToForm(){
     this.questionForm.get('question').patchValue(this.question.question);
-    this.questionForm.get('unitScore').patchValue(this.question.unitScore);
+    this.questionForm.get('score').patchValue(this.question.score);
   }
 
   private formToQuestion(){
-    this.question.unitScore = this.questionForm.get('unitScore').value;
+    this.question.score = this.questionForm.get('score').value;
     this.question.question = this.questionForm.get('question').value;
   }
 }

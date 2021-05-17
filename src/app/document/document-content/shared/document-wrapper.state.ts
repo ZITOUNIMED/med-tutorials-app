@@ -15,6 +15,8 @@ export interface DocumentWrapperState {
   canDeletePage: boolean;
   draggedElementPosition: Point;
   isLockedRepetition: boolean;
+  questions: any;
+  score: number;
 }
 
 export interface Point {

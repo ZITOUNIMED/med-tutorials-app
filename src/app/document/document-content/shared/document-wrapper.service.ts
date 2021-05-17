@@ -7,7 +7,7 @@ const ROW_FLAG = -125;
 const PAGE_FLAG = -523;
 
 export class DocumentWrapperService implements DocumentWrapperGenericService {
-    initDocument(elements: Element[]): DocumentWrapperState {
+    initDocument(elements: Element[], score): DocumentWrapperState {
         return {
             elements: elements,
             currentPage: 0,
@@ -19,6 +19,8 @@ export class DocumentWrapperService implements DocumentWrapperGenericService {
             canDeletePage: false,
             draggedElementPosition: null,
             isLockedRepetition: false,
+            questions: {},
+            score: score
           } as DocumentWrapperState;
     }
 
@@ -77,6 +79,20 @@ export class DocumentWrapperService implements DocumentWrapperGenericService {
 
     dragAndDropEnded(state: DocumentWrapperState, accept: boolean){
       
+    }
+
+    setQuestionScore(state: DocumentWrapperState, question: {questionKey: string, score: number}){
+      state.questions[question.questionKey]=question.score;
+    }
+
+    calculateDocumentScore(state: DocumentWrapperState){
+      let score = 0;
+      for (let key in state.questions) {
+        if (state.questions.hasOwnProperty(key)) {
+          score += state.questions[key];
+        }
+      }
+      state.score = score;
     }
 
     moveRow(state: DocumentWrapperState, previousRow: number, currentRow: number){
