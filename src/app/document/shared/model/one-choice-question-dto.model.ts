@@ -1,4 +1,6 @@
-export interface OneChoiceQuestionDTO {
+import { QuestionCommunDTO } from "./question-commun-dto";
+
+export interface OneChoiceQuestionDTO extends QuestionCommunDTO {
     question: string;
     key: string;
     items: string[];

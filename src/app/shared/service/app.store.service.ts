@@ -33,6 +33,7 @@ import { User } from 'src/app/user/shared/model/user.model';
 import {Principal} from '../../authentication/shared/model/principal.model';
 import {PrincipalState} from '../../authentication/shared/principal.state';
 import {LoadingState} from "../loading.state";
+import { state } from '@angular/animations';
 
 @Injectable()
 export class AppStoreService {
@@ -70,6 +71,11 @@ export class AppStoreService {
 
   getDocumentWrapper(): Observable<DocumentWrapperState> {
       return this.store.select('documentWrapperState');
+  }
+
+  getDocumentWrapperQuestions(): Observable<any> {
+    return this.store.select('documentWrapperState')
+    .pipe(map((docWrapper: DocumentWrapperState) => docWrapper.questions));
   }
 
   initDocumentWrapper(elements: Element[], score) {
@@ -174,8 +180,8 @@ export class AppStoreService {
       .pipe(map((loadingState: LoadingState) => loadingState && loadingState.loading));
   }
 
-  setQuestionScore(key: string, score: number){
-    this.store.dispatch(new DocumentWrapperSetQuestionScoreAction({key: key, score: score}));
+  setQuestionScore(key: string, score: number, answer: string){
+    this.store.dispatch(new DocumentWrapperSetQuestionScoreAction({key: key, score: score, answer: answer}));
   }
 
   calculateDocumentScore(){

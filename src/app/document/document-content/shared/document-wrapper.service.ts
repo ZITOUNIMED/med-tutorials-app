@@ -1,6 +1,7 @@
 import { DocumentWrapperGenericService } from "./document-wrapper-generic.service";
 import { DocumentWrapperState, Point } from "./document-wrapper.state";
 import {Element} from '../../shared/model/element.model';
+import { QuestionWrapper } from "../../shared/model/question-wrapper";
 
 const ROW_FLAG = -125;
 const PAGE_FLAG = -523;
@@ -79,15 +80,26 @@ export class DocumentWrapperService implements DocumentWrapperGenericService {
 
     dragAndDropEnded(state: DocumentWrapperState, accept: boolean){}
 
-    setQuestionScore(state: DocumentWrapperState, question: {key: string, score: number}){
-      state.questions[question.key]=question.score;
+    setQuestionScore(state: DocumentWrapperState, question: {key: string, score: number, answer: string}){
+      let questionWrapper: QuestionWrapper = state.questions[question.key];
+      if(!questionWrapper){
+        questionWrapper = {
+          score: 0,
+          answers: new Set<string>()
+        }
+      }
+
+      questionWrapper.score = question.score;
+      questionWrapper.answers.add(question.answer);
+
+      state.questions[question.key]=questionWrapper;
     }
 
     calculateDocumentScore(state: DocumentWrapperState){
       let score = 0;
       for (let key in state.questions) {
         if (state.questions.hasOwnProperty(key)) {
-          score += state.questions[key];
+          score += state.questions[key].score;
         }
       }
       state.score = score;
