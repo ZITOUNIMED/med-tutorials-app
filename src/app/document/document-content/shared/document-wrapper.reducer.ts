@@ -25,6 +25,7 @@ import { DocumentWrapperState, Point} from './document-wrapper.state';
 import { Element } from '../../shared/model/element.model';
 import { DocumentWrapperService } from './document-wrapper.service';
 import { DocumentWrapperGenericService } from './document-wrapper-generic.service';
+import { ElementType } from '../../shared/element-type';
 
 const service:DocumentWrapperGenericService = new DocumentWrapperService();
 
@@ -125,6 +126,7 @@ function buildWrapper(state: DocumentWrapperState) {
   state.biggestRowOfCurrentPage = getBiggestRowInPage(state, state.currentPage);
   state.canMoveUp = checkCanMoveUp(state);
   state.canDeletePage = checkCanDeletePage(state);
+  state.totalScore = calculateTotalQuestionScore(state);
   return {...state};
 }
 
@@ -178,4 +180,19 @@ function checkCanReturnToPreviousPage(state: DocumentWrapperState) {
 
 function sortElements(state: DocumentWrapperState) {
   return state.currentPageElements.sort((e1, e2) => e1.row - e2.row);
+}
+
+
+function calculateTotalQuestionScore(state: DocumentWrapperState){
+  let totalScore = 0;
+  const QUESTIONS_TYPES = [ElementType.ONE_CHOICE_QUESTION, ElementType.MULTI_CHOICES_QUESTION];
+  state.elements
+    .filter(el => QUESTIONS_TYPES.some(type => type === el.type))
+    .map(el => el.text)
+    .map(text => JSON.parse(text))
+    .forEach(ob => {
+      totalScore += ob.score;
+    });
+
+    return totalScore;
 }

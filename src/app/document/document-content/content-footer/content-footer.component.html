@@ -5,8 +5,8 @@
     (cdkDropListDropped)="drop($event)"
     [cdkDropListDisabled]="!(documentWrapperState$ | async).editMode"
     >
-    <span>
-      Score: {{(documentWrapperState$ | async).score}}/20 
+    <span *ngIf="(documentWrapperState$ | async).totalScore>0">
+      Score: {{((documentWrapperState$ | async).score / (documentWrapperState$ | async).totalScore * 100).toFixed(2)}} %
       <button mat-stroked-button (click)="calculateDocumentScore()">
         <i class="fa fa-refresh" aria-hidden="true"></i>
       </button>

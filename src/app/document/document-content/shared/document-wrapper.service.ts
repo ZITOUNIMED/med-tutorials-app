@@ -1,7 +1,6 @@
 import { DocumentWrapperGenericService } from "./document-wrapper-generic.service";
 import { DocumentWrapperState, Point } from "./document-wrapper.state";
 import {Element} from '../../shared/model/element.model';
-import { state } from "@angular/animations";
 
 const ROW_FLAG = -125;
 const PAGE_FLAG = -523;
@@ -20,7 +19,8 @@ export class DocumentWrapperService implements DocumentWrapperGenericService {
             draggedElementPosition: null,
             isLockedRepetition: false,
             questions: {},
-            score: score
+            score: score,
+            totalScore: 0,
           } as DocumentWrapperState;
     }
 
@@ -77,12 +77,10 @@ export class DocumentWrapperService implements DocumentWrapperGenericService {
         }
     }
 
-    dragAndDropEnded(state: DocumentWrapperState, accept: boolean){
-      
-    }
+    dragAndDropEnded(state: DocumentWrapperState, accept: boolean){}
 
-    setQuestionScore(state: DocumentWrapperState, question: {questionKey: string, score: number}){
-      state.questions[question.questionKey]=question.score;
+    setQuestionScore(state: DocumentWrapperState, question: {key: string, score: number}){
+      state.questions[question.key]=question.score;
     }
 
     calculateDocumentScore(state: DocumentWrapperState){

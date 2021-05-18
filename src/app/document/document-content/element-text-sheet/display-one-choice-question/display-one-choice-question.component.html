@@ -1,21 +1,21 @@
 <div> 
-   <label>{{question?.question}} </label>
-    <button mat-stroked-button (click)="showHideAnswer()">Answer
+   <label>{{question?.question}} </label>&nbsp;<small>({{question?.score}} points)</small>&nbsp;
+    <span (click)="showHideAnswer()">
         <i [hidden]="isAnswerDisplayed" class="fa fa-eye" aria-hidden="true"></i>
         <i [hidden]="!isAnswerDisplayed" class="fa fa-eye-slash" aria-hidden="true"></i>
-    </button>
+    </span>
 </div>
 <div *ngFor="let item of question?.items">
     <input type="radio" [value]="item" [formControl]="questionCtrl" (ngModelChange)="changed()" [name]="question?.key"/> {{item}} 
     <span *ngIf="isAnswerDisplayed">
-        <span *ngIf="item === question?.correctAnswer && question?.correctAnswer === questionCtrl?.value">
+        <span *ngIf="item === questionCtrl?.value && questionCtrl?.value === question?.correctAnswer">
             <i class="fa fa-check" [ngStyle]="{'color': 'green'}" aria-hidden="true"></i>
         </span>
-        <span *ngIf="item === question?.correctAnswer && question?.correctAnswer !== questionCtrl?.value">
+        <span *ngIf="item !== questionCtrl?.value && item === question?.correctAnswer">
             <i class="fa fa-check" aria-hidden="true"></i>
         </span>
         <span *ngIf="item === questionCtrl?.value && question?.correctAnswer !== questionCtrl?.value">
-            <i class="fa fa-check" [ngStyle]="{'color': 'red'}" aria-hidden="true"></i>
+            <i class="fa fa-times" [ngStyle]="{'color': 'red'}" aria-hidden="true"></i>
         </span>
     </span>
     

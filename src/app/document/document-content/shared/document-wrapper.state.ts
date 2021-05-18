@@ -17,6 +17,7 @@ export interface DocumentWrapperState {
   isLockedRepetition: boolean;
   questions: any;
   score: number;
+  totalScore: number;
 }
 
 export interface Point {

@@ -174,8 +174,8 @@ export class AppStoreService {
       .pipe(map((loadingState: LoadingState) => loadingState && loadingState.loading));
   }
 
-  setQuestionScore(questionKey: string, score: number){
-    this.store.dispatch(new DocumentWrapperSetQuestionScoreAction({'questionKey': questionKey, 'score':score}));
+  setQuestionScore(key: string, score: number){
+    this.store.dispatch(new DocumentWrapperSetQuestionScoreAction({key: key, score: score}));
   }
 
   calculateDocumentScore(){

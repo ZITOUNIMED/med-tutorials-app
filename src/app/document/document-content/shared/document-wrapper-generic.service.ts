@@ -32,6 +32,6 @@ export interface DocumentWrapperGenericService {
     dragAndDropEnded(state: DocumentWrapperState, accept: boolean);
 
     // score actions
-    setQuestionScore(state: DocumentWrapperState, question: {questionKey: string, score: number});
+    setQuestionScore(state: DocumentWrapperState, question: {key: string, score: number});
     calculateDocumentScore(state: DocumentWrapperState);
 }

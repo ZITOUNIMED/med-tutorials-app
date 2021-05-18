@@ -182,7 +182,7 @@ export class DocumentWrapperCancelEditElementAction implements Action {
 
 export class DocumentWrapperSetQuestionScoreAction implements Action {
   readonly type = DOCUMENT_WRAPPER_SET_QUESTION_SCORE;
-  constructor(public payload: {questionKey: string, score: number}){}
+  constructor(public payload: {key: string, score: number}){}
 }
 
 export class DocumentWrapperCalculateDocumentScoreAction implements Action {
