@@ -12,8 +12,8 @@ import {DocumentComponent} from './document.component';
 import {AppMaterialModule} from '../app.material.module';
 import {SharedModule} from '../shared/shared.module';
 import { CreateUpdateDocumentComponent } from './shared/modal/create-update-document/create-update-document.component';
-import {ImportDocumentFileComponent} from './shared/modal/import-document-file/import-document-file.component';
-import {AppDirectivesModule} from '../directive/app-directives.module';
+import { ImportDocumentFileComponent } from './shared/modal/import-document-file/import-document-file.component';
+import { AppDirectivesModule } from '../directive/app-directives.module';
 import { ElementTextSheetComponent } from './document-content/element-text-sheet/element-text-sheet.component';
 import { DisplayPdfReportComponent } from './shared/modal/display-pdf-report/display-pdf-report.document';
 import { ContentHeaderComponent } from './document-content/content-header/content-header.component';
@@ -36,6 +36,9 @@ import { DisplayOneChoiceQuestionComponent } from './document-content/element-te
 import { DisplayMultiChoicesQuestionComponent } from './document-content/element-text-sheet/display-multi-choices-question/display-multi-choices-question.component';
 import { OneChoiceQuestionPaletteComponent } from './document-content/document-palette/one-choice-question-palette/one-choice-question-palette.component';
 import { MultiChoicesQuestionPaletteComponent } from './document-content/document-palette/multi-choices-question-palette/multi-choices-question-palette.component';
+import { DisplayShortTextQuestionComponent } from './document-content/element-text-sheet/display-short-text-question/display-short-text-question.component';
+import { DisplayLongTextQuestionComponent } from './document-content/element-text-sheet/display-long-text-question/display-long-text-question.component';
+import { TextQuestionPaletteComponent } from './document-content/document-palette/text-question-palette/text-question-palette.component';
 
 @NgModule({
   imports: [AppMaterialModule,
@@ -75,6 +78,9 @@ import { MultiChoicesQuestionPaletteComponent } from './document-content/documen
     DisplayMultiChoicesQuestionComponent,
     OneChoiceQuestionPaletteComponent,
     MultiChoicesQuestionPaletteComponent,
+    DisplayShortTextQuestionComponent,
+    DisplayLongTextQuestionComponent,
+    TextQuestionPaletteComponent,
   ],
   providers: [DocumentPermissionsService],
   entryComponents: [

@@ -1,0 +1,17 @@
+<div class="new-line"></div>
+<div> 
+   <label>{{question?.question}} </label>&nbsp;<small>({{question?.score}} points)</small>&nbsp;
+    <span (click)="showHideAnswer()">
+        <i [hidden]="isAnswerDisplayed" class="fa fa-eye" aria-hidden="true"></i>
+        <i [hidden]="!isAnswerDisplayed" class="fa fa-eye-slash" aria-hidden="true"></i>
+    </span>
+</div>
+<div>
+    <pre><code>{{question?.questionComplement}}</code></pre>
+</div>
+<div class="form-group"> 
+    <textarea type="text" rows="5" class="form-control" [ngClass]="{'is-invalid': isAnswerDisplayed && !isCorrectAnswer()}" [formControl]="questionCtrl" (ngModelChange)="changed()">
+    </textarea>
+    <label *ngIf="isAnswerDisplayed && isCorrectAnswer()" class="text-success">correct!</label>
+    <label *ngIf="isAnswerDisplayed && !isCorrectAnswer()" class="text-danger">wrong!</label>
+</div>

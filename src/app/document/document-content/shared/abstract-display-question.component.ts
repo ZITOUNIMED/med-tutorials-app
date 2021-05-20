@@ -4,6 +4,8 @@ import { QuestionWrapper } from "../../shared/model/question-wrapper";
 
 export abstract class AbstractDisplayQuestionComponent{
     question: QuestionCommunDTO;
+    isAnswerDisplayed = false;
+    
     constructor(protected appStoreService: AppStoreService){}
 
     ngOnInit(){
@@ -17,6 +19,9 @@ export abstract class AbstractDisplayQuestionComponent{
         });
     }
 
-    abstract showHideAnswer();
+    showHideAnswer(){
+        this.isAnswerDisplayed = !this.isAnswerDisplayed;
+    }
+
     abstract setQuestionWrapperAnswers(questionWrapper:QuestionWrapper);
 }

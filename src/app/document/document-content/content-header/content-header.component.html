@@ -52,6 +52,14 @@
     [ngClass]="{selectedItem: (documentWrapperState$ | async).selectedElement?.type==ElementType.MULTI_CHOICES_QUESTION}">
     <i class="fa fa-check-square-o" aria-hidden="true"></i>
   </button>
+  <button class="btn btn-xs" (click)="appStoreService.selectElement(newEmptyElement(ElementType.SHORT_TEXT_QUESTION))"
+    [ngClass]="{selectedItem: (documentWrapperState$ | async).selectedElement?.type==ElementType.SHORT_TEXT_QUESTION}">
+    short
+  </button>
+  <button class="btn btn-xs" (click)="appStoreService.selectElement(newEmptyElement(ElementType.LONG_TEXT_QUESTION))"
+    [ngClass]="{selectedItem: (documentWrapperState$ | async).selectedElement?.type==ElementType.LONG_TEXT_QUESTION}">
+    long
+  </button>
 </span>
 <div class="pull-right">
   <button class="btn btn-xs btn-default" [appPermissions]="documentPermissions"

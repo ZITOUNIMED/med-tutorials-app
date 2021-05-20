@@ -13,7 +13,6 @@ import { QuestionWrapper } from 'src/app/document/shared/model/question-wrapper'
 export class DisplayOneChoiceQuestionComponent extends AbstractDisplayQuestionComponent implements OnChanges, OnInit {
   @Input() text;
   question: OneChoiceQuestionDTO;
-  isAnswerDisplayed = false;
   questionCtrl = new FormControl('');
 
   constructor(protected appStoreService: AppStoreService){
@@ -25,10 +24,6 @@ export class DisplayOneChoiceQuestionComponent extends AbstractDisplayQuestionCo
       this.question = JSON.parse(this.text);
       this.questionCtrl.patchValue(this.question.courrentAnswer);
     }
-  }
-
-  showHideAnswer(){
-    this.isAnswerDisplayed = !this.isAnswerDisplayed;
   }
 
   changed(){

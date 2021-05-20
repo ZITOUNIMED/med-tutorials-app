@@ -1,0 +1,46 @@
+<form [formGroup]="questionForm">
+    <div>
+        <mat-form-field class="example-full-width">
+            <input
+              type="text"
+              placeholder="Question"
+              matInput
+              formControlName="question"
+              (ngModelChange)="changed()"
+            />
+          </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field class="example-full-width">
+            <input
+              type="text"
+              placeholder="Question complement"
+              matInput
+              formControlName="questionComplement"
+              (ngModelChange)="changed()"
+            />
+          </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field class="example-full-width">
+            <input
+              type="text"
+              placeholder="Correct Answer"
+              matInput
+              formControlName="correctAnswer"
+              (ngModelChange)="changed()"
+            />
+          </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field>
+            <input
+              type="number"
+              placeholder="Score"
+              matInput
+              formControlName="score"
+              (ngModelChange)="changed()"
+            />
+          </mat-form-field>
+    </div>
+</form>

@@ -32,4 +32,10 @@
   <div *ngSwitchCase="ElementType.MULTI_CHOICES_QUESTION">
     <app-display-multi-choices-question [text]="element.text"></app-display-multi-choices-question> 
   </div>
+  <div *ngSwitchCase="ElementType.SHORT_TEXT_QUESTION">
+    <app-display-short-text-question [text]="element.text"></app-display-short-text-question> 
+  </div>
+  <div *ngSwitchCase="ElementType.LONG_TEXT_QUESTION">
+    <app-display-long-text-question [text]="element.text"></app-display-long-text-question> 
+  </div>
 </div>
