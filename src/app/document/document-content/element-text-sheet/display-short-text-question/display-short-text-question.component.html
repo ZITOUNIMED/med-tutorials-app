@@ -12,5 +12,5 @@
     <label *ngIf="isAnswerDisplayed && !isCorrectAnswer()" class="text-danger">wrong!</label>
 </div>
 <div *ngIf="isAnswerDisplayed">
-    <pre><code>{{question.correctAnswer}}</code></pre>
+    <pre><code><i [innerHTML]="question.correctAnswer"></i></code></pre>
 </div>
