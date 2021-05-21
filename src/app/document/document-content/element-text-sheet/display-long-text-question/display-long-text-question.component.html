@@ -8,7 +8,7 @@
 </div>
 <div>
     <span *ngFor="let line of textLines">
-      <pre><code><i [innerHTML]="line"></i></code></pre>
+      <pre><code>{{line}}</code></pre>
     </span>
   </div>
 <div class="form-group"> 
@@ -18,5 +18,5 @@
     <label *ngIf="isAnswerDisplayed && !isCorrectAnswer()" class="text-danger">wrong!</label>
 </div>
 <div *ngIf="isAnswerDisplayed">
-    <pre><code><i [innerHTML]="question.correctAnswer"></i></code></pre>
+    <pre><code>{{question.correctAnswer}}</code></pre>
 </div>
