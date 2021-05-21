@@ -6,6 +6,9 @@
         <i [hidden]="!isAnswerDisplayed" class="fa fa-eye-slash" aria-hidden="true"></i>
     </span>
 </div>
+<div *ngIf="question?.questionComplement">
+    <pre><code>{{question.questionComplement}}</code></pre>
+</div>
 <div class="form-group"> 
     <input type="text" class="form-control" [ngClass]="{'is-invalid': isAnswerDisplayed && !isCorrectAnswer()}" [formControl]="questionCtrl" (ngModelChange)="changed()" />
     <label *ngIf="isAnswerDisplayed && isCorrectAnswer()" class="text-success">correct!</label>

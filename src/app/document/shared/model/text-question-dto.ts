@@ -3,7 +3,6 @@ import { QuestionCommunDTO } from "./question-commun-dto";
 export interface TextQuestionDTO extends QuestionCommunDTO {
     question: string;
     key: string;
-    questionComplement: string;
     correctAnswer: string;
     courrentAnswer: string;
     score: number;

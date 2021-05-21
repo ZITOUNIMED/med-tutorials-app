@@ -24,6 +24,7 @@ export class MultiChoicesQuestionPaletteComponent extends AbstractPaletteCompone
     this.questionForm = fb.group({
       question: [''],
       score: [0],
+      questionComplement: [''],
       newCorrectAnswer: [''],
       newChoice: []
     });
@@ -82,10 +83,12 @@ export class MultiChoicesQuestionPaletteComponent extends AbstractPaletteCompone
   private questionToForm(){
     this.questionForm.get('question').patchValue(this.question.question);
     this.questionForm.get('score').patchValue(this.question.score);
+    this.questionForm.get('questionComplement').patchValue(this.question.questionComplement);
   }
 
   private formToQuestion(){
     this.question.score = this.questionForm.get('score').value;
     this.question.question = this.questionForm.get('question').value;
+    this.question.questionComplement = this.questionForm.get('questionComplement').value;
   }
 }

@@ -6,6 +6,9 @@
          <i [hidden]="!isAnswerDisplayed" class="fa fa-eye-slash" aria-hidden="true"></i>
      </span>
  </div>
+ <div *ngIf="question?.questionComplement">
+    <pre><code>{{question.questionComplement}}</code></pre>
+  </div>
 <div *ngFor="let item of question?.items; let i = index">
     <input type="checkbox" [formControl]="questionControls[i]" (ngModelChange)="changed(questionControls[i].value, item)"/> {{item}}
     <span *ngIf="isAnswerDisplayed">

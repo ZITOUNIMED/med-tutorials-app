@@ -23,6 +23,7 @@ export class OneChoiceQuestionPaletteComponent extends AbstractPaletteComponent 
     const fb = new FormBuilder();
     this.questionForm = fb.group({
       question: [''],
+      questionComplement: [''],
       score: [0],
       correctAnswer: [''],
       newItem: []
@@ -68,6 +69,7 @@ export class OneChoiceQuestionPaletteComponent extends AbstractPaletteComponent 
   private questionToForm(){
     this.questionForm.get('question').patchValue(this.question.question);
     this.questionForm.get('score').patchValue(this.question.score);
+    this.questionForm.get('questionComplement').patchValue(this.question.questionComplement);
     this.questionForm.get('correctAnswer').patchValue(this.question.correctAnswer);
   }
 
@@ -75,6 +77,7 @@ export class OneChoiceQuestionPaletteComponent extends AbstractPaletteComponent 
     this.question.correctAnswer = this.questionForm.get('correctAnswer').value;
     this.question.score = this.questionForm.get('score').value;
     this.question.question = this.questionForm.get('question').value;
+    this.question.questionComplement = this.questionForm.get('questionComplement').value;
   }
 
 }

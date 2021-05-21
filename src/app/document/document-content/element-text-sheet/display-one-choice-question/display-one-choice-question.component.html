@@ -6,6 +6,9 @@
         <i [hidden]="!isAnswerDisplayed" class="fa fa-eye-slash" aria-hidden="true"></i>
     </span>
 </div>
+<div *ngIf="question?.questionComplement">
+    <pre><code>{{question.questionComplement}}</code></pre>
+</div>
 <div *ngFor="let item of question?.items">
     <input type="radio" [value]="item" [formControl]="questionCtrl" (ngModelChange)="changed()" [name]="question?.key"/> {{item}} 
     <span *ngIf="isAnswerDisplayed">

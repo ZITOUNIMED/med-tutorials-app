@@ -13,6 +13,7 @@ export const emptyOneChoiceQuestionDTO = (): OneChoiceQuestionDTO => {
     return {
         question: '',
         key: Math.random().toString(17),
+        questionComplement: '',
         items: [],
         correctAnswer: '',
         courrentAnswer: '',

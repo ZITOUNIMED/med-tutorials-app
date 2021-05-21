@@ -11,6 +11,17 @@
           </mat-form-field>
     </div>
     <div>
+      <mat-form-field class="example-full-width">
+        <textarea
+          rows="5"
+          matInput
+          placeholder="Question complement"
+          formControlName="questionComplement"
+          (ngModelChange)="changed()"
+        ></textarea>
+      </mat-form-field>
+  </div>
+    <div>
         <mat-form-field class="example-full-width">
             <input
               type="number"
