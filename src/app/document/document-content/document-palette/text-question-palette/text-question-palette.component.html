@@ -12,25 +12,25 @@
     </div>
     <div>
         <mat-form-field class="example-full-width">
-            <input
-              type="text"
-              placeholder="Question complement"
-              matInput
-              formControlName="questionComplement"
-              (ngModelChange)="changed()"
-            />
-          </mat-form-field>
+          <textarea
+            rows="5"
+            matInput
+            placeholder="Question complement"
+            formControlName="questionComplement"
+            (ngModelChange)="changed()"
+          ></textarea>
+        </mat-form-field>
     </div>
     <div>
         <mat-form-field class="example-full-width">
-            <input
-              type="text"
-              placeholder="Correct Answer"
-              matInput
-              formControlName="correctAnswer"
-              (ngModelChange)="changed()"
-            />
-          </mat-form-field>
+          <textarea
+            rows="5"
+            matInput
+            placeholder="Correct Answer"
+            formControlName="correctAnswer"
+            (ngModelChange)="changed()"
+          ></textarea>
+        </mat-form-field>
     </div>
     <div>
         <mat-form-field>

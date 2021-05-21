@@ -7,11 +7,16 @@
     </span>
 </div>
 <div>
-    <pre><code>{{question?.questionComplement}}</code></pre>
-</div>
+    <span *ngFor="let line of textLines">
+      <pre><code><i [innerHTML]="line"></i></code></pre>
+    </span>
+  </div>
 <div class="form-group"> 
     <textarea type="text" rows="5" class="form-control" [ngClass]="{'is-invalid': isAnswerDisplayed && !isCorrectAnswer()}" [formControl]="questionCtrl" (ngModelChange)="changed()">
     </textarea>
     <label *ngIf="isAnswerDisplayed && isCorrectAnswer()" class="text-success">correct!</label>
     <label *ngIf="isAnswerDisplayed && !isCorrectAnswer()" class="text-danger">wrong!</label>
+</div>
+<div *ngIf="isAnswerDisplayed">
+    <pre><code><i [innerHTML]="question.correctAnswer"></i></code></pre>
 </div>

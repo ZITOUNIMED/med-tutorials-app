@@ -14,12 +14,10 @@ export class DisplayLongTextQuestionComponent extends AbstractDisplayQuestionCom
   @Input() text;
   question: TextQuestionDTO;
   questionCtrl = new FormControl('');
+  textLines = [];
 
   constructor(protected appStoreService: AppStoreService){
     super(appStoreService);
-  }
-
-  ngOnInit(): void {
   }
 
   changed(){
@@ -32,16 +30,16 @@ export class DisplayLongTextQuestionComponent extends AbstractDisplayQuestionCom
   }
 
   setQuestionWrapperAnswers(questionWrapper:QuestionWrapper){
-    
-  }if(questionWrapper){
-    let answers = Array.from(questionWrapper.answers);
-    if(answers){
-      answers = answers.filter((item: string) => item && item.length)
-    }
-    if(answers.length){
-      const value = answers[answers.length - 1];
-      if(value !== this.questionCtrl.value){
-        this.questionCtrl.patchValue(value);
+    if(questionWrapper){
+      let answers = Array.from(questionWrapper.answers);
+      if(answers){
+        answers = answers.filter((item: string) => item && item.length)
+      }
+      if(answers.length){
+        const value = answers[answers.length - 1];
+        if(value !== this.questionCtrl.value){
+          this.questionCtrl.patchValue(value);
+        }
       }
     }
   }
@@ -49,14 +47,22 @@ export class DisplayLongTextQuestionComponent extends AbstractDisplayQuestionCom
   ngOnChanges(changes){
     if(changes && this.text){
       this.question = JSON.parse(this.text);
+      const questionComplement = this.question.questionComplement;
+      if(questionComplement){
+        this.textLines =questionComplement.split('\n');
+        this.textLines = this.textLines.map(line => line.replace(/ /g, '&nbsp;'));
+      }
       this.questionCtrl.patchValue(this.question.courrentAnswer);
     }
   }
 
   isCorrectAnswer(){
-    const currentValue = this.questionCtrl.value.trim().toUpperCase();
-    const correctAnswer = this.question.correctAnswer.trim().toUpperCase();
-
-    return correctAnswer.includes(currentValue);
+    if(this.question && this.question.correctAnswer){
+      const currentValue = this.questionCtrl.value.trim().toUpperCase();
+      const correctAnswer = this.question.correctAnswer.trim().toUpperCase();
+  
+      return correctAnswer == currentValue;
+    }
+    return false;
   }
 }

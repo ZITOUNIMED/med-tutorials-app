@@ -185,7 +185,11 @@ function sortElements(state: DocumentWrapperState) {
 
 function calculateTotalQuestionScore(state: DocumentWrapperState){
   let totalScore = 0;
-  const QUESTIONS_TYPES = [ElementType.ONE_CHOICE_QUESTION, ElementType.MULTI_CHOICES_QUESTION];
+  const QUESTIONS_TYPES = [ElementType.ONE_CHOICE_QUESTION, 
+    ElementType.MULTI_CHOICES_QUESTION,
+    ElementType.SHORT_TEXT_QUESTION,
+    ElementType.LONG_TEXT_QUESTION];
+    
   state.elements
     .filter(el => QUESTIONS_TYPES.some(type => type === el.type))
     .map(el => el.text)

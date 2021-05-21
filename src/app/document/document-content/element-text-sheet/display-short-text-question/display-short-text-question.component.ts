@@ -19,9 +19,6 @@ export class DisplayShortTextQuestionComponent extends AbstractDisplayQuestionCo
     super(appStoreService);
   }
 
-  ngOnInit(): void {
-  }
-
   changed(){
     let score = 0;
     if(this.isCorrectAnswer()){
@@ -32,16 +29,16 @@ export class DisplayShortTextQuestionComponent extends AbstractDisplayQuestionCo
   }
 
   setQuestionWrapperAnswers(questionWrapper:QuestionWrapper){
-    
-  }if(questionWrapper){
-    let answers = Array.from(questionWrapper.answers);
-    if(answers){
-      answers = answers.filter((item: string) => item && item.length)
-    }
-    if(answers.length){
-      const value = answers[answers.length - 1];
-      if(value !== this.questionCtrl.value){
-        this.questionCtrl.patchValue(value);
+    if(questionWrapper){
+      let answers = Array.from(questionWrapper.answers);
+      if(answers){
+        answers = answers.filter((item: string) => item && item.length)
+      }
+      if(answers.length){
+        const value = answers[answers.length - 1];
+        if(value !== this.questionCtrl.value){
+          this.questionCtrl.patchValue(value);
+        }
       }
     }
   }
@@ -54,9 +51,12 @@ export class DisplayShortTextQuestionComponent extends AbstractDisplayQuestionCo
   }
 
   isCorrectAnswer(){
-    const currentValue = this.questionCtrl.value.trim().toUpperCase();
-    const correctAnswer = this.question.correctAnswer.trim().toUpperCase();
-
-    return correctAnswer.includes(currentValue);
+    if(this.questionCtrl.value && this.question && this.question.correctAnswer){
+      const currentValue = this.questionCtrl.value.trim().toUpperCase();
+      const correctAnswer = this.question.correctAnswer.trim().toUpperCase();
+  
+      return correctAnswer === currentValue;
+    }
+    return false;
   }
 }
