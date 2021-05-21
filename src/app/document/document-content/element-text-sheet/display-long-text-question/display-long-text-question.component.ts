@@ -14,7 +14,6 @@ export class DisplayLongTextQuestionComponent extends AbstractDisplayQuestionCom
   @Input() text;
   question: TextQuestionDTO;
   questionCtrl = new FormControl('');
-  textLines = [];
 
   constructor(protected appStoreService: AppStoreService){
     super(appStoreService);
@@ -47,11 +46,6 @@ export class DisplayLongTextQuestionComponent extends AbstractDisplayQuestionCom
   ngOnChanges(changes){
     if(changes && this.text){
       this.question = JSON.parse(this.text);
-      const questionComplement = this.question.questionComplement;
-      if(questionComplement){
-        this.textLines =questionComplement.split('\n');
-        this.textLines = this.textLines.map(line => line.replace(/ /g, '&nbsp;'));
-      }
       this.questionCtrl.patchValue(this.question.courrentAnswer);
     }
   }
