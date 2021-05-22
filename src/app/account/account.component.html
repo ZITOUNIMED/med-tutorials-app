@@ -13,15 +13,96 @@
       <span>&nbsp;</span>
     </div>
     <div style="margin-top: 20px;">
-      <div *ngIf="!editMode">
-        Firstname: {{user?.firstname}} <br/>
-        Lastname: {{user?.lastname}} <br/>
-        Username: {{user?.username}} <br/>
-        E-mail: {{user?.email}}
-      </div>
-      <div *ngIf="editMode">
-        edit<br/>
-        <button>Save</button>
+      
+      <div class="row">
+        <div *ngIf="!editMode" class="col-6">
+          <div>
+            <label>First Name:</label>
+            {{user?.firstname}} 
+          </div>
+          <div>
+            <label>Last Name:</label>
+            {{user?.lastname}}
+          </div>
+          <div>
+            <label>E-mail:</label>
+            {{user?.email}}
+          </div>
+          <div>
+            <label>Roles:</label>
+            <ul *ngIf="user && user.roles">
+              <li *ngFor="let role of user.roles">
+                {{role.name === 'ROLE_SOURCER' ? 'Sourcer' : role.name === 'ROLE_USER' ? 'User' : role.name === 'ROLE_ADMIN' ? 'Administrator' : 'Guest'}}
+                <i class="fa fa-info-circle" aria-hidden="true" (click)="displayInfos(role.name)"></i>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-6"  *ngIf="editMode" >
+          <form [formGroup]="userForm" (submit)="saveUser()">
+            <div>
+              <mat-form-field class="example-full-width">
+                <input 
+                  type="text"
+                  matInput
+                  placeholder="First Name"
+                  formControlName="firstname"
+                />
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field class="example-full-width">
+                <input
+                  type="text"
+                  matInput
+                  placeholder="Last Name"
+                  formControlName="lastname"
+                />
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field class="example-full-width">
+                <input
+                  type="email"
+                  matInput
+                  placeholder="E-mail"
+                  formControlName="email"
+                />
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field class="example-full-width95">
+                <input
+                  type="password"
+                  matInput
+                  placeholder="Password"
+                  formControlName="password"
+                />
+              </mat-form-field>
+              <i class="fa fa-info-circle" aria-hidden="true"></i>
+            </div>
+            <div>
+              <mat-form-field class="example-full-width">
+                <input
+                  type="password"
+                  matInput
+                  placeholder="Confirm Password"
+                  formControlName="confirmPassword"
+                />
+              </mat-form-field>
+            </div>
+            <div>
+              <button disabled type="submit">Save</button>
+            </div>
+          </form>
+        </div>
+        <div class="col-6">
+          <div class="example-full-width80">
+            <em>
+              {{infos}}
+            </em>
+          </div>
+        </div>
       </div>
     </div>
   </div>

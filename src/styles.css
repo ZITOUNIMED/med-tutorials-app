@@ -7,5 +7,22 @@
 }
 .example-full-width {
     width: 100%;
-  }
+}
+
+.example-full-width95 {
+    width: 95%;
+}
+
+.example-full-width80 {
+    width: 80%;
+}
+
+
+.example-half-width {
+    width: 50%;
+}
+
+label {
+    font-weight: bold !important;
+}
   
